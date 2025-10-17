@@ -1,0 +1,471 @@
+@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "leaflet/dist/leaflet.css";
+
+body, h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+  background-size: 400px;
+  background-color: #f7e4cd;
+  color: #333;
+}
+
+html{
+    scroll-padding-top: 80px;
+}
+
+.app{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  background-image: url("/headerpc.jpeg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 3rem;
+  font-family: "Tinos", serif;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.header h1 {
+  margin-top: 5%;
+  font-size: 3rem;
+}
+.header p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+.header button{
+  display: flex;
+  margin: 5% 0 1% 0;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  background-color: #B22222;
+  color: white;
+  border: none;
+}
+
+.navbar {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+  gap: 1rem;
+  background: #B22222; 
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #8B1A1A; 
+}
+.navbar button {
+  border: 1px solid #B22222;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.navbar button:hover {
+  color: white;
+  transition: 0.3s;
+  transform: translateY(-1px);
+}
+
+.section {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+  color: #B22222; /* títulos vermelhos */
+}
+.section p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+.alt-bg {
+  background: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
+  transition: transform 0.2s;
+  width: 15rem;
+}
+
+.card-content {
+  padding: 1rem;
+  text-align: left;
+}
+
+
+.card-content h3 {
+  color: #B22222;
+  margin-bottom: 0.5rem;
+}
+
+.new-price {
+  color: #333;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+.btn {
+  display: block;
+  width: 65%  ;
+  padding: 0.6rem;
+  background: #2E7D32; /* verde manjericão */
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.meio{
+  justify-content: left;
+  display: flex;
+  margin-top: 25%;
+
+}
+.btn:hover {
+  background: #FFD54F; 
+  color: #333;
+  
+}
+
+.card-monte{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
+  transition: transform 0.2s;
+  width: 15%;
+}
+
+.card-monte h3{
+  color:#B22222;
+}
+
+.card-monte button{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+
+.card-bebida {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
+  transition: transform 0.2s;
+  width: 18vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ul-cart{
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 40vh;
+}
+
+.cart-dropdown {
+  position: fixed;
+  top: 5rem;
+  right: 1rem;
+  background: #FAF3E0; /* bege */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 25vw;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+  color: #333;
+
+}
+
+.cart-icon {
+  top: 15px;
+  right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  vertical-align: center;
+  align-items: center;
+  justify-content: center;
+}
+.cart-count {
+  background: white; /* amarelo destaque */
+  color: #a10101;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 3px;
+}
+
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-header h3 {
+  color: #B22222;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid black;
+  white-space: pre-line;
+}
+
+.cart-item span{
+  font-weight: bold;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.qty-controls button {
+  background: #B22222;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: white;
+}
+.qty-controls span {
+  min-width: 20px;
+  text-align: center;
+}
+.remove-btn {
+  background: #B22222;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 1rem;
+  padding-top: 10px;
+}
+
+.checkout-btn {
+  background: #B22222;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  width: 100%;
+}
+.checkout-btn:hover {
+  background: #2E7D32;
+}
+
+
+.footer {
+  background: #B22222; /* vermelho forno */
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}
+
+.footer p {
+  margin: 4px 0;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #fff;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal h2 {
+  margin-bottom: 1rem;
+  color: #B22222;
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+}
+
+.modal li {
+  width: 80%;
+  margin-bottom: 8px;
+  border: 1px solid red;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.modal li:hover{
+  cursor: pointer;
+}
+
+.modal label{
+  cursor: pointer;
+}
+
+.modal input{
+  cursor: pointer;
+}
+
+.modal-footer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+@media(max-width: 768px){
+
+  .header {
+  background-image: url("/header.jpeg");
+  color: white;
+  text-align: center;
+  padding: 3rem 1rem 0.5rem 1rem;
+  font-family: "Tinos", serif;
+  background-position: center;
+  background-size: 100%;
+}
+
+.header button{
+  display: flex;
+  margin-top: 5%;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  background-color: #B22222;
+  color: white;
+  border: none;
+}
+.header h1 {
+  font-size: 3rem;
+}
+.header p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.cart-dropdown {
+  position: fixed;
+  top: 70px;
+  right: 5px;
+  background: #FAF3E0; /* bege */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 85vw;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 100;
+  color: #333;
+}
+.ul-cart{
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+.remove-btn {
+  background: #B22222;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 6px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+}
