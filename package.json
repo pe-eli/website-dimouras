@@ -12,6 +12,7 @@
   "dependencies": {
     "@mercadopago/sdk-react": "^1.0.6",
     "@react-google-maps/api": "^2.20.7",
+    "firebase": "^12.4.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.545.0",
     "mercadopago": "^2.9.0",
