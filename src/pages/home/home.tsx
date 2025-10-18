@@ -268,7 +268,7 @@ export default function Ap() {
 
         <div className="footer">
           <p>
-            <HiPhone /> (24) 99826-0420
+            <HiPhone /> (37) 99826-0420
           </p>
           <p>
             <IoMdTime /> Terça a Domingo: 18h às 23h
