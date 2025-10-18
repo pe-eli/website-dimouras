@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "leaflet/dist/leaflet.css";
 
 body, h1, h2, h3, p {
@@ -42,7 +42,7 @@ html{
 }
 .header p {
   font-size: 1.2rem;
-  margin-top: 0.5rem;
+  margin-top: 0.5rem; 
 }
 .header button{
   display: flex;
@@ -88,7 +88,7 @@ html{
 .section h2 {
   font-size: 1.8rem;
   margin-bottom: 1.2rem;
-  color: #B22222; /* títulos vermelhos */
+  color: #B22222;  
 }
 .section p {
   margin-bottom: 2rem;
@@ -136,8 +136,7 @@ html{
   display: block;
   width: 65%  ;
   padding: 0.6rem;
-  background: #2E7D32; /* verde manjericão */
-  border: none;
+  background: #2E7D32; 
   color: white;
   font-weight: bold;
   border-radius: 6px;
@@ -211,7 +210,7 @@ html{
   position: fixed;
   top: 5rem;
   right: 1rem;
-  background: #FAF3E0; /* bege */
+  background: #FAF3E0; 
   border: 1px solid #ddd;
   border-radius: 8px;
   width: 25vw;
@@ -233,7 +232,7 @@ html{
   justify-content: center;
 }
 .cart-count {
-  background: white; /* amarelo destaque */
+  background: white; 
   color: #a10101;
   border-radius: 50%;
   padding: 4px 8px;
@@ -322,7 +321,7 @@ html{
 
 
 .footer {
-  background: #B22222; /* vermelho forno */
+  background: #B22222;
   color: white;
   text-align: center;
   padding: 1rem;
@@ -442,7 +441,7 @@ html{
   position: fixed;
   top: 70px;
   right: 5px;
-  background: #FAF3E0; /* bege */
+  background: #FAF3E0; 
   border: 1px solid #ddd;
   border-radius: 8px;
   width: 85vw;
@@ -468,4 +467,145 @@ html{
   cursor: pointer;
 }
 
+}
+*/
+/* Estilo geral */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+
+/* Container principal */
+.landing-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  padding: 1rem;
+}
+
+/* Card central */
+.card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 3rem 2rem;
+  max-width: 480px;
+  text-align: center;
+}
+
+/* Logo */
+.logo {
+  width: 50%;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+}
+
+/* Título */
+.title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+/* Subtítulo */
+.subtitle {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Botão "Em breve" */
+.coming-soon {
+  background: linear-gradient(90deg, #ff4500, #ff7b00);
+  border: none;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: default;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(255, 90, 0, 0.3);
+}
+
+/* Texto descritivo */
+.description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Botões de ação */
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.whatsapp,
+.instagram {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.whatsapp:hover {
+  background: #1ebe5d;
+}
+
+.instagram {
+  border: 2px solid #ff007a;
+  color: #ff007a;
+  background: white;
+}
+
+.instagram:hover {
+  background: #ff007a;
+  color: white;
+}
+
+/* Rodapé */
+.footer {
+  font-size: 0.9rem;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.footer svg {
+  vertical-align: middle;
+  margin-right: 5px;
+  color: #d32f2f;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .card {
+    padding: 2rem 1.2rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
 }
