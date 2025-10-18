@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Pizza from "./pages/home/home"
+import ComingSoon from "./pages/landing/landing"
 import Home from "./pages/home/home"
 import Checkout from "./pages/checkout/checkout";
 import GerenciarPedidos from "./pages/pedidos/pedidos";
@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Routes>
 
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<ComingSoon/>} />
 
         <Route path="/checkout" element={<Checkout/>} />
 
