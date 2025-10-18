@@ -14,7 +14,7 @@ console.log(
 const app = express();
 
 // 🌐 Define URL do frontend (para o CORS e redirecionamentos)
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://www.dimouras.com.br/";
 app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
 console.log("🌐 FRONTEND_URL:", FRONTEND_URL);
