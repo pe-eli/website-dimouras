@@ -9,7 +9,7 @@ import Burger from "../../components/burger/burger";
 import Bebidas from "../../components/bebidas/bebidas";
 
 
-export default function App() {
+export default function Home() {
 
   const navigate = useNavigate();
 
