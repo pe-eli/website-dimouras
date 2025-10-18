@@ -92,7 +92,7 @@ export default function Checkout() {
 
     if (paymentMethod === "site") {
       // 🔹 Cria a preferência no backend
-      const response = await fetch("https://www.dimouras.com.br/api/create_preference", {
+      const response = await fetch("https://website-dimouras.onrender.com/api/create_preference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
