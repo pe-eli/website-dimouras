@@ -1,7 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import "./aprovado.css";
 
+interface Payment {
+  id?: string;
+  status?: string;
+  transaction_amount?: number;
+  [key: string]: any;
+}
+
 export default function PagAprovado() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [payment, setPayment] = useState<Payment | null>(null);
+
+  useEffect(() => {
+    const paymentId = searchParams.get("payment_id");
+
+    // 🚫 Se não tiver payment_id → redireciona imediatamente
+    if (!paymentId) {
+      navigate("/");
+      return;
+    }
+
+    // ✅ Verifica o pagamento no backend
+    fetch(`${import.meta.env.VITE_API_URL}/api/verify-payment?id=${paymentId}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Erro na verificação");
+        const data = await res.json();
+        if (data.approved) {
+          setPayment(data.payment);
+        } else {
+          navigate("/");
+        }
+      })
+      .catch(() => navigate("/"))
+      .finally(() => setLoading(false));
+  }, [searchParams, navigate]);
+
+  // Enquanto valida
+  if (loading) {
+    return (
+      <div className="loading">
+        <h2>Verificando pagamento...</h2>
+      </div>
+    );
+  }
+
+  // Se não tiver pagamento válido → retorna null (evita flicker)
+  if (!payment) return null;
+
+  // ✅ Renderização apenas se aprovado
   return (
     <div className="success-page">
       <div className="success-header">
@@ -13,13 +63,15 @@ export default function PagAprovado() {
       <div className="success-card">
         <div className="order-header">
           <h2>Pedido Confirmado</h2>
-          <p className="order-id">#17608939</p>
+          <p className="order-id">#{payment.id}</p>
           <span className="badge">Pagamento Confirmado</span>
         </div>
 
-        <div className="payment">
+        <div className="payment-info">
           <h3>Pagamento processado</h3>
-          <p className="amount">R$ 83.50</p>
+          <p className="amount">
+            R$ {payment.transaction_amount?.toFixed(2)}
+          </p>
           <p className="status">Transação realizada com sucesso</p>
         </div>
 
@@ -35,32 +87,31 @@ export default function PagAprovado() {
         </div>
 
         <div className="next-steps">
-          <h4 style={{margin: 0}}>Próximos Passos</h4>
-          <ul style={{padding: "0"}}>
+          <h4>Próximos Passos</h4>
+          <ul>
             <li>Seu pedido já está sendo preparado com todo cuidado</li>
             <li>
-              Você pode acompanhar o status em tempo real clicando no botão
-              abaixo
+              Você pode acompanhar o status em tempo real clicando no botão abaixo
             </li>
           </ul>
         </div>
 
         <div className="buttons">
           <button className="track-btn">Acompanhar Meu Pedido</button>
-          <button className="back-btn">Voltar ao Cardápio</button>
+          <button className="back-btn" onClick={() => navigate("/")}>
+            Voltar ao Cardápio
+          </button>
         </div>
 
         <div className="contact">
-          <p>
-            Precisa de ajuda? Entre em contato:
-          </p>
-           <b>(37) 99826-0420</b>
+          <p>Precisa de ajuda? Entre em contato:</p>
+          <b>(37) 99826-0420</b>
         </div>
       </div>
 
       <div className="footer-bar">
         <p>
-          Obrigado por escolher a <b>Di Mouras!</b> 
+          Obrigado por escolher a <b>Di Mouras!</b>
           <br />
           Estamos preparando seu pedido com muito carinho
         </p>

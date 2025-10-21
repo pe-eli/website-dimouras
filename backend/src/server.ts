@@ -34,7 +34,7 @@ app.post("/api/create_preference", async (req, res) => {
     currency_id: item.currency_id || "BRL",
   })),
   back_urls: {
-    success: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    success: "https://www.dimouras.com.br/aprovado",
     failure: "https://www.youtube.com",
     pending: "http://localhost:5173/orders",
   },
