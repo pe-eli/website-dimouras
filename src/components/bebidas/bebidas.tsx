@@ -19,7 +19,7 @@ function Bebidas(){
       <h3>Coca-Cola Zero 350ml</h3>
       <p className="price">R${precoBebidas[0].precoLata}</p>
       <button className="btn-bebida" onClick={() => addToCart({
-        name: "Coca-Cola Zero 350ml", price: "R$6,00", qty: 1
+        name: "Coca-Cola Zero 350ml", price: "R$1,00", qty: 1
       })}>Adicionar ao carrinho</button>
     </div>
   </div>
