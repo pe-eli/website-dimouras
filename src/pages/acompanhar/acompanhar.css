@@ -1,12 +1,13 @@
 .track-container {
   display: flex;
   flex-direction: column;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 30px;
   align-items: center;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem;
-  font-family: "Inter", sans-serif;
-  color: #222;
 }
 
 .back-btn {
@@ -31,82 +32,68 @@
   margin-bottom: 1.5rem;
 }
 
+.navbar button {
+  background-color: #cb4015;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.navbar button:hover {
+  background-color: #e33400;
+}
+
 .search-box {
   display: flex;
-  flex-direction: column;
-  width: 30%;
-  border-radius: 12px;
-  padding: 1rem;
-  gap: 1rem;
-  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto;
+  flex-wrap: wrap;
 }
 
-.search-box input{
-  border-radius: 12px;
-  text-align: center;
-  padding: 0.5rem;
-  font-weight: bold;
-  box-shadow: none;
-  font-size: 1rem;
-  border: 1px solid black;
-}
 
-.search-box button{
-  width: 60%;
-  background-color: #b22222;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 12px;
-}
-
-.search-tabs {
-  display: flex;
-  gap: .5rem;
-  margin-bottom: .8rem;
-}
-
-.error{
-  color: red;
-  margin-bottom: 1rem;
-}
-.tab {
-  flex: 1;
-  padding: .6rem;
-  border-radius: 8px;
-  background: #f3f3f3;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.tab.active {
-  background: #000;
-  color: #fff;
-}
-
-.search-input {
-  display: flex;
-  gap: .5rem;
-}
-
-.search-input input {
-  flex: 1;
-  padding: .7rem;
-  border-radius: 8px;
+.search-box input {
+  padding: 12px 15px;
   border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 240px;
+  font-size: 16px;
+  transition: border 0.3s;
 }
 
-.search-btn {
-  background: #e63946;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0 1rem;
-  cursor: pointer;
+.search-box input:focus {
+  outline: none;
+  border-color: #19a55a;
 }
+
+.search-box button {
+  background-color: #19a55a;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-box button:hover {
+  background-color: #14924f;
+}
+
+.error {
+  color: #e33400;
+  background-color: #ffeaea;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
 
 .pedido-card {
   width: 80%;

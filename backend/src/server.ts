@@ -3,28 +3,20 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { MercadoPagoConfig, Preference } from "mercadopago";
 
-dotenv.config();
 
-// 🔑 Verifica se o token foi carregado
-console.log(
-  "🔑 Token Mercado Pago:",
-  process.env.MERCADOPAGO_ACCESS_TOKEN ? "OK" : "NÃO ENCONTRADO"
-);
+dotenv.config();
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://www.dimouras.com.br";
+
 
 const app = express();
-
-// 🌐 Define URL do frontend (para o CORS e redirecionamentos)
-const FRONTEND_URL = process.env.FRONTEND_URL || "https://www.dimouras.com.br";
 app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
-console.log("🌐 FRONTEND_URL:", FRONTEND_URL);
 
-// 🧩 Inicializa o client do Mercado Pago
+
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN!,
 });
 
-// 🚀 Rota para criar preferência de pagamento
 app.post("/api/create_preference", async (req, res) => {
   try {
     const { items } = req.body;
@@ -33,7 +25,6 @@ app.post("/api/create_preference", async (req, res) => {
       return res.status(400).json({ error: "Items inválidos" });
     }
 
-    // Cria o corpo da preferência
     const body = {
   items: items.map((item: any, index: number) => ({
     id: `item-${index + 1}`,
@@ -44,15 +35,12 @@ app.post("/api/create_preference", async (req, res) => {
   })),
   back_urls: {
     success: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    failure: "http://localhost:5173/checkout",
+    failure: "https://www.dimouras.com.br",
     pending: "http://localhost:5173/orders",
   },
-  auto_return: "approved", // ⬅️ redireciona automaticamente para success
+  auto_return: "approved", 
 };
 
-    console.log("🧾 Enviando para o Mercado Pago:", JSON.stringify(body, null, 2));
-
-    // Cria a preferência via SDK
     const preference = new Preference(client);
     const response = await preference.create({ body });
 
@@ -66,6 +54,49 @@ app.post("/api/create_preference", async (req, res) => {
   }
 });
 
-// 🚪 Inicializa o servidor
+
+
+app.get("/api/verify-payment", async (req, res) => {
+  const paymentId = req.query.id as string;
+
+  if (!paymentId) {
+    return res.status(400).json({ error: "Parâmetro 'id' é obrigatório" });
+  }
+
+  try {
+    const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("❌ Erro ao consultar pagamento:", text);
+      return res.status(500).json({ error: "Erro ao consultar pagamento" });
+    }
+
+    // 👇 Aqui definimos o tipo explicitamente para evitar o erro "unknown"
+    const payment = (await response.json()) as {
+      id?: string;
+      status?: string;
+      transaction_amount?: number;
+      [key: string]: any;
+    };
+
+    if (payment.status === "approved") {
+      console.log(`✅ Pagamento aprovado: ${paymentId}`);
+      return res.json({ approved: true, payment });
+    } else {
+      console.log(`⚠️ Pagamento não aprovado (${payment.status}): ${paymentId}`);
+      return res.json({ approved: false, payment });
+    }
+  } catch (error) {
+    console.error("❌ Erro interno ao verificar pagamento:", error);
+    return res.status(500).json({ error: "Erro interno no servidor" });
+  }
+});
+
+
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => console.log(`🚀 Backend rodando na porta ${PORT}`));

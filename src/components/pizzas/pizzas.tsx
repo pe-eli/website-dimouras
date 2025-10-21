@@ -58,16 +58,16 @@ function Pizzas(){
   { nome: "Azeitona", "preco": 5 },
   { nome: "Bacon", "preco": 6 },
   { nome: "Calabresa", "preco": 4 },
-  { nome: "Cebola", "preco": 2 },
+  { nome: "Cebola", "preco": 3 },
   { nome: "Cream Cheese", "preco": 5 },
-  { nome: "Frango", "preco": 4 },
+  { nome: "Frango", "preco": 8 },
   { nome: "Gorgonzola", "preco": 12 },
   { nome: "Milho", "preco": 3 },
-  { nome: "Parmesão", "preco": 8 },
-  { nome: "Pepperoni", "preco": 4 },
-  { nome: "Provolone", "preco": 8 },
+  { nome: "Parmesão", "preco": 9 },
+  { nome: "Pepperoni", "preco": 9 },
+  { nome: "Provolone", "preco": 9 },
   { nome: "Requeijão", "preco": 4 },
-  { nome: "Tomate", "preco": 3 }
+  { nome: "Tomate", "preco": 5 }
 ];
 
       const addPizzaPersonalizada = () => {

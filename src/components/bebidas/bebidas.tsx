@@ -57,7 +57,7 @@ function Bebidas(){
   <div className="card-bebida">
     <div className="card-content-bebida cocagrande">
       <h3>Coca-Cola 2L</h3>
-      <p className="price">R$ {precoBebidas[1].preco2L}</p>
+      <p className="price">R${precoBebidas[1].preco2L}</p>
       <button className="btn-bebida" onClick={() => addToCart({
         name: "Coca-Cola 2L", price: "R$13,50", qty: 1
       })}>Adicionar ao carrinho</button>
@@ -67,7 +67,7 @@ function Bebidas(){
   <div className="card-bebida">
     <div className="card-content-bebida guarana">
       <h3>Guaraná 2L</h3>
-      <p className="price">R$ {precoBebidas[1].preco2L}</p>
+      <p className="price">R${precoBebidas[1].preco2L}</p>
       <button className="btn-bebida" onClick={() => addToCart({
         name: "Guaraná 2L", price: "R$13,50", qty: 1
       })}>Adicionar ao carrinho</button>

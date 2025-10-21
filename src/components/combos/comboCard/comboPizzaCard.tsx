@@ -22,7 +22,6 @@ type ComboCardProps = {
   bebes?: string[];
 };
 
-
 export default function ComboCard({
   nomeCombo,
   titulo,
@@ -88,7 +87,6 @@ export default function ComboCard({
       }
     });
 
-    // Pega o MAIOR preço entre os sabores da pizza
     const precoPizza = precosSelecionados.length > 0 ? Math.max(...precosSelecionados) : precoC;
 
     total += precoPizza;
@@ -96,7 +94,6 @@ export default function ComboCard({
 
   return `R$${total.toFixed(2).replace(".", ",")}`;
 };
-
 
   const handleConfirm = () => {
     if (pizzas.some((sabores) => sabores.length === 0) || bebidas.some((b) => !b)) {
