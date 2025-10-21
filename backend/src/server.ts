@@ -35,7 +35,7 @@ app.post("/api/create_preference", async (req, res) => {
   })),
   back_urls: {
     success: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    failure: "https://www.dimouras.com.br",
+    failure: "https://www.youtube.com",
     pending: "http://localhost:5173/orders",
   },
   auto_return: "approved", 
