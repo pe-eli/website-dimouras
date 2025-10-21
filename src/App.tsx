@@ -6,10 +6,12 @@ import Checkout from "./pages/checkout/checkout";
 import GerenciarPedidos from "./pages/pedidos/pedidos";
 import AcompanharPedido from "./pages/acompanhar/acompanhar";
 import PagAprovado from "./pages/confirmacao/aprovado"
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <Router>
+       <ScrollToTop /> 
       <Routes>
 
         <Route path="/" element={<Home/>} />
