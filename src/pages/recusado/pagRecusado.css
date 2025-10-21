@@ -1,0 +1,185 @@
+.error-page-recusado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff5f5;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.error-header-recusado {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.error-icon-recusado {
+  font-size: 2.5rem;
+  color: #e63946;
+  background: #ffe3e3;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.error-header-recusado h1 {
+  color: #e63946;
+  margin: 0;
+  font-size: 2rem;
+}
+
+.error-header-recusado p {
+  color: #555;
+  margin-top: 0.3rem;
+}
+
+.error-card-recusado {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  width: 100%;
+}
+
+.order-header-recusado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 2px solid #ffe3e3;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.badge-recusado {
+  display: inline-block;
+  background: #e63946;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.alert-recusado {
+  background: #ffe3e3;
+  border: 1px solid #ffc9c9;
+  padding: 1rem;
+  border-radius: 10px;
+  color: #c53030;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.amount-box-recusado {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.amount-recusado {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.reason-section-recusado ul {
+  list-style: none;
+  padding: 0;
+}
+
+.reason-section-recusado li {
+  background: #fff6f6;
+  border: 1px solid #ffd6d6;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.next-steps-recusado ol {
+  padding-left: 1.5rem;
+}
+
+.buttons-recusado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.retry-btn-recusado {
+  background: #e63946;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.back-btn-recusado {
+  background: white;
+  color: #444;
+  border: 1px solid #ccc;
+  padding: 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.retry-btn-recusado:hover {
+  background: #c62828;
+}
+
+.back-btn-recusado:hover {
+  background: #f5f5f5;
+}
+
+.contact-recusado {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.footer-bar-recusado {
+  background: #00a650;
+  color: white;
+  text-align: center;
+  width: 30%;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.cash-option-recusado p {
+  margin: 0.2rem 0;
+}
+
+
+@media(max-width: 768px){
+    
+.error-card-recusado {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  width: 95%;
+}
+.footer-bar-recusado {
+  background: #00a650;
+  color: white;
+  text-align: center;
+  width: 90%;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+}

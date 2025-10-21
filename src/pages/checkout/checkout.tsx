@@ -22,6 +22,7 @@ export default function Checkout() {
   const [localSelecionado, setLocalSelecionado] = useState<any>(null);
   const [enderecoMessage, setEnderecoMessage] = useState(""); 
   const [observacao, setObservacao] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -91,7 +92,7 @@ export default function Checkout() {
     console.log("Pedido salvo com ID:", id);
 
     if (paymentMethod === "site") {
-      // 🔹 Cria a preferência no backend
+       setIsLoading(true); 
       const response = await fetch("https://website-dimouras.onrender.com/api/create_preference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -113,13 +114,16 @@ export default function Checkout() {
         // 🔸 Redireciona automaticamente pro checkout do Mercado Pago
         window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${data.id}`;
       } else {
+        setIsLoading(false); 
         alert("Erro ao criar preferência de pagamento.");
       }
     } else {
+        setIsLoading(false); 
       alert("Pedido confirmado! Pagamento na entrega.");
     }
   } catch (err) {
     console.error("Erro ao registrar pedido:", err);
+     
     alert("Ocorreu um erro ao salvar o pedido. Tente novamente.");
   }
 };
@@ -143,6 +147,15 @@ const isFormValid =
          </button>
       </nav>
     <div className="checkout-wrapper">
+
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-box">
+            <div className="spinner"></div>
+            <p>Redirecionando para o Mercado Pago...</p>
+          </div>
+        </div>
+      )}
       <div className="checkout-main">
         {/* MÉTODO DE ENTREGA */}
         <div className="checkout-card">
@@ -310,7 +323,7 @@ const isFormValid =
             />
             <div className="payment-info">          
               <span className="title">Pagar na Entrega</span>
-              <span className="subtitle">Dinheiro, cartão ou PIX</span>
+              <span className="subtitle">Dinheiro, Cartão ou PIX</span>
             </div>
           </label>
 
@@ -324,14 +337,13 @@ const isFormValid =
             />
             <div className="payment-info">
               <span className="title">Pagar pelo Site</span>
-              <span className="subtitle">PIX ou cartão de crédito</span>
+              <span className="subtitle">PIX ou Cartão de Crédito</span>
             </div>
           </label>
         </div>
 
        {!preferenceId ? (
             <div style={{ textAlign: "center" }}>
-              {/* 🔹 Mensagem visível apenas quando o botão está desativado */}
               {!isFormValid && (
                 <p
                   style={{

@@ -6,6 +6,7 @@ import Checkout from "./pages/checkout/checkout";
 import GerenciarPedidos from "./pages/pedidos/pedidos";
 import AcompanharPedido from "./pages/acompanhar/acompanhar";
 import PagAprovado from "./pages/confirmacao/aprovado"
+import PagRecusado from "./pages/recusado/pagRecusado"
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
        <ScrollToTop /> 
       <Routes>
 
-        <Route path="/" element={<ComingSoon/>} />
+        <Route path="/" element={<Home/>} />
 
         <Route path="/checkout" element={<Checkout/>} />
 
@@ -24,7 +25,7 @@ function App() {
 
         <Route path="/aprovado" element={<PagAprovado/>} />
 
-
+        <Route path="/recusado" element={<PagRecusado/>} />
         
       </Routes>
     </Router>

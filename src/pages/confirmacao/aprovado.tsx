@@ -18,7 +18,6 @@ export default function PagAprovado() {
   useEffect(() => {
     const paymentId = searchParams.get("payment_id");
 
-    // 🚫 Se não tiver payment_id → redireciona imediatamente
     if (!paymentId) {
       navigate("/");
       return;

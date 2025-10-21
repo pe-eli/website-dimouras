@@ -49,11 +49,11 @@ html{
   margin: 5% 0 1% 0;
   border-radius: 12px;
   padding: 0.5rem 1rem;
-  background-color: #B22222;
+  background-color: #cb4015;
   color: white;
   border: none;
+  font-weight: bold;
 }
-
 .header button:hover{
   color: white;
   transition: 0.3s;
@@ -212,7 +212,6 @@ html{
   overflow-y: auto;
   max-height: 40vh;
 }
-
 .cart-dropdown {
   position: fixed;
   top: 5rem;
@@ -225,9 +224,7 @@ html{
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   z-index: 100;
   color: #333;
-
 }
-
 .cart-icon {
   top: 15px;
   right: 20px;
@@ -246,6 +243,7 @@ html{
   font-size: 0.8rem;
   font-weight: bold;
   margin-left: 3px;
+  user-select: none;
 }
 
 
@@ -417,7 +415,7 @@ html{
 
 @media(max-width: 768px){
 
-  .header {
+.header {
   background-image: url("/header.jpeg");
   color: white;
   text-align: center;
@@ -432,7 +430,7 @@ html{
   margin-top: 5%;
   border-radius: 12px;
   padding: 0.5rem 1rem;
-  background-color: #B22222;
+  background-color: #cb4015;
   color: white;
   border: none;
 }

@@ -183,6 +183,61 @@ body{
 .endereco-message{
   margin: 1rem 0 0 0;
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.loading-box {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.loading-box p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Spinner animado */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #eee;
+  border-top: 5px solid #00a650; /* cor verde Mercado Pago */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 /* Responsivo */
 @media (max-width: 768px) {
   .checkout-wrapper {
@@ -208,5 +263,13 @@ body{
   width: 90vw;
   gap: 0;
 }
+.loading-box {
+  background: white;
+  padding: 2.5rem 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
 
 }
+
