@@ -15,12 +15,20 @@
   transition: all 0.2s;
   scale: 1.02;
 }
-.card-content {
+.card-content-pizza {
+  text-align: center;
   display: flex;
   flex-direction: column;
   padding: 1rem;
   height: 17rem;
   justify-content: space-between;
+  padding: 1rem;
+  text-align: left;
+}
+
+.card-content-pizza h3 {
+  color: #B22222;
+  margin-bottom: 0.5rem;
 }
 
 .cala{

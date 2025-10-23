@@ -1,6 +1,7 @@
 import React from "react";
 import "./landing.css";
 import { FaWhatsapp, FaInstagram } from 'react-icons/fa';
+import { BsGeoAlt, BsClock } from 'react-icons/bs';
 
 const ComingSoon: React.FC = () => {
   const whatsappNumber = "5537998260420"; // seu número do WhatsApp
@@ -33,8 +34,9 @@ const ComingSoon: React.FC = () => {
         </div>
 
         <div className="info">
+          <p><BsGeoAlt size={16} /> Pontevila, Formiga-MG</p>
+          <p><BsClock size={16} /> Terça a Domingo: 18h às 23h</p>
           <p>📞 (37) 99826-0420</p>
-          <p>⏰ Terça a Domingo: 18h às 23h</p>
         </div>
 
       </div>

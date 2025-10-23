@@ -67,7 +67,7 @@ export default function PizzaModal({
           ))}
         </ul>
 
-        <div className="modal-footer">
+        <div className="modal-footer-personalizada">
           <button className="btn-monte-pizza" onClick={addPizzaPersonalizada}>
             <Plus size={18} style={{ marginRight: "6px" }} />
             Adicionar ao Carrinho

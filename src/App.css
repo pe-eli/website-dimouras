@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "leaflet/dist/leaflet.css";
 
 body, h1, h2, h3, p {
@@ -6,21 +6,13 @@ body, h1, h2, h3, p {
   padding: 0;
 }
 body {
-  font-family: Arial, sans-serif;
-  background: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
-  background-size: 400px;
-  background-color: #f7e4cd;
+  font-family: Lato, sans-serif;
+  background: rgb(245, 245, 245);
   color: #333;
 }
 
 html{
     scroll-padding-top: 80px;
-}
-
-.app{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .header {
@@ -47,15 +39,17 @@ html{
 .header button{
   display: flex;
   margin: 5% 0 1% 0;
-  border-radius: 12px;
-  padding: 0.5rem 1rem;
-  background-color: #cb4015;
-  color: white;
+  border-radius: 8px;
+  background-color: white;
+  color: #B22222;
   border: none;
+  padding: 0.3rem 1rem;
   font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
 .header button:hover{
-  color: white;
+  color: #8B1A1A;
   transition: 0.3s;
   transform: translateY(-1px);
   cursor: pointer;
@@ -75,136 +69,23 @@ html{
   z-index: 100;
   border-bottom: 1px solid #8B1A1A; 
 }
-.navbar button {
-  border: 1px solid #B22222;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.navbar button:hover {
-  color: white;
-  transition: 0.3s;
-  transform: translateY(-1px);
-}
 
-.section {
-  padding: 2rem 1rem;
-  text-align: center;
-}
-.section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.2rem;
-  color: #B22222;  
-}
-.section p {
-  margin-bottom: 2rem;
-  color: #555;
-}
-.alt-bg {
-  background: #fff;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
-  transition: transform 0.2s;
-  width: 15rem;
-}
-
-.card-content {
-  padding: 1rem;
-  text-align: left;
-}
-
-
-.card-content h3 {
+.navbar button{
+  background-color: white;
   color: #B22222;
-  margin-bottom: 0.5rem;
-}
-
-.new-price {
-  color: #333;
+  border: none;
+  padding: 0.3rem 1rem;
+  border-radius: 8px;
   font-weight: bold;
-  margin: 0.5rem 0;
-  font-size: 1.5rem;
-}
-.btn {
-  display: block;
-  width: 65%  ;
-  padding: 0.6rem;
-  background: #2E7D32; 
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease-in-out;
 }
 
-.meio{
-  justify-content: left;
-  display: flex;
-  margin-top: 25%;
-
+.navbar button:hover{
+  background-color: white; 
+  color: #8B1A1A; 
+  transform: translateY(-2px);
 }
-.btn:hover {
-  background: #FFD54F; 
-  color: #333;
-  
-}
-
-.card-monte{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
-  transition: transform 0.2s;
-  width: 15%;
-}
-
-.card-monte h3{
-  color:#B22222;
-}
-
-.card-monte button{
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-}
-
-.card-bebida {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
-  transition: transform 0.2s;
-  width: 18vw;
-  height: 30vh;
-  display: flex;
-  flex-direction: column;
-}
-
 .ul-cart{
   padding: 0;
   display: flex;
@@ -245,7 +126,6 @@ html{
   margin-left: 3px;
   user-select: none;
 }
-
 
 .cart-header {
   display: flex;
@@ -323,8 +203,6 @@ html{
 .checkout-btn:hover {
   background: #2E7D32;
 }
-
-
 .footer {
   background: #B22222;
   color: white;
@@ -336,81 +214,6 @@ html{
 
 .footer p {
   margin: 4px 0;
-}
-
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.modal {
-  background: #fff;
-  color: #333;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal h2 {
-  margin-bottom: 1rem;
-  color: #B22222;
-}
-
-.modal ul {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 90%;
-}
-
-.modal li {
-  width: 80%;
-  margin-bottom: 8px;
-  border: 1px solid red;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.modal li:hover{
-  cursor: pointer;
-}
-
-.modal label{
-  cursor: pointer;
-}
-
-.modal input{
-  cursor: pointer;
-}
-
-.modal-footer {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
 }
 
 @media(max-width: 768px){

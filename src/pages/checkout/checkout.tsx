@@ -60,11 +60,6 @@ export default function Checkout() {
   const taxaEntrega = deliveryMethod === "entrega" ? 20 : 0;
   const total = (Number(getTotal().replace(",", ".")) + taxaEntrega).toFixed(2);
 
-  // 🔥 Função principal que cria o pedido e envia ao Firebase
- const handlePayment = async () => {
-  if (!isFormValid) {
-  return;
-}
   const pedido = {
     nome,
     telefone,
@@ -86,12 +81,39 @@ export default function Checkout() {
     criadoEm: new Date().toISOString(),
   };
 
-  try {
-    const id = await addPedido(pedido);
-    console.log("Pedido salvo com ID:", id);
+const handlePayment = async () => {
+  if (!isFormValid) return;
 
+  // 👉 Monta o pedido completo
+  const novoPedido = {
+    nome,
+    telefone,
+    endereco:
+      deliveryMethod === "entrega"
+        ? `${endereco}, ${numero} - ${bairro}`
+        : "Retirada no local",
+    metodoEntrega: deliveryMethod,
+    metodoPagamento: paymentMethod,
+    itens: cart.map((item: any) => ({
+      nome: item.name,
+      preco: item.price,
+      quantidade: item.quantity || 1,
+    })),
+    observacao,
+    total,
+    localizacao: localSelecionado,
+    status: "Pendente" as const,
+    criadoEm: new Date().toISOString(),
+  };
+
+  // 💾 Salva o pedido localmente (temporário)
+  localStorage.setItem("pedidoPendente", JSON.stringify(novoPedido));
+
+  try {
     if (paymentMethod === "site") {
-       setIsLoading(true); 
+      // 🔹 Pagamento via site
+      setIsLoading(true);
+
       const response = await fetch("https://website-dimouras.onrender.com/api/create_preference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -110,31 +132,33 @@ export default function Checkout() {
       const data = await response.json();
 
       if (data.id) {
-        // 🔸 Redireciona automaticamente pro checkout do Mercado Pago
+        // 🔸 Redireciona pro checkout do Mercado Pago
         window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${data.id}`;
       } else {
-        setIsLoading(false); 
+        setIsLoading(false);
         setErroPedido("Erro ao criar preferência de pagamento.\nEntre em contato conosco no WhatsApp.");
-        setTimeout(() => {
-          setErroPedido("");
-        }, 2000);
+        setTimeout(() => setErroPedido(""), 2000);
       }
     } else {
-        setIsLoading(false); 
-        setErroPedido("Pedido confirmado!\nVocê será redirecionado para a página de acompanhamento.");
-        setTimeout(() => {
-          navigate("/acompanhar");
-          }, 2500);
+      // 💰 Pagamento na entrega → salva direto no Firestore
+      setIsLoading(true);
+      const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
+      const id = await addPedido(pedidoSalvo);
+      console.log("Pedido salvo com ID:", id);
+
+      localStorage.removeItem("pedidoPendente"); // Limpa
+      setIsLoading(false);
+      setErroPedido("Pedido confirmado!\nVocê será redirecionado para o acompanhamento.");
+      setTimeout(() => navigate("/acompanhar"), 2500);
     }
   } catch (err) {
-    console.error("Erro ao registrar pedido:", err)
-    setIsLoading(false)
+    console.error("Erro ao registrar pedido:", err);
+    setIsLoading(false);
     setErroPedido("Ocorreu um erro ao salvar o pedido. Tente novamente.");
-    setTimeout(() => {
-          setErroPedido("");
-        }, 2000);
+    setTimeout(() => setErroPedido(""), 2000);
   }
 };
+
 
 const isFormValid =
   nome.trim() !== "" &&
@@ -151,7 +175,7 @@ const isFormValid =
 
       <nav className="navbar">
          <button onClick={() => navigate("/")}>
-          Voltar ao cardápio
+          Voltar ao Cardápio
          </button>
       </nav>
     <div className="checkout-wrapper">
@@ -193,7 +217,7 @@ const isFormValid =
             <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
               <span className="title">Entrega</span>
               <span style={{ fontSize: "0.85rem" }} className="subtitle">
-                Taxa de entrega: R$20,00
+                Taxa de Entrega: R$20,00
               </span>
             </div>
           </label>
@@ -219,7 +243,7 @@ const isFormValid =
             <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
               <span className="title">Retirada no Local</span>
               <span style={{ fontSize: "0.85rem" }} className="subtitle">
-                Sem taxa de entrega
+                Sem Taxa de Entrega
               </span>
 
             </div>
@@ -239,7 +263,7 @@ const isFormValid =
           <div className="checkout-form">
             <input
               type="text"
-              placeholder="Nome completo *"
+              placeholder="Seu Nome *"
               required
               value={nome}
               onChange={(e) => setNome(e.target.value)}
@@ -255,7 +279,7 @@ const isFormValid =
               <>
                 <input
                   type="text"
-                  placeholder="Endereço *"
+                  placeholder="Seu Endereço *"
                   value={endereco}
                   onChange={(e) => setEndereco(e.target.value)}
                   required
@@ -275,7 +299,7 @@ const isFormValid =
                   onChange={(e) => setBairro(e.target.value)}
                   required
                 />
-                <h3 style={{margin: 0}}>Marque no mapa o local da entrega: (opcional)</h3>
+                <h3 style={{margin: 0}}>Marque no Mapa o Local da Entrega: (opcional)</h3>
             <MapPicker onLocalSelect={handleLocalSelect} />
               </>
             )}
@@ -309,7 +333,7 @@ const isFormValid =
           <strong>Total:</strong> <strong>R${total.replace(".", ",")}</strong>
         </div>
 
-        <h4>Alguma observação para o pedido?</h4>
+        <h4>Alguma Observação Para o Pedido?</h4>
         <input 
             type="text"
             style={{
@@ -320,7 +344,7 @@ const isFormValid =
               borderRadius: "6px",
               border: "1px solid black"
             }}
-            placeholder="Escreva a observação"
+            placeholder="Escreva a Observação"
             value={observacao}
             onChange={(e) => setObservacao(e.target.value)}
           />
@@ -369,7 +393,7 @@ const isFormValid =
                     fontWeight: 500,
                   }}
                 >
-                  Preencha todos os campos antes de confirmar o pedido.
+                  Preencha Todos os Campos Antes de Confirmar o Pedido.
                 </p>
               )}
               <button

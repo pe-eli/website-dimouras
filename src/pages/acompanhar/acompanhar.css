@@ -32,21 +32,6 @@
   margin-bottom: 1.5rem;
 }
 
-.navbar button {
-  background-color: #cb4015;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-
-.navbar button:hover {
-  background-color: #e33400;
-}
-
 .search-box {
   display: flex;
   justify-content: center;
@@ -54,8 +39,6 @@
   margin: 20px auto;
   flex-wrap: wrap;
 }
-
-
 .search-box input {
   padding: 12px 15px;
   border: 1px solid #ccc;

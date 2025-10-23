@@ -64,7 +64,7 @@ const HalfPizzaModal: React.FC<HalfPizzaModalProps> = ({
             </ul>
 
 
-        <div className="modal-footer">
+        <div className="modal-footer-meio">
           <button
             className="btn-add-meio"
             onClick={() => {

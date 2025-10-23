@@ -17,7 +17,7 @@ function Pizzas(){
 
     const PizzaCard = ({ nome, preco, classe, ingredientes }: Pizza) => (
   <div className="card-pizza">
-    <div className={`card-content ${classe}`}>
+    <div className={`card-content-pizza ${classe}`}>
       <h3>{nome}</h3>
       <div className="ing">
       {ingredientes.map((ing: string, idx: number) => (
