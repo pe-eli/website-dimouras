@@ -14,7 +14,7 @@ const ComingSoon: React.FC = () => {
           <h1>Di Mouras</h1>
           <h3>Pizzas e Burgers</h3>
         </div>
-        <p className="subtitle">Aqui em Pontevila, Formiga-MG!</p>
+        <p className="subti">Aqui em Pontevila, Formiga-MG!</p>
         <button className="coming-soon-button">⏰ Pedidos pelo site em breve!</button>
         <p className="description">
           Nosso site está sendo finalizado com carinho para te oferecer a melhor experiência ao fazer seu pedido. 

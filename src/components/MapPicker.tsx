@@ -111,7 +111,7 @@ export default function MapPicker({
       </button>
 
       <MapContainer
-        center={[-20.536361, -45.586120]} // Padrão: São Paulo
+        center={[-20.536361, -45.586120]} 
         zoom={13}
         style={{ width: "100%", height: "100%", borderRadius: "10px", zIndex: "1" }}
       >

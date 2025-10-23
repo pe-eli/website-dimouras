@@ -23,6 +23,7 @@ export default function Checkout() {
   const [enderecoMessage, setEnderecoMessage] = useState(""); 
   const [observacao, setObservacao] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [erroPedido, setErroPedido] = useState("")
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,7 +63,6 @@ export default function Checkout() {
   // 🔥 Função principal que cria o pedido e envia ao Firebase
  const handlePayment = async () => {
   if (!isFormValid) {
-  alert("Por favor, preencha todos os campos obrigatórios antes de confirmar o pedido.");
   return;
 }
   const pedido = {
@@ -87,7 +87,6 @@ export default function Checkout() {
   };
 
   try {
-    // 🔹 Salva o pedido no Firebase
     const id = await addPedido(pedido);
     console.log("Pedido salvo com ID:", id);
 
@@ -115,16 +114,25 @@ export default function Checkout() {
         window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${data.id}`;
       } else {
         setIsLoading(false); 
-        alert("Erro ao criar preferência de pagamento.");
+        setErroPedido("Erro ao criar preferência de pagamento.\nEntre em contato conosco no WhatsApp.");
+        setTimeout(() => {
+          setErroPedido("");
+        }, 2000);
       }
     } else {
         setIsLoading(false); 
-      alert("Pedido confirmado! Pagamento na entrega.");
+        setErroPedido("Pedido confirmado!\nVocê será redirecionado para a página de acompanhamento.");
+        setTimeout(() => {
+          navigate("/acompanhar");
+          }, 2500);
     }
   } catch (err) {
-    console.error("Erro ao registrar pedido:", err);
-     
-    alert("Ocorreu um erro ao salvar o pedido. Tente novamente.");
+    console.error("Erro ao registrar pedido:", err)
+    setIsLoading(false)
+    setErroPedido("Ocorreu um erro ao salvar o pedido. Tente novamente.");
+    setTimeout(() => {
+          setErroPedido("");
+        }, 2000);
   }
 };
 
@@ -153,6 +161,14 @@ const isFormValid =
           <div className="loading-box">
             <div className="spinner"></div>
             <p>Redirecionando para o Mercado Pago...</p>
+          </div>
+        </div>
+      )}
+
+      {erroPedido && (
+        <div className="loading-overlay">
+          <div className="loading-box">
+            <p style={{whiteSpace: "pre-line"}}>{erroPedido}</p>
           </div>
         </div>
       )}
