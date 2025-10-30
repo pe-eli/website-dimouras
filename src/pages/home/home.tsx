@@ -62,7 +62,7 @@ const precoFinal = Math.max(
       <header className="header">
         <h1>Di Mouras</h1>
         <p>Pizzas e Burgers</p>
-        <button onClick={() => navigate("/acompanhar")}>Meus Pedidos</button>
+        {/* <button onClick={() => navigate("/acompanhar")}>Meus Pedidos</button> */}
       </header>
 
       <nav className="navbar">
