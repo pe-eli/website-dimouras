@@ -40,7 +40,7 @@ export default function PizzaModal(
   return (
     <div className="modal-overlay-monte-pizza">
       <div className="modal-monte-pizza">
-        <h2>Monte sua Pizza Personalizada</h2>
+        <h2>Monte sua Pizza</h2>
         <p style={{ margin: 0 }}>Selecione até 7 Ingredientes:</p>
 
         <ul className="ingredientes-grid">
