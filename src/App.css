@@ -233,8 +233,8 @@ html{
   margin-top: 5%;
   border-radius: 12px;
   padding: 0.5rem 1rem;
-  background-color: #cb4015;
-  color: white;
+  background-color: white;
+  color: #B22222;
   border: none;
 }
 .header h1 {
@@ -273,6 +273,38 @@ html{
   padding: 4px 6px;
   margin-right: 8px;
   cursor: pointer;
+}
+
+.navbar {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+  gap: 0.5rem;
+  background: #B22222; 
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #8B1A1A; 
+}
+
+.navbar button{
+  background-color: white;
+  color: #B22222;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.navbar button:hover{
+  background-color: white; 
+  color: #8B1A1A; 
+  transform: translateY(-2px);
 }
 
 }

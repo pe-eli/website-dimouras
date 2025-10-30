@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { addPedido } from "../../firebase/pedidosFirebase"
 import "./aprovado.css";
 
 interface Payment {
@@ -10,34 +11,40 @@ interface Payment {
 }
 
 export default function PagAprovado() {
-  const [searchParams] = useSearchParams();
+
+  const id = localStorage.getItem("pedidoId");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [payment, setPayment] = useState<Payment | null>(null);
 
-  useEffect(() => {
-    const paymentId = searchParams.get("payment_id");
+useEffect(() => {
+  const paymentId = searchParams.get("payment_id");
 
-    if (!paymentId) {
-      navigate("/");
-      return;
-    }
+  if (!paymentId) {
+    navigate("/");
+    return;
+  }
 
-    // ✅ Verifica o pagamento no backend
-    fetch(`${import.meta.env.VITE_API_URL}/api/verify-payment?id=${paymentId}`)
-      .then(async (res) => {
-        if (!res.ok) throw new Error("Erro na verificação");
-        const data = await res.json();
-        if (data.approved) {
-          setPayment(data.payment);
-        } else {
-          navigate("/");
+  fetch(`${import.meta.env.VITE_API_URL}/api/verify-payment?id=${paymentId}`)
+    .then(async (res) => {
+      if (!res.ok) throw new Error("Erro na verificação");
+      const data = await res.json();
+      if (data.approved) {
+        const pedidoPendente = localStorage.getItem("pedidoPendente");
+        if (pedidoPendente) {
+          const pedido = JSON.parse(pedidoPendente);
+          await addPedido(pedido);
+          localStorage.removeItem("pedidoPendente");
         }
-      })
-      .catch(() => navigate("/"))
-      .finally(() => setLoading(false));
-  }, [searchParams, navigate]);
-
+        setPayment(data.payment);
+      } else {
+        navigate("/");
+      }
+    })
+    .catch(() => navigate("/"))
+    .finally(() => setLoading(false));
+}, [searchParams, navigate]);
   // Enquanto valida
   if (loading) {
     return (
@@ -47,10 +54,8 @@ export default function PagAprovado() {
     );
   }
 
-  // Se não tiver pagamento válido → retorna null (evita flicker)
   if (!payment) return null;
 
-  // ✅ Renderização apenas se aprovado
   return (
     <div className="success-page">
       <div className="success-header">
@@ -97,7 +102,7 @@ export default function PagAprovado() {
 
         <div className="buttons">
           <button className="track-btn">Acompanhar Meu Pedido</button>
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button className="back-btn" onClick={() => navigate(`/acompanhar/${id}`)}>
             Voltar ao Cardápio
           </button>
         </div>

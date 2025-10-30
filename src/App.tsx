@@ -15,15 +15,15 @@ function App() {
        <ScrollToTop /> 
       <Routes>
 
-        <Route path="/" element={<ComingSoon/>} />
+        {/* <Route path="/" element={<ComingSoon/>} /> */}
 
-        <Route path="/c" element={<Home/>} />
+        <Route path="/" element={<Home/>} />
 
         <Route path="/checkout" element={<Checkout/>} />
 
         <Route path="/orders" element={<GerenciarPedidos/>} />
 
-        <Route path="/acompanhar" element={<AcompanharPedido/>} />
+        <Route path="/acompanhar/:id" element={<AcompanharPedido />} />
 
         <Route path="/aprovado" element={<PagAprovado/>} />
 

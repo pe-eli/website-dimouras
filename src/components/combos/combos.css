@@ -20,7 +20,7 @@
   gap: 1.5rem;
   max-width: 1100px;
   margin: 0 auto;
-  justify-items: center; /* centraliza os cards */
+  justify-items: center; 
 }
 
 .card-combo {

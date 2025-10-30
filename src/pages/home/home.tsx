@@ -12,6 +12,8 @@ import Bebidas from "../../components/bebidas/bebidas";
 export default function Home() {
 
   const navigate = useNavigate();
+  
+  const id = localStorage.getItem("pedidoId");
 
   const [ , setOpenModal] = useState(false);
   const [selecionados, setSelecionados] = useState<string[]>([]);

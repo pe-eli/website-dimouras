@@ -84,10 +84,11 @@ export default function Checkout() {
 const handlePayment = async () => {
   if (!isFormValid) return;
 
-  // 👉 Monta o pedido completo
+  const telefoneLimpo = telefone.replace(/\D/g, "");
+
   const novoPedido = {
     nome,
-    telefone,
+    telefone: telefoneLimpo,
     endereco:
       deliveryMethod === "entrega"
         ? `${endereco}, ${numero} - ${bairro}`
@@ -142,14 +143,19 @@ const handlePayment = async () => {
     } else {
       // 💰 Pagamento na entrega → salva direto no Firestore
       setIsLoading(true);
+
       const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
+
       const id = await addPedido(pedidoSalvo);
       console.log("Pedido salvo com ID:", id);
+      localStorage.setItem("pedidoId", id);
 
+      localStorage.setItem("telefoneCliente", telefone);
+       
       localStorage.removeItem("pedidoPendente"); // Limpa
       setIsLoading(false);
       setErroPedido("Pedido confirmado!\nVocê será redirecionado para o acompanhamento.");
-      setTimeout(() => navigate("/acompanhar"), 2500);
+      setTimeout(() => navigate(`/acompanhar/${id}`), 2500);
     }
   } catch (err) {
     console.error("Erro ao registrar pedido:", err);
