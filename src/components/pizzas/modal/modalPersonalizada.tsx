@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import "./modalPersonalizada.css";
 import { Plus } from "lucide-react";
 
@@ -17,7 +17,8 @@ interface PizzaModalProps {
   onClose: () => void;
 }
 
-export default function PizzaModal({
+export default function PizzaModal(
+  {
   open,
   ingredientes,
   selecionados,
@@ -34,38 +35,56 @@ export default function PizzaModal({
       .reduce((acc, ing) => acc + ing.preco, 0);
   }, [selecionados, ingredientes]);
 
+  const [errorMessage, setErrorMessage] = useState(""); 
+
   return (
     <div className="modal-overlay-monte-pizza">
       <div className="modal-monte-pizza">
         <h2>Monte sua Pizza Personalizada</h2>
         <p style={{ margin: 0 }}>Selecione até 7 Ingredientes:</p>
-        <ul>
-          {ingredientes.map((item, i) => (
-            <li key={i}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selecionados.includes(item.nome)}
-                  onChange={() => {
-                    if (selecionados.includes(item.nome)) {
-                      setSelecionados((prev) =>
-                        prev.filter((x) => x !== item.nome)
-                      );
-                    } else if (selecionados.length < 7) {
-                      setSelecionados((prev) => [...prev, item.nome]);
-                    } else {
-                      alert("Você só pode selecionar até 7 ingredientes.");
-                    }
-                  }}
-                />
-                {item.nome}
-                <p style={{ margin: "0 5px" }}>
-                  R${item.preco.toFixed(2).replace(".", ",")}
-                </p>
-              </label>
-            </li>
-          ))}
-        </ul>
+
+        <ul className="ingredientes-grid">
+            {ingredientes.map((item, i) => {
+              const selecionado = selecionados.includes(item.nome);
+
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    className={`ingrediente-btn ${selecionado ? "ing-ativo" : "ing-inativo"}`}
+                    onClick={() => {
+                      if (selecionado) {
+                        setSelecionados((prev) => prev.filter((x) => x !== item.nome));
+                      } else if (selecionados.length < 7) {
+                        setSelecionados((prev) => [...prev, item.nome]);
+                      } else {
+                        setErrorMessage("Você só pode selecionar até 7 ingredientes.");
+                      }
+                    }}
+                  >
+                    <span className="ingrediente-nome">{item.nome}</span>
+                    <span className="ingrediente-preco">
+                      +R${item.preco.toFixed(2).replace(".", ",")}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          {errorMessage && (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                  margin: "10px 0 10px 0",
+                  textAlign: "center"
+                }}
+              >
+                {errorMessage}
+              </p>
+              )}
 
         <div className="modal-footer-personalizada">
           <button className="btn-monte-pizza" onClick={addPizzaPersonalizada}>
@@ -80,6 +99,9 @@ export default function PizzaModal({
           <button className="btn-cancel" onClick={onClose}>
             Cancelar
           </button>
+
+           
+
         </div>
       </div>
     </div>
