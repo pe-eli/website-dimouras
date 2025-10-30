@@ -19,7 +19,7 @@ export const saboresFixos = [
   },
   {
     nome: "Quatro Queijos",
-    preco: 69.90,
+    preco: 64.90,
     classe: "qq",
     ingredientes: ["Molho Caseiro", "Mussarela", "Parmesão", "Provolone", "Gorgonzola", "Orégano"],
   },

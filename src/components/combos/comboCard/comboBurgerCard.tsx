@@ -37,13 +37,13 @@ export default function HamburguerCard({
     Array(qtdHamburgueres).fill("")
   );
 
-const carnes = ["Picanha", "Fraldinha", "Contrafilé"];
+const carnes = ["Picanha", "Blend de Costela", "Contrafilé"];
 
 const calcularPrecoCombo = () => {
   // Converte os preços das props (strings) para número
   const precoCarne: Record<string, number> = {
     Contrafilé: precoContra,
-    Fraldinha: precoFralda,
+    "Blend de Costela": precoFralda,
     Picanha: precoPicanha,
   };
   const total = selectedCarnes.reduce((acc, carne) => {

@@ -18,9 +18,9 @@ function Combos(){
     galera: 55.9
   },
   quatroqueijos: {
-    casal: 67.9,
-    familia: 67.9,
-    galera: 67.9 
+    casal: 62.9,
+    familia: 62.9,
+    galera: 62.9 
   },
   pepperoni: {
     casal: 62.9,
@@ -53,10 +53,10 @@ function Combos(){
             nomeCombo="Família"
             titulo="Família"
             descricao="2 Pizzas + 1 Refri 2L"
-            precoC={precoPizzaCombo.calabresa.familia+6.75}
-            precoF={precoPizzaCombo.frango.familia+6.75}
-            precoQ={precoPizzaCombo.quatroqueijos.familia+6.75}
-            precoP={precoPizzaCombo.pepperoni.familia+6.75}
+            precoC={precoPizzaCombo.calabresa.familia+6.95}
+            precoF={precoPizzaCombo.frango.familia+6.95}
+            precoQ={precoPizzaCombo.quatroqueijos.familia+6.95}
+            precoP={precoPizzaCombo.pepperoni.familia+6.95}
             qtdPizzas={2}
             qtdBebidas={1}
             bebes={refri2L}
@@ -66,10 +66,10 @@ function Combos(){
             nomeCombo="Galera"
             titulo="Galera"
             descricao="3 Pizzas + 2 Refris 2L"
-            precoC={precoPizzaCombo.calabresa.galera+9}
-            precoF={precoPizzaCombo.frango.galera+9}
-            precoQ={precoPizzaCombo.quatroqueijos.galera+9}
-            precoP={precoPizzaCombo.pepperoni.galera+9}
+            precoC={precoPizzaCombo.calabresa.galera+9.25}
+            precoF={precoPizzaCombo.frango.galera+9.25}
+            precoQ={precoPizzaCombo.quatroqueijos.galera+9.25}
+            precoP={precoPizzaCombo.pepperoni.galera+9.25}
             qtdPizzas={3}
             qtdBebidas={2}
             bebes={refri2L}

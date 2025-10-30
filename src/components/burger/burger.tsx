@@ -44,15 +44,15 @@ function Burger() {
     },
     {
       nome: "Moura's Duplo",
-      precoC: 41.9,
+      precoC: 43.9,
       precoF: 37.9,
-      precoP: 44.9,
+      precoP: 45.9,
       classe: "burgerduplo",
       ingredientes: ["Pão de Brioche", "2 Hambúrguer (140g cada)", "4 Fatias de Cheddar"],
     },
     {
       nome: "Moura's Duplo Bacon",
-      precoC: 44.9,
+      precoC: 45.9,
       precoF: 39.9,
       precoP: 47.9,
       classe: "burgerduplobacon",
