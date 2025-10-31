@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addPedido } from "../../firebase/pedidosFirebase";
 import "./aprovado.css";
 
 interface Payment {
@@ -11,30 +12,52 @@ interface Payment {
 
 export default function PagAprovado() {
   const navigate = useNavigate();
+  const [pedidoId, setPedidoId] = useState<string | null>(null);
+  const [payment, setPayment] = useState<Payment | null>(null);
 
-  // tenta recuperar dados locais para exibição (opcional)
-  const pedidoId = localStorage.getItem("pedidoId") || null;
-  const pedidoPendenteRaw = localStorage.getItem("pedidoPendente") || null;
+  useEffect(() => {
+  const salvarPedido = async () => {
+    const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
 
-  const pedidoPendente = useMemo(() => {
+    // Se não tiver pedido salvo, redireciona
+    if (!pedidoSalvo || !pedidoSalvo.itens) {
+      navigate("/");
+      return;
+    }
+
     try {
-      return pedidoPendenteRaw ? JSON.parse(pedidoPendenteRaw) : null;
-    } catch {
-      return null;
-    }
-  }, [pedidoPendenteRaw]);
+      // Adiciona no Firestore
+      const id = await addPedido(pedidoSalvo);
+      localStorage.setItem("pedidoId", id);
+      setPedidoId(id);
 
-  // se você quiser, pode também preencher um "payment" fake a partir do pedido pendente
-  const payment: Payment | null = useMemo(() => {
-    if (pedidoPendente) {
-      return {
-        id: pedidoId ?? "LOCAL",
+      // Cria um "payment" fake só pra exibir o resumo
+      setPayment({
+        id,
         status: "approved",
-        transaction_amount: Number(pedidoPendente.total) || undefined,
-      };
+        transaction_amount: Number(pedidoSalvo.total) || 0,
+      });
+
+      // ✅ Remove o pedido salvo localmente após salvar no banco
+      localStorage.removeItem("pedidoPendente");
+
+    } catch (err) {
+      console.error("Erro ao salvar pedido:", err);
+      // opcional: redirecionar ou exibir mensagem de erro
     }
-    return null;
-  }, [pedidoPendente, pedidoId]);
+  };
+
+  salvarPedido();
+}, [navigate]);
+
+
+  if (!payment) {
+    return (
+      <div className="loading">
+        <h2>Registrando pedido...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="success-page">

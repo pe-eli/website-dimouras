@@ -60,27 +60,6 @@ export default function Checkout() {
   const taxaEntrega = deliveryMethod === "entrega" ? 20 : 0;
   const total = (Number(getTotal().replace(",", ".")) + taxaEntrega).toFixed(2);
 
-  const pedido = {
-    nome,
-    telefone,
-    endereco:
-      deliveryMethod === "entrega"
-        ? `${endereco}, ${numero} - ${bairro}`
-        : "Retirada no local",
-    metodoEntrega: deliveryMethod,
-    metodoPagamento: paymentMethod,
-    itens: cart.map((item: any) => ({
-      nome: item.name,
-      preco: item.price,
-      quantidade: item.quantity || 1,
-    })),
-    observacao,
-    total,
-    localizacao: localSelecionado,
-    status: "Pendente" as const,
-    criadoEm: new Date().toISOString(),
-  };
-
 const handlePayment = async () => {
   if (!isFormValid) return;
 
@@ -165,7 +144,6 @@ const handlePayment = async () => {
   }
 };
 
-
 const isFormValid =
   nome.trim() !== "" &&
   telefone.trim() !== "" &&
@@ -190,7 +168,7 @@ const isFormValid =
         <div className="loading-overlay">
           <div className="loading-box">
             <div className="spinner"></div>
-            <p>Redirecionando para o Mercado Pago...</p>
+            <p>Só um momento...</p>
           </div>
         </div>
       )}
