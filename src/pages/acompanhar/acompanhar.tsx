@@ -100,7 +100,6 @@ export default function AcompanharPedido() {
   </div>
 </div>
 
-
       <div className="track-container">
         <h1 className="title-">Acompanhe seu Pedido</h1>
 
