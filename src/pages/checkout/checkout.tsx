@@ -112,9 +112,7 @@ const handlePayment = async () => {
 
   try {
     if (paymentMethod === "site") {
-      const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
-      const id = await addPedido(pedidoSalvo);
-      localStorage.setItem("pedidoId", id);
+      // 🔹 Pagamento via site
       setIsLoading(true);
 
       const response = await fetch("https://website-dimouras.onrender.com/api/create_preference", {
