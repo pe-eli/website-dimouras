@@ -11,7 +11,7 @@ interface Pedido {
   endereco?: string;
   metodoEntrega: "entrega" | "retirada";
   metodoPagamento: "entrega" | "site";
-  itens: { nome: string; preco: string; quantidade?: number }[];
+  itens: { nome: string; preco: string; quantidade: number }[];
   total: string;
   localizacao?: { lat: number; lng: number; address: string };
   status?: "Pendente" | "Em preparo" | "Entregue" | "Cancelado";
@@ -146,6 +146,7 @@ export default function AcompanharPedido() {
             <section className="pedido-itens">
               {pedido.itens.map((item, i) => (
                 <div key={i} className="item-row">
+                  <p>{item.quantidade}</p>
                   <span>
                     {item.nome} <small>x{item.quantidade || 1}</small>
                   </span>

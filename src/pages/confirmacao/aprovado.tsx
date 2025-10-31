@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { addPedido } from "../../firebase/pedidosFirebase"
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import "./aprovado.css";
 
 interface Payment {
@@ -11,94 +10,31 @@ interface Payment {
 }
 
 export default function PagAprovado() {
-
-  const id = localStorage.getItem("pedidoId");
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [loading, setLoading] = useState(true);
-  const [payment, setPayment] = useState<Payment | null>(null);
 
-useEffect(() => {
-  const paymentId = searchParams.get("payment_id");
+  // tenta recuperar dados locais para exibição (opcional)
+  const pedidoId = localStorage.getItem("pedidoId") || null;
+  const pedidoPendenteRaw = localStorage.getItem("pedidoPendente") || null;
 
-  if (!paymentId) {
-    // Permitir acesso manual à página quando alguém digita a URL diretamente.
-    // Tentamos recuperar algum rastro do pedido no localStorage (fluxo offline/testes).
-    const pedidoPendente = localStorage.getItem("pedidoPendente");
-    const pedidoId = localStorage.getItem("pedidoId");
-
-    if (pedidoPendente || pedidoId) {
-      // Monta um objeto mínimo de pagamento para mostrar informações úteis.
-      const pending = pedidoPendente ? JSON.parse(pedidoPendente) : null;
-      setPayment({
-        id: pedidoId || undefined,
-        status: "approved",
-        transaction_amount: pending?.total || undefined,
-      } as Payment);
+  const pedidoPendente = useMemo(() => {
+    try {
+      return pedidoPendenteRaw ? JSON.parse(pedidoPendenteRaw) : null;
+    } catch {
+      return null;
     }
+  }, [pedidoPendenteRaw]);
 
-    // Não redirecionamos para a home — permitimos que o usuário veja a página manualmente.
-    setLoading(false);
-    return;
-  }
-
-  fetch(`${import.meta.env.VITE_API_URL}/api/verify-payment?id=${paymentId}`)
-    .then(async (res) => {
-      if (!res.ok) throw new Error("Erro na verificação");
-      const data = await res.json();
-      if (data.approved) {
-        const pedidoPendente = localStorage.getItem("pedidoPendente");
-        if (pedidoPendente) {
-          const pedido = JSON.parse(pedidoPendente);
-          await addPedido(pedido);
-          localStorage.removeItem("pedidoPendente");
-        }
-        setPayment(data.payment);
-      } else {
-        navigate("/");
-      }
-    })
-    .catch(() => navigate("/"))
-    .finally(() => setLoading(false));
-}, [searchParams, navigate]);
-  // Enquanto valida
-  if (loading) {
-    return (
-      <div className="loading">
-        <h2>Verificando pagamento...</h2>
-      </div>
-    );
-  }
-
-  if (!payment) {
-    // Permitir que o usuário acesse a página manualmente mesmo sem dados de pagamento.
-    return (
-      <div className="success-page">
-        <div className="success-header">
-          <div className="success-icon">ℹ️</div>
-          <h1>Informação não encontrada</h1>
-          <p>
-            Não foi possível localizar detalhes do pagamento pela URL. Se você
-            digitou esta página manualmente, verifique se a transação foi
-            realizada ou acesse o cardápio para fazer um novo pedido.
-          </p>
-        </div>
-
-        <div className="success-card">
-          <div className="buttons">
-            <button className="back-btn" onClick={() => navigate(`/`)}>
-              Voltar ao Início
-            </button>
-            {id && (
-              <button className="back-btn" onClick={() => navigate(`/acompanhar/${id}`)}>
-                Acompanhar meu pedido
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // se você quiser, pode também preencher um "payment" fake a partir do pedido pendente
+  const payment: Payment | null = useMemo(() => {
+    if (pedidoPendente) {
+      return {
+        id: pedidoId ?? "LOCAL",
+        status: "approved",
+        transaction_amount: Number(pedidoPendente.total) || undefined,
+      };
+    }
+    return null;
+  }, [pedidoPendente, pedidoId]);
 
   return (
     <div className="success-page">
@@ -111,14 +47,16 @@ useEffect(() => {
       <div className="success-card">
         <div className="order-header">
           <h2>Pedido Confirmado</h2>
-          <p className="order-id">#{payment.id}</p>
+          <p className="order-id">#{payment?.id ?? pedidoId ?? "—"}</p>
           <span className="badge">Pagamento Confirmado</span>
         </div>
 
         <div className="payment-info">
           <h3>Pagamento processado</h3>
           <p className="amount">
-            R${payment.transaction_amount?.toFixed(2)}
+            {payment?.transaction_amount !== undefined
+              ? `R$ ${Number(payment.transaction_amount).toFixed(2)}`
+              : "R$ —"}
           </p>
           <p className="status">Transação realizada com sucesso</p>
         </div>
@@ -145,8 +83,17 @@ useEffect(() => {
         </div>
 
         <div className="buttons">
-          <button className="track-btn">Acompanhar Meu Pedido</button>
-          <button className="back-btn" onClick={() => navigate(`/acompanhar/${id}`)}>
+          <button
+            className="track-btn"
+            onClick={() => {
+              // se não tiver id, vai para /acompanhar (o componente de acompanhar trata a ausência)
+              navigate(pedidoId ? `/acompanhar/${pedidoId}` : "/acompanhar");
+            }}
+          >
+            Acompanhar Meu Pedido
+          </button>
+
+          <button className="back-btn" onClick={() => navigate("/")}>
             Voltar ao Cardápio
           </button>
         </div>
