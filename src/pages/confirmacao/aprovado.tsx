@@ -22,7 +22,23 @@ useEffect(() => {
   const paymentId = searchParams.get("payment_id");
 
   if (!paymentId) {
-    navigate("/");
+    // Permitir acesso manual à página quando alguém digita a URL diretamente.
+    // Tentamos recuperar algum rastro do pedido no localStorage (fluxo offline/testes).
+    const pedidoPendente = localStorage.getItem("pedidoPendente");
+    const pedidoId = localStorage.getItem("pedidoId");
+
+    if (pedidoPendente || pedidoId) {
+      // Monta um objeto mínimo de pagamento para mostrar informações úteis.
+      const pending = pedidoPendente ? JSON.parse(pedidoPendente) : null;
+      setPayment({
+        id: pedidoId || undefined,
+        status: "approved",
+        transaction_amount: pending?.total || undefined,
+      } as Payment);
+    }
+
+    // Não redirecionamos para a home — permitimos que o usuário veja a página manualmente.
+    setLoading(false);
     return;
   }
 
@@ -54,7 +70,35 @@ useEffect(() => {
     );
   }
 
-  if (!payment) return null;
+  if (!payment) {
+    // Permitir que o usuário acesse a página manualmente mesmo sem dados de pagamento.
+    return (
+      <div className="success-page">
+        <div className="success-header">
+          <div className="success-icon">ℹ️</div>
+          <h1>Informação não encontrada</h1>
+          <p>
+            Não foi possível localizar detalhes do pagamento pela URL. Se você
+            digitou esta página manualmente, verifique se a transação foi
+            realizada ou acesse o cardápio para fazer um novo pedido.
+          </p>
+        </div>
+
+        <div className="success-card">
+          <div className="buttons">
+            <button className="back-btn" onClick={() => navigate(`/`)}>
+              Voltar ao Início
+            </button>
+            {id && (
+              <button className="back-btn" onClick={() => navigate(`/acompanhar/${id}`)}>
+                Acompanhar meu pedido
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="success-page">
@@ -74,7 +118,7 @@ useEffect(() => {
         <div className="payment-info">
           <h3>Pagamento processado</h3>
           <p className="amount">
-            R$ {payment.transaction_amount?.toFixed(2)}
+            R${payment.transaction_amount?.toFixed(2)}
           </p>
           <p className="status">Transação realizada com sucesso</p>
         </div>
