@@ -1,0 +1,150 @@
+.modal-overlay-monte-pizza {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-monte-pizza {
+  background: #fff;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-monte-pizza p{
+    margin: 0;
+}
+
+.modal-monte-pizza label{
+    padding: 0.2rem 1rem;
+    border-radius: 12px;
+    display: flex;
+    border: 1px solid #b22222;
+    margin-bottom: 0.5rem;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-monte-pizza ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* duas colunas de tamanhos iguais */
+  gap: 1rem; /* espaço entre os itens */
+}
+
+.ingredientes-grid{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+}
+.ingrediente-btn {
+  width: 90%;
+  height: auto;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid #b22222;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  gap: 0.1rem;
+  cursor: pointer;
+  place-self: center;
+}
+
+.ing-ativo {
+  background-color: #b22222; /* verde manjericão */
+  color: white;
+  font-weight: bold;
+}
+
+.ing-inativo {
+  background-color: transparent;
+  color: #333;
+}
+
+.ingrediente-preco{
+  font-size: 0.8rem;
+}
+.modal-footer-personalizada{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.btn-monte-pizza {
+  display: flex;
+  width: 100%;
+  padding: 0.6rem;
+  background: #2E7D32; /* verde manjericão */
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  align-items: center;
+}
+
+.btn-cancel{
+    display: flex;
+    border-radius: 12px;
+    border: 0;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    background-color: #666;
+    color: white;
+    cursor: pointer;
+}
+
+@media(max-width:768px){
+  .modal-monte-pizza {
+  width: 80vw;
+}
+.ingrediente-btn{
+  display: flex;
+  height: 2.8rem;
+}
+
+
+.ing-ativo {
+  background-color: #b22222; /* verde manjericão */
+  color: white;
+  font-weight: bold;
+}
+
+.ing-inativo {
+  display: flex;
+  background-color: transparent;
+  color: #333;
+  width: 105%;
+}
+
+.ingredientes-grid{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.1rem;
+}
+}

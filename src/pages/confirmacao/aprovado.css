@@ -1,0 +1,171 @@
+.success-page {
+  background-color: #f5fff8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  padding: 40px 20px;
+}
+
+.success-header {
+  text-align: center;
+  color: #19a55a;
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  font-size: 48px;
+  background-color: #19a55a;
+  color: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+}
+
+.success-header h1 {
+  font-size: 28px;
+  margin: 10px 0;
+}
+
+.success-header p {
+  color: #555;
+}
+
+.success-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.order-header {
+  background-color: #19a55a;
+  color: white;
+  padding: 20px;
+  border-radius: 12px 12px 0 0;
+  text-align: center;
+}
+
+.order-header h2 {
+  margin: 0;
+}
+
+.order-id {
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.badge-paid {
+  background-color: #0f8046;
+  padding: 5px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.payment {
+  background-color: #e9fbea;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.payment .amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #19a55a;
+  margin: 8px 0;
+}
+
+.info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.info-box {
+  flex: 1;
+  background-color: #f3f8ff;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+.info-box h4 {
+  margin: 0 0 5px;
+}
+
+.info-box.purple {
+  background-color: #f6f0ff;
+}
+
+.next-steps {
+  background-color: #fff5e6;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #ffa500;
+}
+
+.next-steps ul {
+  margin: 10px 0 0 20px;
+  color: #444;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.track-btn {
+  background-color: #b22222;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.track-btn:hover {
+  background-color: #890000;
+}
+
+.back-btn {
+  border: 1px solid #ddd;
+  background-color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.contact {
+  text-align: center;
+  color: #555;
+}
+
+.footer-bar {
+  background-color: #b22222;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  border-radius: 10px;
+  margin-top: 25px;
+  width: 100%;
+  max-width: 700px;
+  font-weight: 500;
+}

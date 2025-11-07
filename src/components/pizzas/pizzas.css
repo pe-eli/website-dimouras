@@ -1,0 +1,236 @@
+
+.card-pizza {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
+  transition: transform 0.2s;
+  width: 15rem;
+
+}
+
+.card-pizza:hover{
+  transform: translateY(-2px);
+  transition: all 0.2s;
+  scale: 1.02;
+}
+.card-content-pizza {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  height: 17rem;
+  justify-content: space-between;
+  padding: 1rem;
+  text-align: left;
+}
+
+.card-content-pizza h3 {
+  color: #B22222;
+  font-size: 1.3rem;
+  font-weight: 1000;
+  margin-bottom: 0.5rem;
+}
+
+.cala{
+  background-image: url("/cala.png");
+  background-size: contain;
+  background-position: 7rem -1rem;
+  background-repeat: no-repeat;
+}
+
+.fc{
+  background-image: url("/fc.png");
+  background-size: contain;
+  background-position: 7.5rem -0.5rem;
+  background-repeat: no-repeat;
+}
+.qq{
+  background-image: url("/4q.png");
+  background-size: contain;
+  background-position: 7.5rem -0.5rem;
+  background-repeat: no-repeat;
+}
+
+.mista{
+  background-image: url("/pepperoni.png");
+  background-size: 85%;
+  background-position: 8rem 0.5rem;
+  background-repeat: no-repeat; 
+}
+.section-pizzas {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.section-pizzas h2 {
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  color: black; /* títulos vermelhos */
+}
+.section-pizzas p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.section-sabores {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  
+}
+.card-content h3 {
+  color: #B22222;
+  margin-bottom: 0.5rem;
+}
+
+.section {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+  color: #B22222; /* títulos vermelhos */
+}
+.section p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.card-monte{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
+  transition: transform 0.2s;
+  width: 15%;
+}
+
+.card-monte h3{
+  color:#B22222;
+}
+
+.card-monte button{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  
+}
+.ing{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: auto;
+  height: 12dvh;
+}
+.price-pizza {
+  color: #333;
+  font-weight: bold;
+  margin: 0;
+  font-size: 1.5rem;
+
+}
+
+.card-pizza button {
+  display: block;
+  width: 60%;
+  padding: 0.6rem;
+  background: #2E7D32; /* verde manjericão */
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s; 
+}
+
+.botoes{
+  display: flex;
+  flex-direction: column;
+}
+.half{
+  display: flex;
+  text-align: center;
+}
+
+.inteira{
+  display: flex;
+  margin-top: auto;
+}
+
+
+.btn:hover {
+  background: #FFD54F; 
+  color: #333;
+  
+}
+
+@media(max-width: 768px){
+  .section-sabores{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .section-pizzas h2{
+    margin: 0 0 1rem 0;
+  }
+  .card-pizza{
+    width: 90vw;
+  }
+  .botoes{
+    width: 65%;
+  }
+
+  .cala{
+  background-image: url("/cala.png");
+  background-size: 65%;
+  background-position: 7.5rem 0rem;
+  background-repeat: no-repeat;
+}
+
+.fc{
+  background-image: url("/fc.png");
+  background-size: 70%;
+  background-position: 7.25rem -0.2rem;
+  background-repeat: no-repeat;
+}
+.mista{
+  background-image: url("/pepperoni.png");
+  background-size: 61%;
+  background-position: 8.1rem 0.5rem;
+  background-repeat: no-repeat; 
+}
+.qq{
+  background-image: url("/4q.png");
+  background-size: 69%;
+  background-position: 7.3rem 0rem;
+  background-repeat: no-repeat;
+}
+
+.card-monte{
+  width: 90vw;
+  padding: 1rem 0;
+}
+.card-monte h3{
+  margin: 0.5rem 1rem;
+}
+.card-monte p{
+  margin: 0.1rem 0;
+  width: 12rem;
+}
+.card-monte button{
+  margin-top: 10px;
+}
+}

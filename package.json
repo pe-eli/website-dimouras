@@ -1,0 +1,50 @@
+{
+  "name": "dimouras",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "npx vite build",
+    "preview": "vite preview",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@mercadopago/sdk-react": "^1.0.6",
+    "@react-google-maps/api": "^2.20.7",
+    "firebase": "^12.4.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.545.0",
+    "mercadopago": "^2.9.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-icons": "^5.5.0",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.9.1",
+    "stripe": "^18.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/leaflet": "^1.9.21",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.10"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "description": "Frontend React + Vite para deploy no Vercel",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

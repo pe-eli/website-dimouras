@@ -1,0 +1,256 @@
+.track-container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 30px;
+  align-items: center;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.title- {
+  margin: 1rem;
+  text-align: center;
+  color: #e63946;
+  font-size: 1.8rem;
+}
+
+.subtitle- {
+  text-align: center;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto;
+  flex-wrap: wrap;
+}
+.search-box input {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 240px;
+  font-size: 16px;
+  transition: border 0.3s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #19a55a;
+}
+
+.search-box button {
+  background-color: #19a55a;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-box button:hover {
+  background-color: #14924f;
+}
+
+.error {
+  color: #e33400;
+  background-color: #ffeaea;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+
+.pedido-card {
+  width: 80%;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.pedido-card h3{
+  margin: 1rem 1rem;
+}
+
+.pedido-header {
+  background: linear-gradient(90deg, #e63946, #ff7b54);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.pedido-total {
+  display: flex;
+  text-align: right;
+  align-items: center;
+}
+
+.pedido-total .valor {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.pedido-total .previsao {
+  font-size: .9rem;
+  color: #fff;
+  opacity: .9;
+}
+
+.pedido-status {
+  font-size: 1.3rem;
+}
+
+.status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pedido-itens{
+  padding: 0.5rem 1.5rem;
+  border-top: 1px solid #eee;
+  overflow-y: auto;
+  min-height: 19dvh;
+  max-height: 19dvh;
+}
+.pedido-info{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
+
+.pedido-footer {
+  background: #f1f7ff;
+  padding: 1rem;
+  text-align: center;
+  font-size: .9rem;
+  color: #333;
+}
+
+.pedido-footer a {
+  display: block;
+  color: #0077ff;
+  text-decoration: none;
+  margin-top: .3rem;
+}
+
+.endereco{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.endereco h4{
+  margin: 0;
+}
+
+.acompanhamento-link-section {
+  background: #fffaf5;
+  border: 2px solid #e8b282;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.acompanhamento-link-text {
+  font-size: 1rem;
+  color: #4a2c18;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.acompanhamento-link-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.acompanhamento-link-input {
+  flex: 1;
+  max-width: 400px;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border: 1px solid #d5a77c;
+  border-radius: 6px;
+  background-color: #fffdf8;
+  color: #333;
+  text-align: center;
+  cursor: text;
+}
+
+.acompanhamento-link-copy-btn {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.acompanhamento-link-copy-btn:hover {
+  background-color: #b8433f;
+  transform: scale(1.03);
+}
+
+.acompanhamento-link-copy-btn:active {
+  transform: scale(0.97);
+}
+
+
+@media(max-width: 768px){
+  .search-box button{
+    width: 40vw;
+  }
+  .pedido-card{
+    width: 90vw;
+  }
+  .pedido-status{
+    text-align: center;
+  }
+  .mappicker{
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 0.1rem;
+    max-height: 10vh;
+    overflow-y: auto;
+  }
+  .pedido-status {
+  font-size: 0.8rem;
+}
+}
