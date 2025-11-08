@@ -29,6 +29,18 @@ export default function Checkout() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+    const bairros = [
+    { nome: "Centro", taxa: 10 },
+    { nome: "Jardim América", taxa: 15 },
+    { nome: "Vila Nova", taxa: 18 },
+    { nome: "Industrial", taxa: 20 },
+    { nome: "São José", taxa: 25 },
+  ];
+
+  const bairroSelecionado = bairros.find((b) => b.nome === bairro);
+
+
   
   useEffect(() => {
   const fromMenu = location.state?.fromMenu;
@@ -57,9 +69,9 @@ export default function Checkout() {
     }
   };
 
+  const taxaEntrega = deliveryMethod === "entrega" ? bairroSelecionado?.taxa || 0 : 0;
   initMercadoPago("APP_USR-10f7c568-9e67-49d1-ada9-9e7bbdfbd5de");
 
-  const taxaEntrega = deliveryMethod === "entrega" ? 20 : 0;
   const total = (Number(getTotal().replace(",", ".")) + taxaEntrega).toFixed(2);
 
 const handlePayment = async () => {
@@ -99,6 +111,13 @@ const handlePayment = async () => {
   // 💾 Salva o pedido localmente (temporário)
   localStorage.setItem("pedidoPendente", JSON.stringify(novoPedido));
 
+  const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
+
+      setIsLoading(true);
+      const id = await addPedido(pedidoSalvo);
+      console.log("Pedido salvo com ID:", id);
+      localStorage.setItem("pedidoId", id);
+
   try {
     if (paymentMethod === "site") {
       // 🔹 Pagamento via site
@@ -133,11 +152,7 @@ const handlePayment = async () => {
       // 💰 Pagamento na entrega → salva direto no Firestore
       setIsLoading(true);
 
-      const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
-
-      const id = await addPedido(pedidoSalvo);
-      console.log("Pedido salvo com ID:", id);
-      localStorage.setItem("pedidoId", id);
+      
 
       localStorage.setItem("telefoneCliente", telefone);
        
@@ -169,7 +184,7 @@ const isFormValid =
       </header>
 
       <nav className="navbar">
-         <button onClick={() => navigate("/")}>
+         <button className="navbutton" onClick={() => navigate("/")}>
           Voltar ao Cardápio
          </button>
       </nav>
@@ -211,9 +226,7 @@ const isFormValid =
             />
             <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
               <span className="title">Entrega</span>
-              <span style={{ fontSize: "0.85rem" }} className="subtitle">
-                Taxa de Entrega: R$20,00
-              </span>
+              
             </div>
           </label>
 
@@ -237,11 +250,11 @@ const isFormValid =
             />
             <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
               <span className="title">Retirada no Local</span>
-              <span style={{ fontSize: "0.85rem" }} className="subtitle">
-                Sem Taxa de Entrega
-              </span>
+            
 
             </div>
+
+            
           </label>
           
            {deliveryMethod === "retirada" && (
@@ -249,6 +262,9 @@ const isFormValid =
               )}
           
         </div>
+        
+        
+      
 
         {/* DADOS DE ENTREGA */}
         <div className="checkout-card">
@@ -287,15 +303,23 @@ const isFormValid =
                   required
                 />
                 <input type="text" placeholder="Complemento (opcional)" />
-                <input
-                  type="text"
-                  placeholder="Bairro *"
+                
+                 {deliveryMethod === "entrega" && (
+                <select
+                className="select-bairro"
                   value={bairro}
                   onChange={(e) => setBairro(e.target.value)}
                   required
-                />
-                <h3 style={{margin: 0}}>Marque no Mapa o Local da Entrega: (opcional)</h3>
-            <MapPicker onLocalSelect={handleLocalSelect} />
+                >
+                  <option value="">Selecione o bairro *</option>
+                  {bairros.map((b) => (
+                    <option key={b.nome} value={b.nome}>
+                      {b.nome}
+                    </option>
+                  ))}
+                </select>
+              )}
+               
               </>
             )}
           </div>
