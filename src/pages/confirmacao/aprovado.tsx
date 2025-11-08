@@ -26,16 +26,10 @@ export default function PagAprovado() {
 
     try {
       // Adiciona no Firestore
-      const id = await addPedido(pedidoSalvo);
-      localStorage.setItem("pedidoId", id);
-      setPedidoId(id);
+
 
       // Cria um "payment" fake só pra exibir o resumo
-      setPayment({
-        id,
-        status: "approved",
-        transaction_amount: Number(pedidoSalvo.total) || 0,
-      });
+      
 
       // ✅ Remove o pedido salvo localmente após salvar no banco
       localStorage.removeItem("pedidoPendente");

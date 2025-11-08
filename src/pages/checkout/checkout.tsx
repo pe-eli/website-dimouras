@@ -251,7 +251,6 @@ const isFormValid =
             <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
               <span className="title">Retirada no Local</span>
             
-
             </div>
 
             
