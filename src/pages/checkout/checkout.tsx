@@ -40,8 +40,6 @@ export default function Checkout() {
 
   const bairroSelecionado = bairros.find((b) => b.nome === bairro);
 
-
-  
   useEffect(() => {
   const fromMenu = location.state?.fromMenu;
 
@@ -143,6 +141,7 @@ const handlePayment = async () => {
       if (data.id) {
         // 🔸 Redireciona pro checkout do Mercado Pago
         window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${data.id}`;
+        setIsLoading(false);
       } else {
         setIsLoading(false);
         setErroPedido("Erro ao criar preferência de pagamento.\nEntre em contato conosco no WhatsApp.");
