@@ -152,8 +152,6 @@ const handlePayment = async () => {
       // 💰 Pagamento na entrega → salva direto no Firestore
       setIsLoading(true);
 
-      
-
       localStorage.setItem("telefoneCliente", telefone);
        
       localStorage.removeItem("pedidoPendente"); // Limpa

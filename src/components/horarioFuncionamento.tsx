@@ -19,7 +19,7 @@ export function lojaAberta(): boolean {
 
     case 6: // sábado
     case 0: // domingo
-      return horario >= 18 && horario <= 23;
+      return horario >= 8 && horario <= 23;
 
     default:
       return false;
