@@ -34,7 +34,7 @@ function Bebidas(){
     </div>
   </div>
 
-  <div className="card-bebida">
+  {/* <div className="card-bebida">
     <div className="card-content-bebida pepsi">
       <h3>Pepsi 350ml</h3>
       <p className="price">R${precoBebidas[0].precoLata}</p>
@@ -42,8 +42,8 @@ function Bebidas(){
         name: "Pepsi 350ml", price: `R$${precoBebidas[0].precoLata}`, qty: 1
       })}>Adicionar ao carrinho</button>
     </div>
-  </div>
-
+  </div> */}
+{/* 
         <div className="card-bebida">
           <div className="card-content-bebida pepsib">
             <h3> Pepsi Black 350ml</h3>
@@ -52,9 +52,9 @@ function Bebidas(){
               name: "Pepsi Black 350ml", price: `R$${precoBebidas[0].precoLata}`, qty: 1
               })}>Adicionar ao carrinho</button>
           </div>
-        </div>
+        </div> */}
 
-  <div className="card-bebida">
+  {/* <div className="card-bebida">
     <div className="card-content-bebida fanta">
       <h3>Fanta Laranja 350ml</h3>
       <p className="price">R${precoBebidas[0].precoLata}</p>
@@ -62,11 +62,11 @@ function Bebidas(){
         name: "Fanta Laranja 350ml", price: `R$${precoBebidas[0].precoLata}`, qty: 1
       })}>Adicionar ao carrinho</button>
     </div>
-  </div>
+  </div> */}
 
  
 
-  <div className="card-bebida">
+  {/* <div className="card-bebida">
     <div className="card-content-bebida soda">
       <h3>Soda Antarctica 350ml</h3>
       <p className="price">R${precoBebidas[0].precoLata}</p>
@@ -74,9 +74,7 @@ function Bebidas(){
         name: "Soda Antarctica 350ml", price: `R$${precoBebidas[0].precoLata}`, qty: 1
       })}>Adicionar ao carrinho</button>
     </div>
-  </div>
-
-  
+  </div> */}
 
   
   <div className="card-bebida">

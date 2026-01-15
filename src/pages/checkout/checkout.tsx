@@ -120,7 +120,6 @@ const handlePayment = async () => {
 
   };
 
-  // 💾 Salva o pedido localmente (temporário)
   localStorage.setItem("pedidoPendente", JSON.stringify(novoPedido));
 
   const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
@@ -132,7 +131,6 @@ const handlePayment = async () => {
 
   try {
     if (paymentMethod === "site") {
-      // 🔹 Pagamento via site
       setIsLoading(true);
 
       const response = await fetch("https://website-dimouras.onrender.com/api/create_preference", {
