@@ -131,7 +131,7 @@ const precoFinal = Math.max(
                   <ul>
                     <li>Segunda: ❌ Fechado</li>
                     <li>Terça: ❌ Fechado</li>
-                    <li>Quarta a Sexta: 18h às 22h30</li>
+                    <li>Quarta a Sexta: 18h às 22h</li>
                     <li>Sábado e Domingo: 18h às 23h</li>
                   </ul>
                   <button className="close-button"onClick={() => setMostrarModal(false)}>Fechar</button>

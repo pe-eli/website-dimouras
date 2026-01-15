@@ -28,33 +28,33 @@ function Burger() {
   const saboresFixos: Burger[] = [
     {
       nome: "Moura's Burger",
-      precoC: 29.9,
-      precoF: 25.9,
-      precoP: 34.9,
+      precoC: 31.9, //contrafilé
+      precoF: 26.9, //blend costela
+      precoP: 29.9, //fraldinha
       classe: "burger",
       ingredientes: ["Pão de Brioche", "Burger 140g", "2 Fatias de Cheddar"],
     },
     {
       nome: "Moura's Bacon",
-      precoC: 36.9,
-      precoF: 32.9,
-      precoP: 39.9,
+      precoC: 35.9,//contrafilé
+      precoF: 31.9,//blend costela
+      precoP: 32.9,//fraldinha
       classe: "burgerbacon",
       ingredientes: ["Pão de Brioche", "Burger 140g", "2 Fatias de Cheddar", "Bacon"],
     },
     {
       nome: "Moura's Duplo",
-      precoC: 43.9,
-      precoF: 37.9,
-      precoP: 45.9,
+      precoC: 51.9,//contrafilé
+      precoF: 41.9,//blend costela
+      precoP: 45.9,//fraldinha
       classe: "burgerduplo",
       ingredientes: ["Pão de Brioche", "2 Burgers (140g cada)", "4 Fatias de Cheddar"],
     },
     {
       nome: "Moura's Duplo Bacon",
-      precoC: 47.9,
-      precoF: 39.9,
-      precoP: 49.9,
+      precoC: 54.9,//contrafilé
+      precoF: 45.9,//blend costela
+      precoP: 49.9,//fraldinha
       classe: "burgerduplobacon",
       ingredientes: ["Pão de Brioche", "2 Burgers (140g cada)", "4 Fatias de Cheddar", "Bacon"],
     },
@@ -95,7 +95,7 @@ function Burger() {
     const extrasLista = [
       { nome: "Bacon", preco: 5 },
       { nome: "Cheddar", preco: 3 },
-      { nome: "Carne", preco: 12 },
+      { nome: "Carne", preco: 16 },
     ];
 
     const totalExtras = extrasLista
@@ -125,7 +125,7 @@ function Burger() {
             })
           }
         >
-          Picanha
+          Fraldinha
           <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
             R${precoP.toFixed(2).replace(".", ",")}
           </p>
@@ -151,13 +151,13 @@ function Burger() {
           className="btn-burger"
           onClick={() =>
             handleOpenModal({
-              name: `${nome} Blend de Costela`,
+              name: `${nome} Blend Costela`,
               price: precoF,
               qty: 1,
             })
           }
         >
-          Blend de Costela
+          Blend Costela
           <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
             R${precoF.toFixed(2).replace(".", ",")}
           </p>

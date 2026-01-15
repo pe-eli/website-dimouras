@@ -31,12 +31,26 @@ export default function Checkout() {
   const location = useLocation();
 
     const bairros = [
-    { nome: "Centro", taxa: 10 },
-    { nome: "Jardim América", taxa: 15 },
-    { nome: "Vila Nova", taxa: 18 },
-    { nome: "Industrial", taxa: 20 },
-    { nome: "São José", taxa: 25 },
+    { nome: "Condomínio Pontevila", taxa: 10 },
+    { nome: "Aterro", taxa: 10 },
+    { nome: "Capão", taxa: 10 },
+    { nome: "Aroeira", taxa: 10 },
+
+    { nome: "Aprolago", taxa: 15 },
+    { nome: "Fivela", taxa: 15 },
+    { nome: "Laranjal", taxa: 15 },
+    { nome: "Encosta do Lago", taxa: 15 },
+
+
+    { nome: "Ilha das Pedras", taxa: 20 },
+    { nome: "Mar de Minas", taxa: 20 },
+    { nome: "FIC", taxa: 20 },
+    { nome: "Mangueirão", taxa: 20 },
+    { nome: "Edentur", taxa: 20 },
+    { nome: "Condomínio Vale do Sol", taxa: 20 },
+    { nome: "Furnastur", taxa: 20}
   ];
+
 
   const bairroSelecionado = bairros.find((b) => b.nome === bairro);
 
