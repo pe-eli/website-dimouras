@@ -9,17 +9,19 @@ export function lojaAberta(): boolean {
 
   switch (dia) {
     case 1: // segunda
+      return false;
     case 2: // terça
       return false; // fechado
-
     case 3: // quarta
+      return horario >= 18 && horario <= 22;
     case 4: // quinta
+      return horario >= 18 && horario <= 22;
     case 5: // sexta
       return horario >= 18 && horario <= 22; // 22.5 = 22h30
-
     case 6: // sábado
-    case 0: // domingo
       return horario >= 18 && horario <= 23;
+    case 0: // domingo
+      return horario >= 18 && horario <= 22;
 
     default:
       return false;
