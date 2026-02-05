@@ -9,7 +9,7 @@ const isProd = process.env.NODE_ENV === "production";
 const FRONTEND_URL =
   process.env.FRONTEND_URL || (isProd ? "https://www.dimouras.com.br" : "http://localhost:5173");
 const BACKEND_URL =
-  process.env.BACKEND_URL || (isProd ? "https://api.dimouras.com.br" : "http://localhost:3333");
+  process.env.BACKEND_URL || (isProd ? "https://website-dimouras.onrender.com" : "http://localhost:3333");
 const corsOrigins = FRONTEND_URL.split(",").map((origin) => origin.trim()).filter(Boolean);
 const isDev = !isProd;
 
