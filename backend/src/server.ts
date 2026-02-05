@@ -97,15 +97,77 @@ app.post("/api/payments", async (req, res) => {
   }
 });
 
+// 🔹 Endpoint para criar pagamento PIX
+app.post("/api/payments/pix", async (req, res) => {
+  try {
+    const {
+      transaction_amount,
+      payer,
+      external_reference,
+      metadata,
+      description,
+    } = req.body;
+
+    // Validações
+    if (!transaction_amount || transaction_amount <= 0) {
+      return res.status(400).json({ error: "Valor de transação inválido" });
+    }
+    if (!payer?.email) {
+      return res.status(400).json({ error: "Email do pagador é obrigatório" });
+    }
+
+    const body: Record<string, unknown> = {
+      transaction_amount: Number(transaction_amount),
+      description: description || "Pedido Di Mouras",
+      payment_method_id: "pix",
+      payer,
+      external_reference,
+      metadata,
+    };
+
+    // Adiciona notification_url apenas em produção
+    if (isProd) {
+      body.notification_url = `${BACKEND_URL}/api/webhook/mercadopago`;
+    }
+
+    console.log("💳 Criando pagamento PIX com:", { external_reference, amount: transaction_amount });
+
+    const payment = new Payment(client);
+    const response = await payment.create({ body });
+
+    console.log("✅ PIX criado com sucesso:", { id: response.id, status: response.status });
+
+    res.json({
+      id: response.id,
+      status: response.status,
+      status_detail: response.status_detail,
+      transaction_amount: response.transaction_amount,
+      point_of_interaction: response.point_of_interaction,
+      qr_code: response.point_of_interaction?.transaction_data?.qr_code,
+      qr_code_base64: response.point_of_interaction?.transaction_data?.qr_code_base64,
+    });
+  } catch (error: any) {
+    console.error("❌ Erro ao criar PIX:", error.message);
+    const statusCode = error.status || 500;
+    res.status(statusCode).json({ error: error.message || "Erro ao criar pagamento PIX" });
+  }
+});
+
 app.post("/api/webhook/mercadopago", async (req, res) => {
   const topic = req.query.type || req.body?.type;
   const paymentId = req.query["data.id"] || req.body?.data?.id;
 
+  // Responde imediatamente ao Mercado Pago (webhook deve retornar rápido)
+  res.sendStatus(200);
+
   if (topic !== "payment" || !paymentId) {
-    return res.sendStatus(200);
+    console.log("⚠️ Webhook ignorado - tipo ou ID inválido");
+    return;
   }
 
   try {
+    console.log("🔔 Webhook recebido para pagamento:", paymentId);
+
     const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
       headers: {
         Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
@@ -115,26 +177,84 @@ app.post("/api/webhook/mercadopago", async (req, res) => {
     if (!response.ok) {
       const text = await response.text();
       console.error("❌ Erro ao consultar pagamento no webhook:", text);
-      return res.sendStatus(200);
+      return;
     }
 
     const payment = (await response.json()) as {
       id?: string;
       status?: string;
+      status_detail?: string;
       external_reference?: string;
+      payment_method_id?: string;
+      transaction_amount?: number;
       [key: string]: any;
     };
 
-    console.log("🔔 Webhook Mercado Pago:", {
+    console.log("✅ Pagamento atualizado no webhook:", {
       id: payment.id,
       status: payment.status,
+      status_detail: payment.status_detail,
       external_reference: payment.external_reference,
+      payment_method_id: payment.payment_method_id,
     });
+
+    // TODO: Aqui você deve implementar a lógica para atualizar o pedido no Firebase
+    // Exemplo pseudocódigo:
+    // if (payment.external_reference && payment.status === "approved") {
+    //   await updatePedidoStatus(payment.external_reference, "Pago");
+    // }
+
   } catch (error) {
     console.error("❌ Erro no webhook Mercado Pago:", error);
   }
+});
 
-  return res.sendStatus(200);
+// 🔹 Endpoint para verificar status do pagamento (útil para polling)
+app.get("/api/payments/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ error: "ID do pagamento é obrigatório" });
+  }
+
+  try {
+    const response = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("❌ Erro ao consultar pagamento:", text);
+      return res.status(500).json({ error: "Erro ao consultar pagamento" });
+    }
+
+    const payment = (await response.json()) as {
+      id?: string;
+      status?: string;
+      status_detail?: string;
+      transaction_amount?: number;
+      payment_method_id?: string;
+      external_reference?: string;
+      point_of_interaction?: any;
+      [key: string]: any;
+    };
+
+    console.log(`✅ Status do pagamento ${id}:`, payment.status);
+
+    res.json({
+      id: payment.id,
+      status: payment.status,
+      status_detail: payment.status_detail,
+      transaction_amount: payment.transaction_amount,
+      payment_method_id: payment.payment_method_id,
+      external_reference: payment.external_reference,
+    });
+  } catch (error: any) {
+    console.error("❌ Erro interno ao verificar pagamento:", error.message);
+    return res.status(500).json({ error: "Erro interno no servidor" });
+  }
 });
 
 
