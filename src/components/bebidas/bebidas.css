@@ -105,9 +105,9 @@
 }
 
 .guarana{
-  background-image: url("/guaranagrande.png");
+  background-image: url("/guarana1L.png");
   background-size: contain;
-  background-position:11.5rem 0rem;
+  background-position:9rem 0rem;
   background-repeat: no-repeat;  
 }
 
@@ -203,10 +203,17 @@
 }
 
 .guarana{
-  background-image: url("/guaranagrande.png");
+  background-image: url("/guarana1L.png");
   background-size: contain;
-  background-position: 13rem -0.4rem;
+  background-position: 10rem 0rem;
   background-repeat: no-repeat;  
+}
+
+.guarana350{
+  background-image: url("/guarana.png");
+  background-size: contain;
+  background-position: 180% 0rem;
+  background-repeat: no-repeat; 
 }
   
 }

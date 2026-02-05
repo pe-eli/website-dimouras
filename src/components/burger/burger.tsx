@@ -134,7 +134,7 @@ function Burger() {
           className="btn-burger"
           onClick={() =>
             handleOpenModal({
-              name: `${nome} Picanha`,
+              name: `${nome} Fraldinha`,
               price: precoP,
               qty: 1,
             })
