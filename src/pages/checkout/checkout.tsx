@@ -813,7 +813,7 @@ const isFormValid =
                     transition: "all 0.2s ease",
                   }}
                 >
-                  💳 Cartão de Crédito/Débito
+                  💳 Cartão de Crédito
                 </button>
                 <button
                   onClick={handleCreatePix}

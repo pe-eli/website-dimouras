@@ -98,9 +98,9 @@
 }
 
 .cocagrande{
-  background-image: url("/coca2L.png");
-  background-size: 350px 350px;
-  background-position:5rem -3rem;
+  background-image: url("/coca1L.png");
+  background-size: 280px 280px;
+  background-position:8rem -1rem;
   background-repeat: no-repeat;  
 }
 
@@ -196,7 +196,7 @@
 }
 
 .cocagrande{
-  background-image: url("/coca2L.png");
+  background-image: url("/coca1L.png");
   background-size: 350px 350px;
   background-position: 6.5rem -3rem;
   background-repeat: no-repeat;  
