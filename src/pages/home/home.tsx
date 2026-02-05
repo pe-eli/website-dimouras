@@ -292,6 +292,7 @@ const precoFinal = Math.max(
                   name: `Meio a Meio - ${firstFlavor} + ${secondFlavor}`,
                   price: `R$${precoFinal.toFixed(2).replace(".", ",")}`,
                   qty: 1,
+                  category_id: "food",
                 });
                 setOpenHalfModal(false);
                 setSecondFlavor(null);

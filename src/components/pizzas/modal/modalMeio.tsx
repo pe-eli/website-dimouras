@@ -10,7 +10,7 @@ interface HalfPizzaModalProps {
   setFirstFlavor: (sabor: string | null) => void;
   setSecondFlavor: (sabor: string | null) => void;
   onClose: () => void;
-  addToCart: (item: { name: string; price: string; qty: number }) => void;
+  addToCart: (item: { name: string; price: string; qty: number; category_id?: string }) => void;
 }
 
 const HalfPizzaModal: React.FC<HalfPizzaModalProps> = ({
@@ -76,6 +76,7 @@ const HalfPizzaModal: React.FC<HalfPizzaModalProps> = ({
                 name: `Pizza: 1⁄2 ${firstFlavor} e 1⁄2 ${secondFlavor}`,
                 price: `R$ ${precoFinal.toFixed(2).replace(".", ",")}`,
                 qty: 1,
+                category_id: "food",
               });
               onClose();
               setSecondFlavor(null);

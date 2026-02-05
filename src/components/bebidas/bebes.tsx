@@ -15,7 +15,7 @@ export const refri2L = [
 ]
 
 export const precoBebidas = [
-    {precoLata: "6,00"},
+    {precoLata: "2,00"},
     {precoGuarana1L: "8,00"},
     {precoCoca1L: "10,00"},
 ]

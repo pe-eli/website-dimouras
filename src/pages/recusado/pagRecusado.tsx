@@ -14,6 +14,11 @@ export default function PagRecusado() {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [payment, setPayment] = useState<Payment | null>(null);
+  const apiUrl =
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.MODE === "production"
+      ? "https://website-dimouras.onrender.com"
+      : "http://localhost:3333");
 
   useEffect(() => {
     const paymentId = searchParams.get("payment_id");
@@ -25,7 +30,7 @@ export default function PagRecusado() {
     }
 
     // 🔍 Verifica no backend se o pagamento foi realmente recusado
-    fetch(`${import.meta.env.VITE_API_URL}/api/verify-payment?id=${paymentId}`)
+    fetch(`${apiUrl}/api/verify-payment?id=${paymentId}`)
       .then(async (res) => {
         if (!res.ok) throw new Error("Erro ao verificar pagamento");
         const data = await res.json();

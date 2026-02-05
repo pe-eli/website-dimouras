@@ -116,6 +116,7 @@ const itemName = `Combo ${titulo}\n${pizzasDescricao}\n${bebidasDescricao}`;
       name: itemName,
       price: preco(),
       qty: 1,
+      category_id: "food",
     };
 
     addToCart(comboItem);

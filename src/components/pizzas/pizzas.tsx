@@ -44,6 +44,7 @@ function Pizzas(){
             name: `Pizza Inteira de ${nome}`,
             price: `R$${preco.toFixed(2).replace("." , ",")}`,
             qty: 1,
+            category_id: "food",
           })
         }
       >
@@ -81,6 +82,7 @@ function Pizzas(){
       name: `Pizza Personalizada (${selecionados.join(", ")})`,
       price: `R$ ${total.replace(".", ",")}`,
       qty: 1,
+      category_id: "food",
     });
     setOpenModal(false);
     setSelecionados([]);

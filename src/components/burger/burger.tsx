@@ -84,6 +84,7 @@ function Burger() {
         name: `${selectedBurger.name}${extrasStr}`,
         price: `R$${precoTotal.toFixed(2).replace(".",",")}`, // 💰 adiciona o total correto
         qty: selectedBurger.qty,
+        category_id: "food",
       });
 
       setShowModal(false);

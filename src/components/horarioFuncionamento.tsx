@@ -15,7 +15,7 @@ export function lojaAberta(): boolean {
     case 3: // quarta
       return horario >= 18 && horario <= 24;
     case 4: // quinta
-      return horario >= 18 && horario <= 22;
+      return horario >= 0 && horario <= 22;
     case 5: // sexta
       return horario >= 18 && horario <= 22; // 22.5 = 22h30
     case 6: // sábado

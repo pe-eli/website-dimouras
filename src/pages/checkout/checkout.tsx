@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Wallet, initMercadoPago } from "@mercadopago/sdk-react";
+import { Payment, initMercadoPago } from "@mercadopago/sdk-react";
 import { useCart } from "../../CartContext";
 import MapPicker from "../../components/MapPicker";
 import { addPedido, validarCupom, marcarCupomComoUsado } from "../../firebase/pedidosFirebase"
@@ -19,8 +19,14 @@ export default function Checkout() {
   const [cupomAplicado, setCupomAplicado] = useState("");
   const [desconto, setDesconto] = useState(0);
   const [mensagemCupom, setMensagemCupom] = useState("");
-  const [preferenceId, setPreferenceId] = useState<string | null>(null);
+  const [paymentReady, setPaymentReady] = useState(false);
+  const [pedidoId, setPedidoId] = useState<string | null>(null);
+  const [paymentResult, setPaymentResult] = useState<any>(null);
+  const [pixQrCode, setPixQrCode] = useState<string | null>(null);
+  const [pixQrCodeBase64, setPixQrCodeBase64] = useState<string | null>(null);
+  const [pixTicketUrl, setPixTicketUrl] = useState<string | null>(null);
   const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
   const [numero, setNumero] = useState("");
@@ -33,6 +39,12 @@ export default function Checkout() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const apiUrl =
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.MODE === "production"
+      ? "https://website-dimouras.onrender.com"
+      : "http://localhost:3333");
+  const mpPublicKey = import.meta.env.VITE_MP_PUBLIC_KEY || "";
 
     const bairros = [
     { nome: "Aprolago", taxa: 15 },
@@ -65,6 +77,17 @@ export default function Checkout() {
   }
 }, [cart, location, navigate]);
 
+  useEffect(() => {
+    if (paymentMethod !== "site") {
+      setPaymentReady(false);
+      setPaymentResult(null);
+      setPedidoId(null);
+      setPixQrCode(null);
+      setPixQrCodeBase64(null);
+      setPixTicketUrl(null);
+    }
+  }, [paymentMethod]);
+
   const handleLocalSelect = (data: {
     lat: number;
     lng: number;
@@ -84,12 +107,18 @@ export default function Checkout() {
   };
 
   const taxaEntrega = deliveryMethod === "entrega" ? bairroSelecionado?.taxa || 0 : 0;
-  initMercadoPago("APP_USR-10f7c568-9e67-49d1-ada9-9e7bbdfbd5de");
+
+  useEffect(() => {
+    if (mpPublicKey) {
+      initMercadoPago(mpPublicKey);
+    }
+  }, [mpPublicKey]);
 
   const subtotalNum = Number(getTotal().replace(",", "."));
   const totalComTaxa = subtotalNum + taxaEntrega;
   const totalComDesconto = Math.max(0, totalComTaxa - desconto);
   const total = totalComDesconto.toFixed(2);
+  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const aplicarCupom = async () => {
     if (!cupom.trim()) {
@@ -173,38 +202,16 @@ const handlePayment = async () => {
       const id = await addPedido(pedidoSalvo);
       console.log("Pedido salvo com ID:", id);
       localStorage.setItem("pedidoId", id);
+      setPedidoId(id);
 
   try {
     if (paymentMethod === "site") {
-      setIsLoading(true);
-
-      const response = await fetch("https://website-dimouras.onrender.com/api/create_preference", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: [
-            {
-              title: "DI MOURA'S PIZZAS E BURGERS",
-              quantity: 1,
-              unit_price: parseFloat(total),
-              currency_id: "BRL",
-            },
-          ],
-          pedidoId: id,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.id) {
-        // 🔸 Redireciona pro checkout do Mercado Pago
-        window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${data.id}`;
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-        setErroPedido("Erro ao criar preferência de pagamento.\nEntre em contato conosco no WhatsApp.");
-        setTimeout(() => setErroPedido(""), 2000);
-      }
+      setPaymentReady(true);
+      setPaymentResult(null);
+      setPixQrCode(null);
+      setPixQrCodeBase64(null);
+      setPixTicketUrl(null);
+      setIsLoading(false);
     } else {
       // 💰 Pagamento na entrega → salva direto no Firestore
       setIsLoading(true);
@@ -230,9 +237,99 @@ const handlePayment = async () => {
   }
 };
 
+const handlePaymentSubmit = async (formData: any) => {
+  if (!pedidoId) {
+    setErroPedido("Pedido não encontrado. Atualize a página e tente novamente.");
+    throw new Error("Pedido não encontrado");
+  }
+
+  try {
+    // Extrair dados do formData se existir
+    const paymentData = formData.formData || formData;
+
+    const payer = {
+      ...(paymentData.payer || {}),
+      email: paymentData?.payer?.email || email,
+    };
+
+    // Função para determinar category_id baseado no nome do item
+    const getCategoryId = (itemName: string): string => {
+      const name = itemName.toLowerCase();
+      if (
+        name.includes("refrigerante") ||
+        name.includes("suco") ||
+        name.includes("bebida") ||
+        name.includes("água") ||
+        name.includes("cerveja")
+      ) {
+        return "beverage";
+      }
+      return "food";
+    };
+
+    // Preparar items com category_id (mantém aqui apenas para referência, não envia para API)
+    const items = cart.map((item) => ({
+      title: item.name,
+      unit_price: parseFloat(item.price.replace("R$", "").replace(",", ".")),
+      quantity: item.qty,
+      category_id: item.category_id || getCategoryId(item.name),
+    }));
+
+    const payload = {
+      token: paymentData.token,
+      issuer_id: paymentData.issuer_id,
+      payment_method_id: paymentData.payment_method_id,
+      installments: paymentData.installments,
+      amount: Number(total),
+      transaction_amount: Number(total),
+      description: `Pedido Di Mouras - ${items.map((i) => `${i.quantity}x ${i.title}`).join(", ")}`,
+      external_reference: pedidoId,
+      metadata: { pedidoId },
+      payer,
+    };
+
+    const response = await fetch(`${apiUrl}/api/payments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.error || "Erro ao processar pagamento");
+    }
+
+    setPaymentResult(data);
+
+    const pixData = data?.point_of_interaction?.transaction_data;
+    if (pixData?.qr_code_base64) setPixQrCodeBase64(pixData.qr_code_base64);
+    if (pixData?.qr_code) setPixQrCode(pixData.qr_code);
+    if (pixData?.ticket_url) setPixTicketUrl(pixData.ticket_url);
+
+    if (data.status === "approved") {
+      if (cupomAplicado) {
+        await marcarCupomComoUsado(cupomAplicado);
+      }
+
+      localStorage.removeItem("pedidoPendente");
+      clearCart();
+      setErroPedido("Pagamento aprovado!\nVocê será redirecionado para o acompanhamento.");
+      setTimeout(() => navigate(`/acompanhar/${pedidoId}`), 2000);
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error("Erro ao processar pagamento:", error);
+    setErroPedido("Erro ao processar pagamento. Tente novamente.");
+    setTimeout(() => setErroPedido(""), 2000);
+    throw error;
+  }
+};
+
 const isFormValid =
   nome.trim() !== "" &&
   telefone.trim() !== "" &&
+  (paymentMethod !== "site" || emailValido) &&
   (deliveryMethod === "retirada" ||
     (endereco.trim() !== "" && numero.trim() !== "" && bairro.trim() !== ""));
 
@@ -343,6 +440,13 @@ const isFormValid =
               onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
               required
               placeholder="Digite seu WhatsApp"
+            />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required={paymentMethod === "site"}
+              placeholder="Digite seu E-mail"
             />
             {deliveryMethod === "entrega" && (
               <>
@@ -557,7 +661,51 @@ const isFormValid =
 </div>
 
 
-       {!preferenceId ? (
+       {paymentMethod === "site" && paymentReady ? (
+            <div>
+              <h3>Pagamento Online</h3>
+              <Payment
+                initialization={{ amount: Number(total) }}
+                customization={{
+                  paymentMethods: {
+                    creditCard: "all",
+                    debitCard: "all",
+                  },
+                }}
+                onSubmit={handlePaymentSubmit}
+                onError={(error) => {
+                  console.error("Erro no pagamento:", error);
+                  setErroPedido("Erro ao processar pagamento. Tente novamente.");
+                  setTimeout(() => setErroPedido(""), 2000);
+                }}
+              />
+
+              {pixQrCodeBase64 && (
+                <div style={{ marginTop: "16px", textAlign: "center" }}>
+                  <h4>Pagamento PIX</h4>
+                  <img
+                    src={`data:image/png;base64,${pixQrCodeBase64}`}
+                    alt="QR Code PIX"
+                    style={{ maxWidth: "260px", width: "100%" }}
+                  />
+                  {pixQrCode && (
+                    <textarea
+                      readOnly
+                      value={pixQrCode}
+                      style={{ width: "100%", marginTop: "8px" }}
+                    />
+                  )}
+                  {pixTicketUrl && (
+                    <div style={{ marginTop: "8px" }}>
+                      <a href={pixTicketUrl} target="_blank" rel="noreferrer">
+                        Abrir link do pagamento
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
             <div style={{ textAlign: "center" }}>
               {!isFormValid && (
                 <p
@@ -583,11 +731,6 @@ const isFormValid =
               >
                 Confirmar Pedido
               </button>
-            </div>
-          ) : (
-            <div>
-              <h3>Pagamento Online</h3>
-              <Wallet initialization={{ preferenceId }} />
             </div>
           )}
 

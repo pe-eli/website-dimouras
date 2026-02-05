@@ -85,6 +85,7 @@ const calcularPrecoCombo = () => {
       name: itemName,
       price: `R$${calcularPrecoCombo()}`,
       qty: 1,
+      category_id: "food",
     };
 
     addToCart(comboItem);
