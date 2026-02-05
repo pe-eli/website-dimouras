@@ -49,7 +49,8 @@ export default function Checkout() {
     { nome: "Ilha das Pedras", taxa: 20 },
     { nome: "Laranjal", taxa: 15 },
     { nome: "Mangueirão", taxa: 20 },
-    { nome: "Mar de Minas", taxa: 20 }
+    { nome: "Mar de Minas", taxa: 20 },
+    { nome: "Pontevila", taxa: 0 },
   ];
 
 
@@ -367,7 +368,7 @@ const isFormValid =
                   onChange={(e) => setBairro(e.target.value)}
                   required
                 >
-                  <option value="">Selecione o bairro *</option>
+                  <option value="">Selecione a localidade: *</option>
                   {bairros.map((b) => (
                     <option key={b.nome} value={b.nome}>
                       {b.nome}
