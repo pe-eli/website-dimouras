@@ -76,7 +76,6 @@ export default function PagRecusado() {
             A transação foi recusada pela operadora do cartão.<br />
             <b>Não se preocupe, nenhum valor foi cobrado.</b>
           </p>
-          <p className="order-id-recusado">ID do Pagamento: #{payment.id}</p>
         </div>
 
         <div className="reason-section-recusado">

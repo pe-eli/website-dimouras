@@ -5,9 +5,10 @@ import Home from "./pages/home/home"
 import Checkout from "./pages/checkout/checkout";
 import GerenciarPedidos from "./pages/pedidos/pedidos";
 import AcompanharPedido from "./pages/acompanhar/acompanhar";
-import PagAprovado from "./pages/confirmacao/aprovado"
+// import PagAprovado from "./pages/confirmacao/aprovado"
 import PagRecusado from "./pages/recusado/pagRecusado"
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./pages/notfound/NotFound";
 
 function App() {
   return (
@@ -21,13 +22,15 @@ function App() {
 
         <Route path="/checkout" element={<Checkout/>} />
 
-        <Route path="/orders" element={<GerenciarPedidos/>} />
+        {/* <Route path="/orders" element={<GerenciarPedidos/>} /> */}
 
         <Route path="/acompanhar/:id" element={<AcompanharPedido />} />
 
-        <Route path="/aprovado" element={<PagAprovado/>} />
+        {/* <Route path="/aprovado" element={<PagAprovado/>} /> */}
 
         <Route path="/recusado" element={<PagRecusado/>} />
+
+        <Route path="*" element={<NotFound/>} />
         
       </Routes>
     </Router>
