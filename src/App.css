@@ -501,6 +501,12 @@ html{
   width: auto;
 }
 
+@media(max-width: 768px) {
+  .status-loja-container {
+    display: none;
+  }
+}
+
 .status-loja {
   font-weight: bold;
   font-size: 0.7rem;
