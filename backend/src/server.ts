@@ -19,7 +19,7 @@ const client = new MercadoPagoConfig({
 
 app.post("/api/create_preference", async (req, res) => {
   try {
-    const { items } = req.body;
+    const { items, pedidoId } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "Items inválidos" });
@@ -34,7 +34,7 @@ app.post("/api/create_preference", async (req, res) => {
     currency_id: item.currency_id || "BRL",
   })),
   back_urls: {
-    success: "https://www.dimouras.com.br/aprovado",
+    success: `https://www.dimouras.com.br/acompanhar/${pedidoId}`,
     failure: "https://www.dimouras.com.br/recusado",
     pending: "https://www.dimouras.com.br",
   },

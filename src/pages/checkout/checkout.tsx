@@ -190,6 +190,7 @@ const handlePayment = async () => {
               currency_id: "BRL",
             },
           ],
+          pedidoId: id,
         }),
       });
 
