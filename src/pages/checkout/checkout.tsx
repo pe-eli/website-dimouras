@@ -666,13 +666,7 @@ const isFormValid =
               <h3>Pagamento Online</h3>
               <Payment
                 initialization={{ amount: Number(total) }}
-                customization={{
-                  paymentMethods: {
-                    creditCard: "all",
-                    debitCard: "all",
-                    ticket: "all",
-                  },
-                }}
+                customization={{}}
                 onSubmit={handlePaymentSubmit}
                 onError={(error) => {
                   console.error("Erro no pagamento:", error);
