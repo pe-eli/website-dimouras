@@ -670,6 +670,7 @@ const isFormValid =
                   paymentMethods: {
                     creditCard: "all",
                     debitCard: "all",
+                    ticket: "all",
                   },
                 }}
                 onSubmit={handlePaymentSubmit}
