@@ -18,7 +18,6 @@ if (!process.env.MERCADOPAGO_ACCESS_TOKEN) {
   console.error("❌ ERRO: MERCADOPAGO_ACCESS_TOKEN não está configurado no .env");
   process.exit(1);
 }
-
   
 const app = express();
 app.use(
