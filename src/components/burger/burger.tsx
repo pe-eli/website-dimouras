@@ -93,7 +93,7 @@ function Burger() {
   // 💰 cálculo estilo "PizzaModal"
   const precoTotal = useMemo(() => {
     const extrasLista = [
-      { nome: "Bacon", preco: 5 },
+      { nome: "Bacon", preco: 8 },
       { nome: "Cheddar", preco: 3 },
       { nome: "Carne", preco: 16 },
     ];
@@ -119,15 +119,14 @@ function Burger() {
           className="btn-burger"
           onClick={() =>
             handleOpenModal({
-              name: `${nome} Picanha`,
-              price: precoP,
+              name: `${nome} Contrafilé`,
+              price: precoC,
               qty: 1,
             })
           }
-        >
-          Fraldinha
+        > Contrafilé
           <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
-            R${precoP.toFixed(2).replace(".", ",")}
+            R${precoC.toFixed(2).replace(".", ",")}
           </p>
         </button>
 
@@ -135,17 +134,17 @@ function Burger() {
           className="btn-burger"
           onClick={() =>
             handleOpenModal({
-              name: `${nome} Contrafilé`,
-              price: precoC,
+              name: `${nome} Picanha`,
+              price: precoP,
               qty: 1,
             })
           }
-        >
-          Contrafilé
+        > Fraldinha
           <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
-            R${precoC.toFixed(2).replace(".", ",")}
+            R${precoP.toFixed(2).replace(".", ",")}
           </p>
         </button>
+
 
         <button
           className="btn-burger"
@@ -156,8 +155,7 @@ function Burger() {
               qty: 1,
             })
           }
-        >
-          Blend Costela
+        > Blend Costela
           <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
             R${precoF.toFixed(2).replace(".", ",")}
           </p>
@@ -186,7 +184,7 @@ function Burger() {
               style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
             >
               {["Bacon", "Cheddar", "Carne"].map((extra, i) => {
-                const precoAdd = [5, 3, 9];
+                const precoAdd = [8, 3, 16];
                 const preco = Number(precoAdd[i]);
                 const isSelected = extras.includes(extra);
 

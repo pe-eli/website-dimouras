@@ -77,11 +77,6 @@ const precoFinal = Math.max(
   return (
     <div className="app">
       <header className="header">
-        <h1>Di Mouras</h1>
-        <p>Pizzas e Burgers</p>
-        {/* <button onClick={() => navigate("/acompanhar")}>Meus Pedidos</button> */}
-
-
       </header>
 
       <nav className="navbar">
@@ -132,7 +127,8 @@ const precoFinal = Math.max(
                     <li>Segunda: ❌ Fechado</li>
                     <li>Terça: ❌ Fechado</li>
                     <li>Quarta a Sexta: 18h às 22h</li>
-                    <li>Sábado e Domingo: 18h às 23h</li>
+                    <li>Sábado: 18h às 23h</li>
+                    <li>Domingo: 18h às 22h</li>
                   </ul>
                   <button className="close-button"onClick={() => setMostrarModal(false)}>Fechar</button>
                 </div>

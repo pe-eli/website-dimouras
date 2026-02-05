@@ -16,7 +16,7 @@ function Bebidas(){
         
   <div className="card-bebida">
     <div className="card-content-bebida coca">
-      <h3>Coca-Cola 350ml</h3>
+      <h3>Coca-Cola 350mL</h3>
       <p className="price">R${precoBebidas[0].precoLata}</p>
       <button className="btn-bebida" onClick={() => addToCart({
         name: "Coca-Cola 350ml", price: `R$${precoBebidas[0].precoLata}`, qty: 1
@@ -24,9 +24,10 @@ function Bebidas(){
     </div>
   </div>
 
+
   <div className="card-bebida">
-    <div className="card-content-bebida cocazero">
-      <h3>Coca-Cola Zero 350ml</h3>
+    <div className="card-content-bebida guarana350">
+      <h3>Guaraná Antarctica 350mL</h3>
       <p className="price">R${precoBebidas[0].precoLata}</p>
       <button className="btn-bebida" onClick={() => addToCart({
         name: "Coca-Cola Zero 350ml", price: `R$${precoBebidas[0].precoLata}`, qty: 1
@@ -79,20 +80,20 @@ function Bebidas(){
   
   <div className="card-bebida">
     <div className="card-content-bebida cocagrande">
-      <h3>Coca-Cola 2L</h3>
+      <h3>Coca-Cola 1L</h3>
       <p className="price">R${precoBebidas[1].preco2L}</p>
       <button className="btn-bebida" onClick={() => addToCart({
-        name: "Coca-Cola 2L", price: `R$${precoBebidas[1].preco2L}`, qty: 1
+        name: "Coca-Cola 1L", price: `R$${precoBebidas[1].preco2L}`, qty: 1
       })}>Adicionar ao carrinho</button>
     </div>
   </div>
 
   <div className="card-bebida">
     <div className="card-content-bebida guarana">
-      <h3>Guaraná 2L</h3>
+      <h3>Guaraná 1L</h3>
       <p className="price">R${precoBebidas[1].preco2L}</p>
       <button className="btn-bebida" onClick={() => addToCart({
-        name: "Guaraná 2L", price: `R$${precoBebidas[1].preco2L}`, qty: 1
+        name: "Guaraná 1L", price: `R$${precoBebidas[1].preco2L}`, qty: 1
       })}>Adicionar ao carrinho</button>
     </div>
   </div>

@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Wallet, initMercadoPago } from "@mercadopago/sdk-react";
 import { useCart } from "../../CartContext";
 import MapPicker from "../../components/MapPicker";
-import { addPedido } from "../../firebase/pedidosFirebase"
+import { addPedido, validarCupom, marcarCupomComoUsado } from "../../firebase/pedidosFirebase"
 import "./checkout.css";
 
 export default function Checkout() {
@@ -15,6 +15,10 @@ export default function Checkout() {
   const [valorTroco, setValorTroco] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"entrega" | "site">("entrega");
   const [deliveryMethod, setDeliveryMethod] = useState<"entrega" | "retirada">("entrega");
+  const [cupom, setCupom] = useState("");
+  const [cupomAplicado, setCupomAplicado] = useState("");
+  const [desconto, setDesconto] = useState(0);
+  const [mensagemCupom, setMensagemCupom] = useState("");
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
   const [telefone, setTelefone] = useState("");
   const [nome, setNome] = useState("");
@@ -31,24 +35,21 @@ export default function Checkout() {
   const location = useLocation();
 
     const bairros = [
-    { nome: "Condomínio Pontevila", taxa: 10 },
+    { nome: "Aprolago", taxa: 15 },
+    { nome: "Aroeira", taxa: 10 },
     { nome: "Aterro", taxa: 10 },
     { nome: "Capão", taxa: 10 },
-    { nome: "Aroeira", taxa: 10 },
-
-    { nome: "Aprolago", taxa: 15 },
-    { nome: "Fivela", taxa: 15 },
-    { nome: "Laranjal", taxa: 15 },
-    { nome: "Encosta do Lago", taxa: 15 },
-
-
-    { nome: "Ilha das Pedras", taxa: 20 },
-    { nome: "Mar de Minas", taxa: 20 },
-    { nome: "FIC", taxa: 20 },
-    { nome: "Mangueirão", taxa: 20 },
-    { nome: "Edentur", taxa: 20 },
+    { nome: "Condomínio Pontevila", taxa: 10 },
     { nome: "Condomínio Vale do Sol", taxa: 20 },
-    { nome: "Furnastur", taxa: 20}
+    { nome: "Edentur", taxa: 20 },
+    { nome: "Encosta do Lago", taxa: 15 },
+    { nome: "FIC", taxa: 20 },
+    { nome: "Fivela", taxa: 15 },
+    { nome: "Furnastur", taxa: 20 },
+    { nome: "Ilha das Pedras", taxa: 20 },
+    { nome: "Laranjal", taxa: 15 },
+    { nome: "Mangueirão", taxa: 20 },
+    { nome: "Mar de Minas", taxa: 20 }
   ];
 
 
@@ -84,7 +85,48 @@ export default function Checkout() {
   const taxaEntrega = deliveryMethod === "entrega" ? bairroSelecionado?.taxa || 0 : 0;
   initMercadoPago("APP_USR-10f7c568-9e67-49d1-ada9-9e7bbdfbd5de");
 
-  const total = (Number(getTotal().replace(",", ".")) + taxaEntrega).toFixed(2);
+  const subtotalNum = Number(getTotal().replace(",", "."));
+  const totalComTaxa = subtotalNum + taxaEntrega;
+  const totalComDesconto = Math.max(0, totalComTaxa - desconto);
+  const total = totalComDesconto.toFixed(2);
+
+  const aplicarCupom = async () => {
+    if (!cupom.trim()) {
+      setMensagemCupom("Digite um cupom");
+      setTimeout(() => setMensagemCupom(""), 3000);
+      return;
+    }
+
+    try {
+      setMensagemCupom("Validando cupom...");
+      const resultado = await validarCupom(cupom.trim());
+
+      if (resultado.valido) {
+        let descontoValor = resultado.desconto || 0;
+        
+        // Se for percentual, calcula sobre o total com taxa
+        if (resultado.tipo === "percentual") {
+          descontoValor = totalComTaxa * (descontoValor / 100);
+        }
+        
+        setDesconto(descontoValor);
+        setCupomAplicado(cupom.trim().toUpperCase());
+        setMensagemCupom("✓ Cupom aplicado com sucesso!");
+        setCupom("");
+        setTimeout(() => setMensagemCupom(""), 3000);
+      } else {
+        setMensagemCupom("✗ Cupom inválido ou expirado");
+        setDesconto(0);
+        setCupomAplicado("");
+        setTimeout(() => setMensagemCupom(""), 3000);
+      }
+    } catch (error) {
+      console.error("Erro ao validar cupom:", error);
+      setMensagemCupom("✗ Erro ao validar cupom");
+      setDesconto(0);
+      setTimeout(() => setMensagemCupom(""), 3000);
+    }
+  };
 
 const handlePayment = async () => {
   if (!isFormValid) return;
@@ -107,6 +149,8 @@ const handlePayment = async () => {
     })),
     observacao,
     total,
+    cupom: cupomAplicado || null,
+    desconto: desconto || 0,
     localizacao: localSelecionado,
     status: "Pendente" as const,
     criadoEm: new Date().toISOString(),
@@ -163,6 +207,11 @@ const handlePayment = async () => {
       // 💰 Pagamento na entrega → salva direto no Firestore
       setIsLoading(true);
 
+      // Marcar cupom como usado se houver
+      if (cupomAplicado) {
+        await marcarCupomComoUsado(cupomAplicado);
+      }
+
       localStorage.setItem("telefoneCliente", telefone);
        
       localStorage.removeItem("pedidoPendente"); // Limpa
@@ -188,8 +237,7 @@ const isFormValid =
   return (
     <>
     <header className="header">
-        <h1>Di Mouras</h1>
-        <p>Pizzas e Burgers</p>
+
       </header>
 
       <nav className="navbar">
@@ -356,11 +404,70 @@ const isFormValid =
           <span>Taxa de entrega:</span> <span>R${taxaEntrega.toFixed(2).replace(".", ",")}</span>
         </div>
 
+        {desconto > 0 && (
+          <div className="summary-line" style={{ color: "#27ae60", fontWeight: "bold" }}>
+            <span>Desconto:</span> <span>-R${desconto.toFixed(2).replace(".", ",")}</span>
+          </div>
+        )}
+
         <div className="summary-total">
           <strong>Total:</strong> <strong>R${total.replace(".", ",")}</strong>
         </div>
 
-        <h4>Alguma Observação Para o Pedido?</h4>
+        <div style={{ marginTop: "15px", padding: "10px", backgroundColor: "#f5f5f5", borderRadius: "6px" }}>
+          <h4 style={{ marginTop: 0, marginBottom: "10px", fontSize: "0.95rem" }}>Cupom de Desconto</h4>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <input
+              type="text"
+              placeholder="Digite seu cupom"
+              value={cupom}
+              onChange={(e) => setCupom(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  aplicarCupom();
+                }
+              }}
+              style={{
+                flex: 1,
+                padding: "8px",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                fontSize: "0.9rem"
+              }}
+            />
+            <button
+              onClick={aplicarCupom}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#e67e22",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+                fontSize: "0.9rem",
+                transition: "background-color 0.2s ease"
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#d35400")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#e67e22")}
+            >
+              Aplicar
+            </button>
+          </div>
+          {mensagemCupom && (
+            <p style={{
+              marginTop: "8px",
+              marginBottom: 0,
+              fontSize: "0.85rem",
+              color: mensagemCupom.startsWith("✓") ? "#27ae60" : "#e74c3c",
+              fontWeight: "bold"
+            }}>
+              {mensagemCupom}
+            </p>
+          )}
+        </div>
+
+        <h4>Alguma observação para o pedido?</h4>
         <input 
             type="text"
             style={{
@@ -459,7 +566,7 @@ const isFormValid =
                     fontWeight: 500,
                   }}
                 >
-                  Preencha Todos os Campos Antes de Confirmar o Pedido.
+                  Preencha todos os campos antes de confirmar o pedido.
                 </p>
               )}
               <button

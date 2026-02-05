@@ -1,11 +1,12 @@
 export const refriLata = [
     "Coca-Cola 350mL",
     "Coca-Cola Zero 350mL",
-    "Pepsi 350mL",
-    "Pepsi Black 350mL",
-    "Fanta Laranja 350mL", 
-    "Soda Antarctica 350mL",
-    "Fanta Laranja 350mL"
+    "Guaraná Antarctica 350mL",
+    // "Pepsi 350mL",
+    // "Pepsi Black 350mL",
+    // "Fanta Laranja 350mL", 
+    // "Soda Antarctica 350mL",
+    // "Fanta Laranja 350mL"
 ]
 
 export const refri2L = [

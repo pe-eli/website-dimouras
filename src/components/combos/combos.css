@@ -24,7 +24,8 @@
 }
 
 .card-combo {
-  border: 1px solid #ddd;
+  position: relative;
+  border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -36,6 +37,43 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.combo-badge {
+  position: absolute;
+  top: 32px;
+  left: -60px;
+
+  background: #c62828;
+  color: #fff;
+
+  padding: 6px 50px;
+  font-size: 0.565rem;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+  overflow: hidden;
+}
+
+
+.combo-badge-text {
+  display: inline-block;
+  animation: softZoom 1s ease-in-out infinite;
+}
+
+@keyframes softZoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .card-content-combo {
@@ -50,6 +88,11 @@
 .card-content-combo h3 {
   color: #B22222;
   margin-bottom: 0.5rem;
+}
+
+.descricao-combo{
+  display: flex;
+  font-size: 0.85rem;
 }
 
 .price-combo {

@@ -7,8 +7,45 @@ body, h1, h2, h3, p {
 }
 body {
   font-family: Lato, sans-serif;
-  background: rgb(245, 245, 245);
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(200, 80, 80, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(176, 60, 60, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(190, 90, 90, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #b85b5b 0%, #8f3b3b 35%, #5b2323 70%, #1a0b0b 90%, #000000 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+  background-attachment: fixed;
+  position: relative;
   color: #333;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px),
+    repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,0,0,.05) 35px, rgba(0,0,0,.05) 70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 10% 30%, rgba(255, 77, 77, 0.2) 0%, transparent 40%),
+    radial-gradient(ellipse at 90% 70%, rgba(185, 28, 28, 0.2) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 html{
@@ -16,43 +53,20 @@ html{
 }
 
 .header {
-  background-image: url("/headerpc.jpeg");
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: white;
-  text-align: center;
-  padding: 5rem;
-  font-family: "Open Sans", sans-serif;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
-.header h1 {
-  font-size: 3rem;
-}
-.header p {
-  font-size: 1.2rem;
+  background-image: url('/dimouras.png');
+  background-size: contain;
+  height: 30.5vh;
+  width: 100vw;
+  background-color: none;
 
 }
-.header button{
-  display: flex;
-  margin: 5% 0 1% 0;
-  border-radius: 8px;
-  background-color: white;
-  color: #B22222;
-  border: none;
-  padding: 0.3rem 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-.header button:hover{
-  color: #8B1A1A;
-  transition: 0.3s;
-  transform: translateY(-1px);
-  cursor: pointer;
-}
+/* .header img{
+  background: none;
+  width: 100vw;
+  height: 250px;
+  margin: 0;
+  padding: 0;
+} */
 
 .navbar {
   margin: 0;
@@ -71,20 +85,29 @@ html{
 }
 
 .navbutton{
-  background-color: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
   color: #B22222;
-  border: none;
-  padding: 0.3rem 1rem;
-  border-radius: 8px;
-  font-weight: bold;
+  border: 2px solid white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  letter-spacing: 0.3px;
 }
 
 .navbutton:hover{
-  background-color: white; 
-  color: #8B1A1A; 
+  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
+  color: #8B1A1A;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 213, 79, 0.35);
+  border-color: #ffc400;
+}
+
+.navbutton:active{
+  transform: translateY(0);
 }
 
 .ul-cart{
@@ -241,12 +264,30 @@ html{
   margin: 4px 0;
 }
 
+.status-loja-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
 
 .status-loja {
   font-weight: bold;
   font-size: 1.2rem;
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   place-self: center;
   justify-content: center;
   align-items: center;
@@ -266,33 +307,44 @@ html{
   color: white;
   margin: 0;
   gap: 1rem;
-  align-items: end;
+  align-items: center;
+  font-size: 1rem;
 
 }
 
 .link-horarios {
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 0.6rem;
   font-family: "Lato", sans-serif;
-  padding: 0;
+  padding: 0.25rem 0.5rem;
   margin: 0;
-  background: none;
-  border: none;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  font-weight: 700;
   cursor: pointer;
-  border-bottom: 1px solid white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.link-horarios:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.link-horarios:active {
+  transform: translateY(0);
 }
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
   z-index: 999;
 }
 
@@ -303,6 +355,7 @@ html{
   text-align: center;
   max-width: 400px;
   width: 90%;
+  margin: 0;
 }
 
 .modal-content h3 {
@@ -333,30 +386,11 @@ html{
 @media(max-width: 768px){
 
 .header {
-  background-image: url("/header.jpeg");
-  color: white;
-  text-align: center;
-  padding: 3rem;
-  font-family: "Tinos", serif;
-  background-position: center;
-  background-size: 100%;
-}
-
-.header button{
-  display: flex;
-  margin-top: 5%;
-  border-radius: 12px;
-  padding: 0.5rem 1rem;
-  background-color: white;
-  color: #B22222;
-  border: none;
-}
-.header h1 {
-  font-size: 3rem;
-}
-.header p {
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
+  background-image: url('/dimouras-mobile.png');
+  width: 100vw;
+  height: 100vw;
+  background-repeat: no-repeat;
+  background-color: none;
 }
 
 .cart-dropdown {
@@ -405,20 +439,28 @@ html{
 }
 
 .navbutton{
-  background-color: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
   color: #B22222;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 8px;
-  font-weight: bold;
+  border: 2px solid white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .navbutton:hover{
-  background-color: white; 
-  color: #8B1A1A; 
+  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
+  color: #8B1A1A;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 213, 79, 0.35);
+  border-color: #ffc400;
+}
+
+.navbutton:active{
+  transform: translateY(0);
 }
 
 .close-button{
@@ -440,18 +482,38 @@ html{
   width: 80%;
 }
 
+.status-loja-container {
+  position: fixed;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.6rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  height: auto;
+  width: auto;
+}
+
 .status-loja {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.7rem;
   border-radius: 8px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   place-self: center;
   justify-content: center;
   align-items: center;
   vertical-align: center;
   color: white;
   margin: 0;
+  line-height: 1.1;
 }
 
 .status-loja.aberta {
@@ -465,21 +527,29 @@ html{
   color: white;
   margin: 0;
   gap: 0.2rem;
-  align-items: center
-
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 120px;
+  justify-content: center;
+  line-height: 1.1;
 }
 
 .link-horarios {
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-family: "Lato", sans-serif;
-  padding: 0.1rem;
+  padding: 0.2rem 0.4rem;
   margin: 0;
-  background: none;
-  border: none;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  font-weight: 700;
   cursor: pointer;
-  border-bottom: 1px solid white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  line-height: 1;
 }
 
 

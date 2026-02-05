@@ -8,20 +8,20 @@
 
 .section-bebidas h2{
   margin: 1rem;
-  color: black;
+  color: white;
   font-size: 1.8rem;
 }
 
 .grid-bebidas {
   display: grid;
   place-self: center;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   place-items: center; 
   width: auto;
   gap: 2rem;
 }
 .card-bebida {
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -39,7 +39,7 @@
 
 .card-content-bebida h3 {
   color: #B22222;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 1000;
   margin-bottom: 0.5rem;
 }
@@ -59,6 +59,13 @@
   background-image: url("/cocazero.png");
   background-size: contain;
   background-position: 220% -0.5rem;
+  background-repeat: no-repeat; 
+}
+
+.guarana350{
+  background-image: url("/guarana.png");
+  background-size: contain;
+  background-position: 230% 0rem;
   background-repeat: no-repeat; 
 }
 

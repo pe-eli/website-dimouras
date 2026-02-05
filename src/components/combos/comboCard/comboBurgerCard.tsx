@@ -16,6 +16,7 @@ type HamburguerCardProps = {
   qtdBebidas?: number;
   bebes?: string[];
   sanduba: string;
+  economia?: number
 };
 
 export default function HamburguerCard({
@@ -28,7 +29,8 @@ export default function HamburguerCard({
   qtdBebidas = 1,
   qtdHamburgueres = 2,
   bebes,
-  sanduba
+  sanduba,
+  economia,
 }: HamburguerCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); 
@@ -94,6 +96,13 @@ const calcularPrecoCombo = () => {
   return (
     <>
       <div className="card-combo">
+        {economia && (
+          <div className="combo-badge">
+            <span className="combo-badge-text">
+              Economize até R${economia.toFixed(2).replace(".", ",")}
+            </span>
+          </div>
+        )}
         <div className="card-content-combo">
           <h3>{titulo}</h3>
           <p className="descricao-combo">{descricao}</p>

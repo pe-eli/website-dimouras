@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addPedido } from "../../firebase/pedidosFirebase";
+import { addPedido, marcarCupomComoUsado } from "../../firebase/pedidosFirebase";
 import "./aprovado.css";
 
 interface Payment {
@@ -27,6 +27,10 @@ export default function PagAprovado() {
     try {
       // Adiciona no Firestore
 
+      // Marcar cupom como usado se houver
+      if (pedidoSalvo.cupom) {
+        await marcarCupomComoUsado(pedidoSalvo.cupom);
+      }
 
       // Cria um "payment" fake só pra exibir o resumo
       

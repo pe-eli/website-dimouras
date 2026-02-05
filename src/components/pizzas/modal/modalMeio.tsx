@@ -39,7 +39,7 @@ const HalfPizzaModal: React.FC<HalfPizzaModalProps> = ({
   return (
     <div className="modal-overlay-meio">
       <div className="modal-meio">
-        <h2>Pizza Meio a Meio</h2>
+        <h2 style={{color: 'black'}}>Pizza Meio a Meio</h2>
         <p style={{margin: 0}}>
           Você escolheu <strong>{firstFlavor}</strong>. 
         </p>
