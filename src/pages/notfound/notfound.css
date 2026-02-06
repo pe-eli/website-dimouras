@@ -49,12 +49,14 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.notfound-btn:hover {
-  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
-  color: #8B1A1A;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(245, 213, 79, 0.35);
-  border-color: #ffc400;
+@media (hover: hover) {
+  .notfound-btn:hover {
+    background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
+    color: #8B1A1A;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245, 213, 79, 0.35);
+    border-color: #ffc400;
+  }
 }
 
 .notfound-btn:active {

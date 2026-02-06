@@ -134,12 +134,14 @@
   cursor: pointer;
 }
 
-.retry-btn-recusado:hover {
-  background: #c62828;
-}
+@media (hover: hover) {
+  .retry-btn-recusado:hover {
+    background: #c62828;
+  }
 
-.back-btn-recusado:hover {
-  background: #f5f5f5;
+  .back-btn-recusado:hover {
+    background: #f5f5f5;
+  }
 }
 
 .contact-recusado {

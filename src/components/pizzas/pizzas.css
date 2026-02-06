@@ -10,11 +10,6 @@
 
 }
 
-.card-pizza:hover{
-  transform: translateY(-2px);
-  transition: all 0.2s;
-  scale: 1.02;
-}
 .card-content-pizza {
   text-align: center;
   display: flex;
@@ -169,10 +164,17 @@
 }
 
 
-.btn:hover {
-  background: #FFD54F; 
-  color: #333;
-  
+@media (hover: hover) {
+  .card-pizza:hover{
+    transform: translateY(-2px);
+    transition: all 0.2s;
+    scale: 1.02;
+  }
+
+  .btn:hover {
+    background: #FFD54F; 
+    color: #333;
+  }
 }
 
 @media(max-width: 768px){

@@ -10,10 +10,6 @@
   position: relative;
 }
 
-.card-burger:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
-}
 
 .burger{
   background-image: url("/mburger.png");
@@ -81,12 +77,6 @@
     box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
 }
 
-.btn-burger:hover{
-  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
-  color: #333;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(245, 213, 79, 0.4);
-}
 
 .btn-burger:active{
   transform: translateY(0);
@@ -143,10 +133,6 @@
   box-shadow: 0 4px 8px rgba(178, 34, 34, 0.3);
 }
 
-.e-sel:hover{
-  background-color: #8B1A1A;
-  transform: translateY(-1px);
-}
 
 .e-nsel{
   border: 2px solid #B22222;
@@ -159,10 +145,6 @@
   transition: all 0.2s ease;
 }
 
-.e-nsel:hover{
-  background-color: rgba(178, 34, 34, 0.1);
-  transform: translateY(-1px);
-}
 
 .actions{
   display: flex;
@@ -187,12 +169,6 @@
   box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
 }
 
-.btn-add-burger:hover{
-  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
-  color: #333;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(245, 213, 79, 0.4);
-}
 
 .btn-add-burger:active{
   transform: translateY(-1px);
@@ -213,10 +189,41 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-.btn-cancel-burger:hover{
-  background-color: #666;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+@media (hover: hover) {
+  .card-burger:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .btn-burger:hover{
+    background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
+    color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 213, 79, 0.4);
+  }
+
+  .e-sel:hover{
+    background-color: #8B1A1A;
+    transform: translateY(-1px);
+  }
+
+  .e-nsel:hover{
+    background-color: rgba(178, 34, 34, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .btn-add-burger:hover{
+    background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
+    color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(245, 213, 79, 0.4);
+  }
+
+  .btn-cancel-burger:hover{
+    background-color: #666;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  }
 }
 
 @media(max-width: 768px){

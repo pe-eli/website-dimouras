@@ -98,13 +98,6 @@ html{
   letter-spacing: 0.3px;
 }
 
-.navbutton:hover{
-  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
-  color: #8B1A1A;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(245, 213, 79, 0.35);
-  border-color: #ffc400;
-}
 
 .navbutton:active{
   transform: translateY(0);
@@ -248,9 +241,6 @@ html{
   margin-top: 10px;
   width: 100%;
 }
-.checkout-btn:hover {
-  background: #2E7D32;
-}
 .footer {
   background: #B22222;
   color: white;
@@ -328,12 +318,6 @@ html{
   white-space: nowrap;
 }
 
-.link-horarios:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.8);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
 
 .link-horarios:active {
   transform: translateY(0);
@@ -451,12 +435,25 @@ html{
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.navbutton:hover{
-  background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
-  color: #8B1A1A;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(245, 213, 79, 0.35);
-  border-color: #ffc400;
+@media (hover: hover) {
+  .navbutton:hover{
+    background: linear-gradient(135deg, #f5d54f 0%, #ffc400 100%);
+    color: #8B1A1A;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 213, 79, 0.35);
+    border-color: #ffc400;
+  }
+
+  .checkout-btn:hover {
+    background: #2E7D32;
+  }
+
+  .link-horarios:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .navbutton:active{

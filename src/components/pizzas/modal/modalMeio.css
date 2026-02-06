@@ -54,9 +54,11 @@
   user-select: none;
 }
 
-.btn-add-meio:hover {
-  background: #FFD54F; 
-  color: #333;
+@media (hover: hover) {
+  .btn-add-meio:hover {
+    background: #FFD54F; 
+    color: #333;
+  }
 }
 .selected{
     background-color: #b22222;

@@ -140,8 +140,10 @@
   font-weight: 600;
 }
 
-.track-btn:hover {
-  background-color: #890000;
+@media (hover: hover) {
+  .track-btn:hover {
+    background-color: #890000;
+  }
 }
 
 .back-btn {

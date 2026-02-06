@@ -114,9 +114,11 @@
   transition: 0.3s;
 }
 
-.btn-combo:hover {
-  background: #FFD54F; 
-  color: #333; 
+@media (hover: hover) {
+  .btn-combo:hover {
+    background: #FFD54F; 
+    color: #333; 
+  }
 }
 
 @media(max-width: 768px){

@@ -64,9 +64,6 @@
   transition: background-color 0.3s;
 }
 
-.search-box button:hover {
-  background-color: #14924f;
-}
 
 .error {
   color: #e33400;
@@ -223,9 +220,15 @@
   transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.acompanhamento-link-copy-btn:hover {
-  background-color: #b8433f;
-  transform: scale(1.03);
+@media (hover: hover) {
+  .search-box button:hover {
+    background-color: #14924f;
+  }
+
+  .acompanhamento-link-copy-btn:hover {
+    background-color: #b8433f;
+    transform: scale(1.03);
+  }
 }
 
 .acompanhamento-link-copy-btn:active {

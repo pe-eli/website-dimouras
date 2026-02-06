@@ -88,9 +88,11 @@
     justify-content: center;
 }
 
-.botao-adicionar-burger:hover{
-    background: #FFD54F; 
-    color: #333;
+@media (hover: hover) {
+    .botao-adicionar-burger:hover{
+        background: #FFD54F; 
+        color: #333;
+    }
 }
 .modal-overlay-combo-burger {
   position: fixed;
