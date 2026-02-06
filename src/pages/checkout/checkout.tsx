@@ -28,6 +28,7 @@ export default function Checkout() {
   const [currentPaymentId, setCurrentPaymentId] = useState<string | null>(null);
   const [isCheckingPayment, setIsCheckingPayment] = useState(false);
   const [paymentVerificationInterval, setPaymentVerificationInterval] = useState<NodeJS.Timeout | null>(null);
+  const [pedidoRef, setPedidoRef] = useState<string | null>(null);
   const [checkoutStep, setCheckoutStep] = useState<1 | 2>(1);
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
@@ -127,11 +128,56 @@ export default function Checkout() {
   const totalComTaxa = subtotalNum + taxaEntrega;
   const totalComDesconto = Math.max(0, totalComTaxa - desconto);
   const total = totalComDesconto.toFixed(2);
+  const generatePedidoRef = () => {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+      return crypto.randomUUID();
+    }
+
+    return `pedido_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`;
+  };
+
+  const getPedidoRef = () => pedidoRef || localStorage.getItem("pedidoRef") || "";
+
   const getPayerEmail = () => {
     const cleanPhone = telefone.replace(/\D/g, "");
     if (email.trim()) return email.trim();
     if (cleanPhone) return `${cleanPhone}@cliente.local`;
     return "sem-email@dimouras.com";
+  };
+
+  const finalizePagamentoAprovado = async (mensagem: string) => {
+    const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "null");
+
+    if (!pedidoSalvo) {
+      setErroPedido("Pedido pendente nao encontrado. Tente novamente.");
+      setTimeout(() => setErroPedido(""), 2000);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const id = await addPedido(pedidoSalvo);
+      console.log("Pedido salvo com ID:", id);
+      localStorage.setItem("pedidoId", id);
+      setPedidoId(id);
+
+      if (cupomAplicado) {
+        await marcarCupomComoUsado(cupomAplicado);
+      }
+
+      localStorage.removeItem("pedidoPendente");
+      localStorage.removeItem("pedidoRef");
+      clearCart();
+      setErroPedido(mensagem);
+      setTimeout(() => navigate(`/acompanhar/${id}`), 2000);
+    } catch (err) {
+      console.error("Erro ao registrar pedido:", err);
+      setErroPedido("Ocorreu um erro ao salvar o pedido. Tente novamente.");
+      setTimeout(() => setErroPedido(""), 2000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const aplicarCupom = async () => {
@@ -210,51 +256,51 @@ const handlePayment = async () => {
 
   localStorage.setItem("pedidoPendente", JSON.stringify(novoPedido));
 
-  const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "{}");
-
-      setIsLoading(true);
-      const id = await addPedido(pedidoSalvo);
-      console.log("Pedido salvo com ID:", id);
-      localStorage.setItem("pedidoId", id);
-      setPedidoId(id);
-
   try {
     if (paymentMethod === "site") {
+      const ref = generatePedidoRef();
+      setPedidoRef(ref);
+      localStorage.setItem("pedidoRef", ref);
       setPaymentReady(true);
       setPaymentResult(null);
       setPixQrCode(null);
       setPixQrCodeBase64(null);
       setPixTicketUrl(null);
-      setIsLoading(false);
-    } else {
-      // 💰 Pagamento na entrega → salva direto no Firestore
-      setIsLoading(true);
-
-      // Marcar cupom como usado se houver
-      if (cupomAplicado) {
-        await marcarCupomComoUsado(cupomAplicado);
-      }
-
-      localStorage.setItem("telefoneCliente", telefone);
-       
-      localStorage.removeItem("pedidoPendente"); // Limpa
-      setIsLoading(false);
-      clearCart();
-      setErroPedido("Pedido confirmado!\nVocê será redirecionado para o acompanhamento.");
-      setTimeout(() => navigate(`/acompanhar/${id}`), 2500);
+      return;
     }
+
+    // 💰 Pagamento na entrega → salva direto no Firestore
+    setIsLoading(true);
+    const id = await addPedido(novoPedido);
+    console.log("Pedido salvo com ID:", id);
+    localStorage.setItem("pedidoId", id);
+    setPedidoId(id);
+
+    if (cupomAplicado) {
+      await marcarCupomComoUsado(cupomAplicado);
+    }
+
+    localStorage.setItem("telefoneCliente", telefone);
+    localStorage.removeItem("pedidoPendente");
+    localStorage.removeItem("pedidoRef");
+    clearCart();
+    setErroPedido("Pedido confirmado!\nVocê será redirecionado para o acompanhamento.");
+    setTimeout(() => navigate(`/acompanhar/${id}`), 2500);
   } catch (err) {
     console.error("Erro ao registrar pedido:", err);
-    setIsLoading(false);
     setErroPedido("Ocorreu um erro ao salvar o pedido. Tente novamente.");
     setTimeout(() => setErroPedido(""), 2000);
+  } finally {
+    setIsLoading(false);
   }
 };
 
 const handlePaymentSubmit = async (formData: any) => {
-  if (!pedidoId) {
-    setErroPedido("Pedido não encontrado. Atualize a página e tente novamente.");
-    throw new Error("Pedido não encontrado");
+  const referencia = getPedidoRef();
+
+  if (!referencia) {
+    setErroPedido("Pedido nao encontrado. Atualize a pagina e tente novamente.");
+    throw new Error("Pedido nao encontrado");
   }
 
   try {
@@ -297,8 +343,8 @@ const handlePaymentSubmit = async (formData: any) => {
       amount: Number(total),
       transaction_amount: Number(total),
       description: `Pedido Di Mouras - ${items.map((i) => `${i.quantity}x ${i.title}`).join(", ")}`,
-      external_reference: pedidoId,
-      metadata: { pedidoId },
+      external_reference: referencia,
+      metadata: { pedidoRef: referencia },
       payer,
     };
 
@@ -316,14 +362,9 @@ const handlePaymentSubmit = async (formData: any) => {
     setPaymentResult(data);
 
     if (data.status === "approved") {
-      if (cupomAplicado) {
-        await marcarCupomComoUsado(cupomAplicado);
-      }
-
-      localStorage.removeItem("pedidoPendente");
-      clearCart();
-      setErroPedido("Pagamento aprovado!\nVocê será redirecionado para o acompanhamento.");
-      setTimeout(() => navigate(`/acompanhar/${pedidoId}`), 2000);
+      await finalizePagamentoAprovado(
+        "Pagamento aprovado!\nVocê será redirecionado para o acompanhamento."
+      );
     }
 
     return data;
@@ -337,7 +378,9 @@ const handlePaymentSubmit = async (formData: any) => {
 
 // 🔹 Nova função para criar PIX
 const handleCreatePix = async () => {
-  if (!pedidoId) {
+  const referencia = getPedidoRef();
+
+  if (!referencia) {
     setErroPedido("Pedido nao encontrado. Atualize a pagina e tente novamente.");
     setTimeout(() => setErroPedido(""), 2000);
     return;
@@ -369,8 +412,8 @@ const handleCreatePix = async () => {
     const pixPayload = {
       transaction_amount: Number(total),
       payer: { email: getPayerEmail() },
-      external_reference: pedidoId,
-      metadata: { pedidoId },
+      external_reference: referencia,
+      metadata: { pedidoRef: referencia },
       description: `Pedido Di Mouras - ${items.map((i) => `${i.quantity}x ${i.title}`).join(", ")}`,
     };
 
@@ -417,15 +460,9 @@ const checkPaymentStatus = async (paymentId: string) => {
 
     if (paymentData.status === "approved") {
       clearPaymentVerification();
-      
-      if (cupomAplicado) {
-        await marcarCupomComoUsado(cupomAplicado);
-      }
-
-      localStorage.removeItem("pedidoPendente");
-      clearCart();
-      setErroPedido("Pagamento aprovado!\nVocê será redirecionado para o acompanhamento.");
-      setTimeout(() => navigate(`/acompanhar/${pedidoId}`), 2000);
+      await finalizePagamentoAprovado(
+        "Pagamento aprovado!\nVocê será redirecionado para o acompanhamento."
+      );
     }
   } catch (error) {
     console.error("Erro ao verificar pagamento:", error);
@@ -512,7 +549,7 @@ const isFormValid = isStepOneValid;
 
         {checkoutStep === 1 && (
           <>
-            <div className="checkout-card checkout-card-split">
+            <div className="checkout-card checkout-card-split delivery-info-card">
               <div className="card-section">
                 <h3>
                   <i className="bi bi-truck"></i> Método de Entrega
@@ -564,7 +601,7 @@ const isFormValid = isStepOneValid;
 
               <div className="card-section">
                 <h3>
-                  <i className="bi bi-geo-alt"></i> Dados de Entrega
+                  <i className="bi bi-geo-alt"></i> Informacoes de Entrega
                 </h3>
                 <div className="checkout-form">
                   <h3 style={{margin: 0}}>Nome:</h3>
@@ -644,9 +681,9 @@ const isFormValid = isStepOneValid;
 
         {checkoutStep === 2 && (
           <>
-            <div className="checkout-card">
+            <div className="checkout-card payment-info-card">
               <h3>
-                <i className="bi bi-credit-card"></i> Forma de Pagamento
+                <i className="bi bi-credit-card"></i> Informacoes de Pagamento
               </h3>
 
               <label className={`payment-option ${paymentMethod === "entrega" ? "active" : ""}`}>
@@ -745,8 +782,9 @@ const isFormValid = isStepOneValid;
             </div>
 
             {paymentMethod === "site" && paymentReady ? (
-              <div className="checkout-card checkout-card-soft">
-                <h3>Escolha como quer pagar:</h3>
+              <div className="checkout-card checkout-card-soft payment-online-card">
+                <h3>
+                  <i className="bi bi-credit-card"></i> Metodo de Pagamento</h3>
 
                 <div className="payment-tabs">
                   <button
