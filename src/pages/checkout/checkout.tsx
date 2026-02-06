@@ -28,6 +28,7 @@ export default function Checkout() {
   const [currentPaymentId, setCurrentPaymentId] = useState<string | null>(null);
   const [isCheckingPayment, setIsCheckingPayment] = useState(false);
   const [paymentVerificationInterval, setPaymentVerificationInterval] = useState<NodeJS.Timeout | null>(null);
+  const [checkoutStep, setCheckoutStep] = useState<1 | 2>(1);
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
@@ -126,7 +127,12 @@ export default function Checkout() {
   const totalComTaxa = subtotalNum + taxaEntrega;
   const totalComDesconto = Math.max(0, totalComTaxa - desconto);
   const total = totalComDesconto.toFixed(2);
-  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const getPayerEmail = () => {
+    const cleanPhone = telefone.replace(/\D/g, "");
+    if (email.trim()) return email.trim();
+    if (cleanPhone) return `${cleanPhone}@cliente.local`;
+    return "sem-email@dimouras.com";
+  };
 
   const aplicarCupom = async () => {
     if (!cupom.trim()) {
@@ -257,7 +263,7 @@ const handlePaymentSubmit = async (formData: any) => {
 
     const payer = {
       ...(paymentData.payer || {}),
-      email: paymentData?.payer?.email || email,
+      email: paymentData?.payer?.email || getPayerEmail(),
     };
 
     // Função para determinar category_id baseado no nome do item
@@ -331,8 +337,8 @@ const handlePaymentSubmit = async (formData: any) => {
 
 // 🔹 Nova função para criar PIX
 const handleCreatePix = async () => {
-  if (!pedidoId || !email.trim()) {
-    setErroPedido("Preencha o email para continuar.");
+  if (!pedidoId) {
+    setErroPedido("Pedido nao encontrado. Atualize a pagina e tente novamente.");
     setTimeout(() => setErroPedido(""), 2000);
     return;
   }
@@ -362,7 +368,7 @@ const handleCreatePix = async () => {
 
     const pixPayload = {
       transaction_amount: Number(total),
-      payer: { email },
+      payer: { email: getPayerEmail() },
       external_reference: pedidoId,
       metadata: { pedidoId },
       description: `Pedido Di Mouras - ${items.map((i) => `${i.quantity}x ${i.title}`).join(", ")}`,
@@ -453,12 +459,13 @@ const clearPaymentVerification = () => {
   setIsCheckingPayment(false);
 };
 
-const isFormValid =
+const isStepOneValid =
   nome.trim() !== "" &&
   telefone.trim() !== "" &&
-  (paymentMethod !== "site" || emailValido) &&
   (deliveryMethod === "retirada" ||
     (endereco.trim() !== "" && numero.trim() !== "" && bairro.trim() !== ""));
+
+const isFormValid = isStepOneValid;
 
   return (
     <>
@@ -490,129 +497,391 @@ const isFormValid =
         </div>
       )}
       <div className="checkout-main">
-        {/* MÉTODO DE ENTREGA */}
-        <div className="checkout-card">
-          <h3>
-            <i className="bi bi-truck"></i> Método de Entrega
-          </h3>
-
-          <label
-            className={`delivery-option ${deliveryMethod === "entrega" ? "active" : ""}`}
-            onClick={() => setDeliveryMethod("entrega")}
-          >
-            <input
-              type="radio"
-              name="delivery"
-              value="entrega"
-              checked={deliveryMethod === "entrega"}
-              onChange={() => setDeliveryMethod("entrega")}
-            />
-            <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
-              <span className="title">Entrega</span>
-              
-            </div>
-          </label>
-
-          <label
-            className={`delivery-option ${
-              deliveryMethod === "retirada" ? "active" : ""
+        <div className="checkout-steps">
+          <div className={`checkout-step ${checkoutStep === 1 ? "active" : ""}`}>
+            1. Contato e entrega
+          </div>
+          <div
+            className={`checkout-step ${checkoutStep === 2 ? "active" : ""} ${
+              !isStepOneValid ? "disabled" : ""
             }`}
-            onClick={() => {
-              setDeliveryMethod("retirada");
-              setEnderecoMessage("Endereço para retirada: Rua Dona Carolina, 175 - Pontevila, Formiga - MG");
-            }}
           >
-            <input
-              type="radio"
-              name="delivery"
-              value="retirada"
-              checked={deliveryMethod === "retirada"}
-              onChange={() => {
-                setDeliveryMethod("retirada");
-              }}
-            />
-            <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
-              <span className="title">Retirada no Local</span>
-            
-            </div>
-
-            
-          </label>
-          
-           {deliveryMethod === "retirada" && (
-                <p className="endereco-message">{enderecoMessage}</p>
-              )}
-          
-        </div>
-        
-        
-      
-
-        {/* DADOS DE ENTREGA */}
-        <div className="checkout-card">
-          <h3>
-            <i className="bi bi-geo-alt"></i> Dados de Entrega
-          </h3>
-          <div className="checkout-form">
-            <input
-              type="text"
-              placeholder="Seu Nome *"
-              required
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-            />
-            <input
-              type="text"
-              value={telefone}
-              onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
-              required
-              placeholder="Digite seu WhatsApp"
-            />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required={paymentMethod === "site"}
-              placeholder="Digite seu E-mail"
-            />
-            {deliveryMethod === "entrega" && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Seu Endereço *"
-                  value={endereco}
-                  onChange={(e) => setEndereco(e.target.value)}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Número *"
-                  value={numero}
-                  onChange={(e) => setNumero(e.target.value)}
-                  required
-                />
-                <input type="text" placeholder="Complemento (opcional)" />
-                
-                 {deliveryMethod === "entrega" && (
-                <select
-                className="select-bairro"
-                  value={bairro}
-                  onChange={(e) => setBairro(e.target.value)}
-                  required
-                >
-                  <option value="">Selecione a localidade: *</option>
-                  {bairros.map((b) => (
-                    <option key={b.nome} value={b.nome}>
-                      {b.nome}
-                    </option>
-                  ))}
-                </select>
-              )}
-               
-              </>
-            )}
+            2. Pagamento
           </div>
         </div>
+
+        {checkoutStep === 1 && (
+          <>
+            <div className="checkout-card checkout-card-split">
+              <div className="card-section">
+                <h3>
+                  <i className="bi bi-truck"></i> Método de Entrega
+                </h3>
+
+                <label
+                  className={`delivery-option ${deliveryMethod === "entrega" ? "active" : ""}`}
+                  onClick={() => setDeliveryMethod("entrega")}
+                >
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value="entrega"
+                    checked={deliveryMethod === "entrega"}
+                    onChange={() => setDeliveryMethod("entrega")}
+                  />
+                  <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
+                    <span className="title">Entrega</span>
+                  </div>
+                </label>
+
+                <label
+                  className={`delivery-option ${
+                    deliveryMethod === "retirada" ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setDeliveryMethod("retirada");
+                    setEnderecoMessage("Endereço para retirada: Rua Dona Carolina, 175 - Pontevila, Formiga - MG");
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value="retirada"
+                    checked={deliveryMethod === "retirada"}
+                    onChange={() => {
+                      setDeliveryMethod("retirada");
+                    }}
+                  />
+                  <div style={{ display: "flex", flexDirection: "column" }} className="delivery-info">
+                    <span className="title">Retirada no Local</span>
+                  </div>
+                </label>
+
+                {deliveryMethod === "retirada" && (
+                  <p className="endereco-message">{enderecoMessage}</p>
+                )}
+              </div>
+
+              <div className="card-section">
+                <h3>
+                  <i className="bi bi-geo-alt"></i> Dados de Entrega
+                </h3>
+                <div className="checkout-form">
+                  <h3 style={{margin: 0}}>Nome:</h3>
+                  <input
+                    type="text"
+                    placeholder="Seu Nome *"
+                    required
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                  />
+
+                  <h3 style={{margin: 0}}>WhatsApp:</h3>
+                  <input
+                    type="text"
+                    value={telefone}
+                    onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
+                    required
+                    placeholder="Digite seu WhatsApp"
+                  />
+                  {deliveryMethod === "entrega" && (
+                    <>
+                      <input
+                        type="text"
+                        placeholder="Seu Endereço *"
+                        value={endereco}
+                        onChange={(e) => setEndereco(e.target.value)}
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Número *"
+                        value={numero}
+                        onChange={(e) => setNumero(e.target.value)}
+                        required
+                      />
+                      <input type="text" placeholder="Complemento (opcional)" />
+
+                      {deliveryMethod === "entrega" && (
+                        <select
+                          className="select-bairro"
+                          value={bairro}
+                          onChange={(e) => setBairro(e.target.value)}
+                          required
+                        >
+                          <option value="">Selecione a localidade: *</option>
+                          {bairros.map((b) => (
+                            <option key={b.nome} value={b.nome}>
+                              {b.nome}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="checkout-actions">
+              <button
+                className="confirm-btn"
+                onClick={() => setCheckoutStep(2)}
+                disabled={!isStepOneValid}
+                style={{
+                  opacity: isStepOneValid ? 1 : 0.6,
+                  cursor: isStepOneValid ? "pointer" : "not-allowed",
+                }}
+              >
+                Continuar para pagamento
+              </button>
+              {!isStepOneValid && (
+                <p className="step-hint">Preencha os campos obrigatorios para continuar.</p>
+              )}
+            </div>
+          </>
+        )}
+
+        {checkoutStep === 2 && (
+          <>
+            <div className="checkout-card">
+              <h3>
+                <i className="bi bi-credit-card"></i> Forma de Pagamento
+              </h3>
+
+              <label className={`payment-option ${paymentMethod === "entrega" ? "active" : ""}`}>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="entrega"
+                  checked={paymentMethod === "entrega"}
+                  onChange={() => setPaymentMethod("entrega")}
+                />
+                <div className="payment-info">
+                  <span className="title">Pagar na Entrega/Retirada</span>
+                  <span className="subtitle">Dinheiro, Cartão ou PIX</span>
+                </div>
+              </label>
+
+              <label className={`payment-option ${paymentMethod === "site" ? "active" : ""}`}>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="site"
+                  checked={paymentMethod === "site"}
+                  onChange={() => setPaymentMethod("site")}
+                />
+                <div className="payment-info">
+                  <span className="title">Pagar pelo Site</span>
+                  <span className="subtitle">PIX ou Cartão de Crédito</span>
+                </div>
+              </label>
+
+              {paymentMethod === "entrega" && (
+                <div className="change-section">
+                  <label className="change-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={precisaTroco}
+                      onChange={(e) => {
+                        setPrecisaTroco(e.target.checked);
+                        if (!e.target.checked) setValorTroco("");
+                      }}
+                    />
+                    Preciso de troco
+                  </label>
+
+                  {precisaTroco && (
+                    <div className="troco-input-container">
+                      <label htmlFor="valorTroco">Troco para quanto?</label>
+                      <input
+                        style={{ width: "30%", border: "1px solid black", borderRadius: "5px", padding: "2px", marginTop: "5px" }}
+                        id="valorTroco"
+                        type="text"
+                        value={valorTroco}
+                        onChange={(e) => {
+                          const rawValue = e.target.value.replace(/\D/g, "");
+                          const formattedValue = (Number(rawValue) / 100).toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          });
+                          setValorTroco(formattedValue);
+                        }}
+                        placeholder="R$0,00"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {!(paymentMethod === "site" && paymentReady) && (
+                <div className="payment-confirm">
+                  {!isFormValid && (
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "0.9rem",
+                        margin: "10px 0",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Preencha todos os campos antes de confirmar o pedido.
+                    </p>
+                  )}
+                  <button
+                    className="confirm-btn"
+                    onClick={handlePayment}
+                    disabled={!isFormValid}
+                    style={{
+                      opacity: isFormValid ? 1 : 0.6,
+                      cursor: isFormValid ? "pointer" : "not-allowed",
+                      transition: "opacity 0.2s ease",
+                    }}
+                  >
+                    Confirmar Pedido
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {paymentMethod === "site" && paymentReady ? (
+              <div className="checkout-card checkout-card-soft">
+                <h3>Escolha como quer pagar:</h3>
+
+                <div className="payment-tabs">
+                  <button
+                    className={`payment-tab ${!pixQrCodeBase64 ? "active" : ""}`}
+                    onClick={() => {
+                      clearPaymentVerification();
+                      setPixQrCodeBase64(null);
+                      setPixQrCode(null);
+                    }}
+                    type="button"
+                  >
+                    Cartão de crédito/débito
+                  </button>
+                  <button
+                    className={`payment-tab ${pixQrCodeBase64 ? "active" : ""}`}
+                    onClick={handleCreatePix}
+                    disabled={isLoading || isCheckingPayment}
+                    type="button"
+                  >
+                    {isCheckingPayment ? "⏳ Aguardando pagamento..." : "PIX"}
+                  </button>
+                </div>
+
+                {!pixQrCodeBase64 && (
+                  <div className="mp-brick">
+                    <Payment
+                      initialization={{ amount: Number(total) }}
+                      customization={{
+                        paymentMethods: {
+                          creditCard: "all",
+                          debitCard: "all",
+                        },
+                      }}
+                      onSubmit={handlePaymentSubmit}
+                      onError={(error) => {
+                        console.error("Erro no pagamento:", error);
+                        setErroPedido("Erro ao processar pagamento. Tente novamente.");
+                        setTimeout(() => setErroPedido(""), 2000);
+                      }}
+                    />
+                  </div>
+                )}
+
+                {pixQrCodeBase64 && (
+                  <div className="mp-brick" style={{ textAlign: "center" }}>
+                    <h4>💰 Pagamento PIX</h4>
+                    <p style={{ color: "#666", marginBottom: "16px" }}>
+                      {isCheckingPayment ? "Escaneie o QR code ou copie o codigo abaixo" : ""}
+                    </p>
+
+                    <div
+                      style={{
+                        padding: "16px",
+                        backgroundColor: "#f5f5f5",
+                        borderRadius: "8px",
+                        display: "inline-block",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      <img
+                        src={`data:image/png;base64,${pixQrCodeBase64}`}
+                        alt="QR Code PIX"
+                        style={{ maxWidth: "260px", width: "100%" }}
+                      />
+                    </div>
+
+                    {pixQrCode && (
+                      <div style={{ marginTop: "16px" }}>
+                        <p style={{ fontSize: "0.9rem", color: "#666", marginBottom: "8px" }}>Ou copie o codigo:</p>
+                        <div style={{ position: "relative" }}>
+                          <textarea
+                            readOnly
+                            value={pixQrCode}
+                            style={{
+                              width: "100%",
+                              minHeight: "100px",
+                              padding: "12px",
+                              border: "1px solid #ddd",
+                              borderRadius: "6px",
+                              fontFamily: "monospace",
+                              fontSize: "0.85rem",
+                              resize: "none",
+                            }}
+                          />
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(pixQrCode);
+                              alert("Codigo copiado para a area de transferencia!");
+                            }}
+                            style={{
+                              marginTop: "8px",
+                              padding: "10px 16px",
+                              backgroundColor: "#27ae60",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontWeight: "bold",
+                              width: "100%",
+                            }}
+                          >
+                            ✓ Copiar Codigo PIX
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {isCheckingPayment && (
+                      <p
+                        style={{
+                          marginTop: "16px",
+                          padding: "12px",
+                          backgroundColor: "#fff3cd",
+                          borderRadius: "6px",
+                          color: "#856404",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        <strong>⏳ Aguardando confirmacao do pagamento...</strong>
+                        <br />
+                        Voce sera redirecionado assim que recebermos a confirmacao.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            <div className="checkout-actions">
+              <button className="step-back-btn" onClick={() => setCheckoutStep(1)}>
+                Voltar para dados
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* RESUMO DO PEDIDO */}
@@ -715,256 +984,6 @@ const isFormValid =
             value={observacao}
             onChange={(e) => setObservacao(e.target.value)}
           />
-        <div className="checkout-card">
-  <h3>
-    <i className="bi bi-credit-card"></i> Forma de Pagamento
-  </h3>
-
-  <label className={`payment-option ${paymentMethod === "entrega" ? "active" : ""}`}>
-    <input
-      type="radio"
-      name="payment"
-      value="entrega"
-      checked={paymentMethod === "entrega"}
-      onChange={() => setPaymentMethod("entrega")}
-    />
-    <div className="payment-info">
-      <span className="title">Pagar na Entrega</span>
-      <span className="subtitle">Dinheiro, Cartão ou PIX</span>
-    </div>
-  </label>
-
-  <label className={`payment-option ${paymentMethod === "site" ? "active" : ""}`}>
-    <input
-      type="radio"
-      name="payment"
-      value="site"
-      checked={paymentMethod === "site"}
-      onChange={() => setPaymentMethod("site")}
-    />
-    <div className="payment-info">
-      <span className="title">Pagar pelo Site</span>
-      <span className="subtitle">PIX ou Cartão de Crédito</span>
-    </div>
-  </label>
-
-  {/* 🔹 Pergunta sobre troco */}
-  {paymentMethod === "entrega" && (
-    <div className="change-section">
-      <label className="change-checkbox">
-         <input
-          type="checkbox"
-          checked={precisaTroco}
-          onChange={(e) => {
-            setPrecisaTroco(e.target.checked);
-            if (!e.target.checked) setValorTroco(""); // limpa o valor se desmarcar
-          }}
-        />
-        Preciso de troco
-      </label>
-
-       {precisaTroco && (
-    <div className="troco-input-container">
-      <label htmlFor="valorTroco">Troco para quanto?</label>
-      <input
-        style={{width: "30%", border:"1px solid black",borderRadius: "5px", padding: "2px", marginTop: "5px"}}
-        id="valorTroco"
-        type="text"
-        value={valorTroco}
-        onChange={(e) => {
-          const rawValue = e.target.value.replace(/\D/g, ""); // remove tudo que não for número
-          const formattedValue = (Number(rawValue) / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          });
-          setValorTroco(formattedValue);
-        }}
-        placeholder="R$0,00"
-      />
-    </div>
-  )}
-    </div>
-  )}
-</div>
-
-
-       {paymentMethod === "site" && paymentReady ? (
-            <div>
-              <h3>Pagamento Online</h3>
-              
-              {/* Abas de seleção de método PIX vs Cartão */}
-              <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                <button
-                  onClick={() => {
-                    clearPaymentVerification();
-                    setPixQrCodeBase64(null);
-                    setPixQrCode(null);
-                  }}
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    border: "2px solid",
-                    borderColor: !pixQrCodeBase64 ? "#e67e22" : "#ddd",
-                    backgroundColor: !pixQrCodeBase64 ? "#e67e22" : "white",
-                    color: !pixQrCodeBase64 ? "white" : "black",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  💳 Cartão de Crédito
-                </button>
-                <button
-                  onClick={handleCreatePix}
-                  disabled={isLoading || isCheckingPayment}
-                  style={{
-                    flex: 1,
-                    padding: "12px",
-                    border: "2px solid",
-                    borderColor: pixQrCodeBase64 ? "#e67e22" : "#ddd",
-                    backgroundColor: pixQrCodeBase64 ? "#e67e22" : "white",
-                    color: pixQrCodeBase64 ? "white" : "black",
-                    borderRadius: "6px",
-                    cursor: isLoading || isCheckingPayment ? "not-allowed" : "pointer",
-                    fontWeight: "bold",
-                    transition: "all 0.2s ease",
-                    opacity: isLoading || isCheckingPayment ? 0.6 : 1,
-                  }}
-                >
-                  {isCheckingPayment ? "⏳ Aguardando pagamento..." : "🏦 PIX"}
-                </button>
-              </div>
-
-              {/* Mostrar Payment Brick para Cartão */}
-              {!pixQrCodeBase64 && (
-                <Payment
-                  initialization={{ amount: Number(total) }}
-                  customization={{
-                    paymentMethods: {
-                      creditCard: "all",
-                      debitCard: "all",
-                    },
-                  }}
-                  onSubmit={handlePaymentSubmit}
-                  onError={(error) => {
-                    console.error("Erro no pagamento:", error);
-                    setErroPedido("Erro ao processar pagamento. Tente novamente.");
-                    setTimeout(() => setErroPedido(""), 2000);
-                  }}
-                />
-              )}
-
-              {/* Mostrar QR Code para PIX */}
-              {pixQrCodeBase64 && (
-                <div style={{ marginTop: "16px", textAlign: "center" }}>
-                  <h4>💰 Pagamento PIX</h4>
-                  <p style={{ color: "#666", marginBottom: "16px" }}>
-                    {isCheckingPayment ? "Escaneie o QR code ou copie o código abaixo" : ""}
-                  </p>
-                  
-                  {/* QR Code */}
-                  <div style={{
-                    padding: "16px",
-                    backgroundColor: "#f5f5f5",
-                    borderRadius: "8px",
-                    display: "inline-block",
-                    marginBottom: "16px"
-                  }}>
-                    <img
-                      src={`data:image/png;base64,${pixQrCodeBase64}`}
-                      alt="QR Code PIX"
-                      style={{ maxWidth: "260px", width: "100%" }}
-                    />
-                  </div>
-
-                  {/* Código Copia-e-Cola */}
-                  {pixQrCode && (
-                    <div style={{ marginTop: "16px" }}>
-                      <p style={{ fontSize: "0.9rem", color: "#666", marginBottom: "8px" }}>Ou copie o código:</p>
-                      <div style={{ position: "relative" }}>
-                        <textarea
-                          readOnly
-                          value={pixQrCode}
-                          style={{
-                            width: "100%",
-                            minHeight: "100px",
-                            padding: "12px",
-                            border: "1px solid #ddd",
-                            borderRadius: "6px",
-                            fontFamily: "monospace",
-                            fontSize: "0.85rem",
-                            resize: "none"
-                          }}
-                        />
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(pixQrCode);
-                            alert("Código copiado para a área de transferência!");
-                          }}
-                          style={{
-                            marginTop: "8px",
-                            padding: "10px 16px",
-                            backgroundColor: "#27ae60",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            fontWeight: "bold",
-                            width: "100%"
-                          }}
-                        >
-                          ✓ Copiar Código PIX
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {isCheckingPayment && (
-                    <p style={{
-                      marginTop: "16px",
-                      padding: "12px",
-                      backgroundColor: "#fff3cd",
-                      borderRadius: "6px",
-                      color: "#856404",
-                      fontSize: "0.9rem"
-                    }}>
-                      <strong>⏳ Aguardando confirmação do pagamento...</strong><br />
-                      Você será redirecionado assim que recebermos a confirmação.
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div style={{ textAlign: "center" }}>
-              {!isFormValid && (
-                <p
-                  style={{
-                    color: "red",
-                    fontSize: "0.9rem",
-                    margin:"10px 0",
-                    fontWeight: 500,
-                  }}
-                >
-                  Preencha todos os campos antes de confirmar o pedido.
-                </p>
-              )}
-              <button
-                className="confirm-btn"
-                onClick={handlePayment}
-                disabled={!isFormValid}
-                style={{
-                  opacity: isFormValid ? 1 : 0.6,
-                  cursor: isFormValid ? "pointer" : "not-allowed",
-                  transition: "opacity 0.2s ease",
-                }}
-              >
-                Confirmar Pedido
-              </button>
-            </div>
-          )}
-
       </div>
     </div>
     </>
