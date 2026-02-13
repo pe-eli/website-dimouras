@@ -118,7 +118,7 @@
 }
 
 .btn-burger .btn-label {
-  text-align: left;
+  text-align: center;
 }
 
 .btn-burger .btn-price {
@@ -279,22 +279,24 @@
     flex-direction: column;
     gap: 1.5rem;
   }
-
+  .burger-info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .btn-price{
     margin: 0;
     margin-left: 0;
   }
-
-  .btn-burger{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  .burger-footer{
+    width: 100%;
   }
   .burger-actions{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
+    justify-content: center;
+    align-items: center;
   }
   .burger-section h2{
     margin: 0 0 1rem 0;
@@ -302,9 +304,8 @@
   .burger-card{
     width: 90vw;
   }
-  .burger-info{
-    align-items: flex-start;
-    text-align: left;
+  .btn-burger{
+    width: 100%;
   }
   .btn-burger{
     width: 60%;

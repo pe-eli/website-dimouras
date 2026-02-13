@@ -15,7 +15,7 @@ function Pizzas(){
   ingredientes: string[];
 }
 
-    const PizzaCard = ({ nome, preco, classe, ingredientes }: Pizza) => (
+      const PizzaCard = ({ nome, preco, classe, ingredientes }: Pizza) => (
   <div className="pizza-card">
     <div
       className={`pizza-image pizza-${classe}`}
@@ -45,7 +45,7 @@ function Pizzas(){
           <button
             className="pizza-btn pizza-btn--inteira"
             onClick={() =>
-              addToCart({
+              handleAddToCart({
                 name: `Pizza Inteira de ${nome}`,
                 price: `R$${preco.toFixed(2).replace("." , ",")}`,
                 qty: 1,
@@ -84,7 +84,7 @@ function Pizzas(){
     }
      const total = (ingredientes.filter((i) => selecionados.includes(i.nome)).reduce((acc, item) => acc + item.preco, 0) + 51).toFixed(2);
 
-    addToCart({
+    handleAddToCart({
       name: `Pizza Personalizada (${selecionados.join(", ")})`,
       price: `R$ ${total.replace(".", ",")}`,
       qty: 1,
@@ -100,6 +100,28 @@ function Pizzas(){
     const [openHalfModal, setOpenHalfModal] = useState(false);
     const [firstFlavor, setFirstFlavor] = useState<string | null>(null);
     const [secondFlavor, setSecondFlavor] = useState<string | null>(null);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const showToast = (message: string) => {
+      setToastMessage(message);
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+      toastTimeoutRef.current = setTimeout(() => {
+        setToastMessage(null);
+      }, 2000);
+    };
+
+    const handleAddToCart = (item: {
+      name: string;
+      price: string;
+      qty: number;
+      category_id: string;
+    }) => {
+      addToCart(item);
+      showToast("Item adicionado ao carrinho!");
+    };
 
     return(
 
@@ -110,15 +132,10 @@ function Pizzas(){
               <PizzaCard key={i} {...pizza} />
               ))}
 
-            <div className="pizza-card">
-              <div
-                className="pizza-image pizza-monte"
-                role="img"
-                aria-label="Monte a sua pizza"
-              />
+            <div className="pizza-card pizza-card--personalizada">
               <div className="pizza-info">
                 <h3>Monte a Sua Pizza</h3>
-                <p className="pizza-description">Monte seu sabor de pizza com até 7 ingredientes:</p>
+                <p>Escolha os ingredientes que deseja adicionar à sua pizza personalizada.</p>
                 <div className="pizza-footer">
                   <button className="pizza-btn" onClick={() => setOpenModal(true)}>+</button>
                 </div>
@@ -144,8 +161,14 @@ function Pizzas(){
         setFirstFlavor={setFirstFlavor}
         setSecondFlavor={setSecondFlavor}
         onClose={() => setOpenHalfModal(false)}
-        addToCart={addToCart}
+        addToCart={handleAddToCart}
       />
+
+      {toastMessage && (
+        <div className="pizza-toast" role="status" aria-live="polite">
+          {toastMessage}
+        </div>
+      )}
 
       </section>
 

@@ -14,6 +14,12 @@
   height: 580px;
 }
 
+.pizza-card--personalizada {
+  width: 18rem;
+  min-height: calc(580px * 0.30);
+  height: calc(580px * 0.30);
+}
+
 .pizza-info {
   display: flex;
   flex-direction: column;
@@ -114,12 +120,11 @@
   color: white; /* títulos vermelhos */
 }
 
-
 .pizza-sabores {
   display: flex;
   gap: 50px;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
 }
 .pizza-btn {
@@ -135,6 +140,31 @@
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s; 
+}
+
+.pizza-toast {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  background: #2E7D32;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  z-index: 9999;
+  animation: pizza-toast-in 0.2s ease-out;
+}
+
+@keyframes pizza-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -160,6 +190,12 @@
   }
   .pizza-card{
     width: 90vw;
+  }
+
+  .pizza-card--personalizada {
+    width: 80vw;
+    min-height: calc(580px * 0.25);
+    height: calc(580px * 0.25);
   }
 
   .pizza-image{
