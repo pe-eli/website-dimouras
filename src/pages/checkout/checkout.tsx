@@ -40,7 +40,13 @@ export default function Checkout() {
   const [enderecoMessage, setEnderecoMessage] = useState(""); 
   const [observacao, setObservacao] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [erroPedido, setErroPedido] = useState("")
+  const [erroPedido, setErroPedido] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const validateEmail = (emailToValidate: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailToValidate);
+  };
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -378,6 +384,18 @@ const handlePaymentSubmit = async (formData: any) => {
 
 // 🔹 Nova função para criar PIX
 const handleCreatePix = async () => {
+  // Validar email
+  if (!email.trim()) {
+    setEmailError("Email é obrigatório para pagar com PIX");
+    return;
+  }
+
+  if (!validateEmail(email)) {
+    setEmailError("Email inválido. Por favor, insira um email válido");
+    return;
+  }
+
+  setEmailError("");
   const referencia = getPedidoRef();
 
   if (!referencia) {
@@ -411,7 +429,7 @@ const handleCreatePix = async () => {
 
     const pixPayload = {
       transaction_amount: Number(total),
-      payer: { email: getPayerEmail() },
+      payer: { email: email.trim() },
       external_reference: referencia,
       metadata: { pedidoRef: referencia },
       description: `Pedido Di Mouras - ${items.map((i) => `${i.quantity}x ${i.title}`).join(", ")}`,
@@ -692,7 +710,10 @@ const isFormValid = isStepOneValid;
                   name="payment"
                   value="entrega"
                   checked={paymentMethod === "entrega"}
-                  onChange={() => setPaymentMethod("entrega")}
+                  onChange={() => {
+                    setPaymentMethod("entrega");
+                    setEmailError("");
+                  }}
                 />
                 <div className="payment-info">
                   <span className="title">Pagar na Entrega/Retirada</span>
@@ -793,6 +814,7 @@ const isFormValid = isStepOneValid;
                       clearPaymentVerification();
                       setPixQrCodeBase64(null);
                       setPixQrCode(null);
+                      setEmailError("");
                     }}
                     type="button"
                   >
@@ -808,24 +830,53 @@ const isFormValid = isStepOneValid;
                   </button>
                 </div>
 
-                {!pixQrCodeBase64 && (
-                  <div className="mp-brick">
-                    <Payment
-                      initialization={{ amount: Number(total) }}
-                      customization={{
-                        paymentMethods: {
-                          creditCard: "all",
-                          debitCard: "all",
-                        },
-                      }}
-                      onSubmit={handlePaymentSubmit}
-                      onError={(error) => {
-                        console.error("Erro no pagamento:", error);
-                        setErroPedido("Erro ao processar pagamento. Tente novamente.");
-                        setTimeout(() => setErroPedido(""), 2000);
-                      }}
-                    />
-                  </div>
+                {pixQrCodeBase64 === null && (
+                  <>
+                    <div style={{ marginBottom: "16px", padding: "12px", backgroundColor: "#f0f4f8", borderRadius: "6px" }}>
+                      <h4 style={{ margin: "0 0 12px 0", fontSize: "0.95rem", color: "#333" }}>
+                        Email para Receber Comprovante
+                      </h4>
+                      <input
+                        type="email"
+                        placeholder="seu.email@example.com"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (emailError) setEmailError("");
+                        }}
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          border: emailError ? "2px solid #e74c3c" : "1px solid #ddd",
+                          borderRadius: "4px",
+                          fontSize: "0.95rem",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                      {emailError && (
+                        <p style={{ color: "#e74c3c", fontSize: "0.85rem", marginTop: "6px", marginBottom: "0" }}>
+                          ⚠️ {emailError}
+                        </p>
+                      )}
+                    </div>
+                    <div className="mp-brick">
+                      <Payment
+                        initialization={{ amount: Number(total) }}
+                        customization={{
+                          paymentMethods: {
+                            creditCard: "all",
+                            debitCard: "all",
+                          },
+                        }}
+                        onSubmit={handlePaymentSubmit}
+                        onError={(error) => {
+                          console.error("Erro no pagamento:", error);
+                          setErroPedido("Erro ao processar pagamento. Tente novamente.");
+                          setTimeout(() => setErroPedido(""), 2000);
+                        }}
+                      />
+                    </div>
+                  </>
                 )}
 
                 {pixQrCodeBase64 && (
