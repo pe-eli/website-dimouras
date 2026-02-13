@@ -14,114 +14,76 @@
 
 .grid-bebidas {
   display: grid;
-  place-self: center;
-  grid-template-columns: repeat(2, 1fr);
-  place-items: center; 
-  width: auto;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  place-items: stretch;
+  width: 90%;
   gap: 2rem;
 }
-.card-bebida {
+.product-card {
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
-  transition: transform 0.2s;
-  width: 330px;
-  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  min-height: 280px;
 }
 
-.card-content-bebida {
-  padding: 1rem;
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   text-align: left;
-  height: 100%;
+  flex: 1;
+  padding: 1rem 1.2rem 1.2rem;
 }
 
-.card-content-bebida h3 {
+.product-info h3 {
   color: #B22222;
   font-size: 1.1rem;
-  font-weight: 1000;
-  margin-bottom: 0.5rem;
+  font-weight: 800;
+  margin: 0;
 }
 
-.card-bebida button{
-  margin-top: 8rem;
-}
-
-.coca{
-  background-image: url("/coca.png");
-  background-size: contain;
-  background-position: 220%;
-  background-repeat: no-repeat; 
-}
-
-.cocazero{
-  background-image: url("/cocazero.png");
-  background-size: contain;
-  background-position: 220% -0.5rem;
-  background-repeat: no-repeat; 
-}
-
-.guarana350{
-  background-image: url("/guarana.png");
-  background-size: contain;
-  background-position: 230% 0rem;
-  background-repeat: no-repeat; 
-}
-
-
-.fanta{
-  background-image: url("/fanta.png");
-  background-size: contain;
-  background-position: 220% 20%;
-  background-repeat: no-repeat; 
-}
-
-.pepsi{
-  background-image: url("/pepsinormal.png");
-  background-size: 58%;
-  background-position: 145% -1rem;
-  background-repeat: no-repeat;   
-}
-.pepsib{
-  background-image: url("/pepsi.png");
-  background-size: 85%;
-  background-position: 310%;
-  background-repeat: no-repeat;   
-}
-
-.soda{
-  background-image: url("/soda.png");
-  background-size: 48%;
-  background-position: 125% -3rem;
-  background-repeat: no-repeat;  
-}
-
-.cocagrande{
-  background-image: url("/coca1L.png");
-  background-size: 280px 280px;
-  background-position:8rem -1rem;
-  background-repeat: no-repeat;  
-}
-
-.guarana{
-  background-image: url("/guarana1L.png");
-  background-size: contain;
-  background-position:9rem 0rem;
-  background-repeat: no-repeat;  
-}
-
-.price {
+.product-price {
   color: #333;
   font-weight: bold;
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+}
 
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.product-image {
+  width: 100%;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #f8f5f2;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .btn-bebida{
-  display: block;
-  width: 65%  ;
+  display: inline-flex;
+  width: fit-content;
   padding: 0.6rem;
   background: #2E7D32; /* verde manjericão */
   border: none;
@@ -139,7 +101,7 @@
   }
 }
 
-@media(max-width: 768px){
+@media(max-width: 600px){
   .section-bebidas h2{
     margin: 1rem 0 1rem 0;
   }
@@ -147,75 +109,22 @@
     display: flex;
     flex-direction: column;
   }
-  .card-bebida{
-    width: 90vw;
+  .product-card{
+    width: 100%;
+  }
+  .product-info{
+    align-items: center;
+    text-align: center;
+  }
+  .product-footer{
+    flex-direction: column;
   }
   .btn-bebida{
-    width: 55%;
+    width: 70%;
+    justify-content: center;
   }
-
-  .coca{
-  background-image: url("/coca.png");
-  background-size: 75%;
-  background-position: 170% 2rem;
-  background-repeat: no-repeat; 
-}
-
-  .cocazero{
-  background-image: url("/cocazero.png");
-  background-size: 78%;
-  background-position: 175% 1.5rem;
-  background-repeat: no-repeat; 
-}
-
-.pepsi{
-  background-image: url("/pepsinormal.png");
-  background-size: 60%;
-  background-position: 125% -1rem;
-  background-repeat: no-repeat;   
-}
-
-.pepsib{
-  background-image: url("/pepsi.png");
-  background-size: 90%;
-  background-position: 340% 0rem;
-  background-repeat: no-repeat;   
-}
-
-
-.fanta{
-  background-image: url("/fanta.png");
-  background-size: 80%;
-  background-position: 195% 1.5rem;
-  background-repeat: no-repeat; 
-}
-
-.soda{
-  background-image: url("/soda.png");
-  background-size: 50%;
-  background-position: 110% -1rem;
-  background-repeat: no-repeat;  
-}
-
-.cocagrande{
-  background-image: url("/coca1L.png");
-  background-size: 350px 350px;
-  background-position: 6.5rem -3rem;
-  background-repeat: no-repeat;  
-}
-
-.guarana{
-  background-image: url("/guarana1L.png");
-  background-size: contain;
-  background-position: 10rem 0rem;
-  background-repeat: no-repeat;  
-}
-
-.guarana350{
-  background-image: url("/guarana.png");
-  background-size: contain;
-  background-position: 180% 0rem;
-  background-repeat: no-repeat; 
-}
-  
+  .product-image{
+    width: 100%;
+    height: 160px;
+  }
 }

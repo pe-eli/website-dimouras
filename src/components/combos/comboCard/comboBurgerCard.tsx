@@ -12,6 +12,7 @@ type HamburguerCardProps = {
   precoContra: number;
   precoFralda: number;
   precoPicanha: number;
+  imagem: string;
   qtdHamburgueres?: number;
   qtdBebidas?: number;
   bebes?: string[];
@@ -26,6 +27,7 @@ export default function HamburguerCard({
   precoContra,
   precoFralda,
   precoPicanha,
+  imagem,
   qtdBebidas = 1,
   qtdHamburgueres = 2,
   bebes,
@@ -96,7 +98,7 @@ const calcularPrecoCombo = () => {
 
   return (
     <>
-      <div className="card-combo">
+      <div className="product-card combo-card">
         {economia && (
           <div className="combo-badge">
             <span className="combo-badge-text">
@@ -104,13 +106,18 @@ const calcularPrecoCombo = () => {
             </span>
           </div>
         )}
-        <div className="card-content-combo">
+        <div className="product-image">
+          <img src={imagem} alt={titulo} />
+        </div>
+        <div className="product-info">
           <h3>{titulo}</h3>
-          <p className="descricao-combo">{descricao}</p>
-          <p className="price-combo">A partir de R${((Number(precoFralda)*2)).toFixed(2).replace(".",",")}</p>
-          <button className="btn-combo" onClick={() => setIsModalOpen(true)}>
-            Adicionar ao carrinho
-          </button>
+          <p className="product-description">{descricao}</p>
+          <div className="product-footer">
+            <p className="product-price">A partir de R${((Number(precoFralda)*2)).toFixed(2).replace(".",",")}</p>
+            <button className="btn-combo" onClick={() => setIsModalOpen(true)}>
+              Adicionar ao carrinho
+            </button>
+          </div>
         </div>
       </div>
 

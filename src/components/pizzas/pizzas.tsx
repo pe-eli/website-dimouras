@@ -16,40 +16,46 @@ function Pizzas(){
 }
 
     const PizzaCard = ({ nome, preco, classe, ingredientes }: Pizza) => (
-  <div className="card-pizza">
-    <div className={`card-content-pizza ${classe}`}>
+  <div className="pizza-card">
+    <div
+      className={`pizza-image pizza-${classe}`}
+      role="img"
+      aria-label={nome}
+    />
+    <div className="pizza-info">
       <h3>{nome}</h3>
-      <div className="ing">
-      {ingredientes.map((ing: string, idx: number) => (
-        <p key={idx} style={{ margin: 0 }}>{`- ${ing}`}</p>
-      ))}
+      <div className="pizza-ingredients">
+        {ingredientes.map((ing: string, idx: number) => (
+          <p key={idx} className="pizza-ingredient">{`- ${ing}`}</p>
+        ))}
       </div>
-      <h4 className="price-pizza">R${preco.toFixed(2).replace(".", ",")}</h4>
-      <div className="botoes">
-      <button
-        className="btn half"
-        onClick={() => {
-          setFirstFlavor(nome);
-          setOpenHalfModal(true);
-        }}
-      >
-        Meio a meio
-      </button>
+      <div className="pizza-footer">
+        <p className="pizza-price">R${preco.toFixed(2).replace(".", ",")}</p>
+        <div className="pizza-actions">
+          <button
+            className="pizza-btn pizza-btn--half"
+            onClick={() => {
+              setFirstFlavor(nome);
+              setOpenHalfModal(true);
+            }}
+          >
+            Meio a meio
+          </button>
 
-      <button
-        style={{ marginTop: "0.5rem" }}
-        className="btn inteira"
-        onClick={() =>
-          addToCart({
-            name: `Pizza Inteira de ${nome}`,
-            price: `R$${preco.toFixed(2).replace("." , ",")}`,
-            qty: 1,
-            category_id: "food",
-          })
-        }
-      >
-        Inteira
-      </button>
+          <button
+            className="pizza-btn pizza-btn--inteira"
+            onClick={() =>
+              addToCart({
+                name: `Pizza Inteira de ${nome}`,
+                price: `R$${preco.toFixed(2).replace("." , ",")}`,
+                qty: 1,
+                category_id: "food",
+              })
+            }
+          >
+            Inteira
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -97,22 +103,27 @@ function Pizzas(){
 
     return(
 
-<section className="section-pizzas">
+<section className="pizza-section">
         <h2>Pizzas</h2>
-        <div className="section-sabores">
-          <div className="section-sabores">
-
+        <div className="pizza-sabores">
             {saboresFixos.map((pizza, i) => (
               <PizzaCard key={i} {...pizza} />
               ))}
 
-            <div className="card-monte">
-            <h3>Monte a Sua Pizza</h3>
-            <p>Monte seu sabor de pizza com até 7 ingredientes:</p>
-            <button onClick={() => setOpenModal(true)}>+</button>
-          </div>
-        </div>
-
+            <div className="pizza-card">
+              <div
+                className="pizza-image pizza-monte"
+                role="img"
+                aria-label="Monte a sua pizza"
+              />
+              <div className="pizza-info">
+                <h3>Monte a Sua Pizza</h3>
+                <p className="pizza-description">Monte seu sabor de pizza com até 7 ingredientes:</p>
+                <div className="pizza-footer">
+                  <button className="pizza-btn" onClick={() => setOpenModal(true)}>+</button>
+                </div>
+              </div>
+            </div>
         </div>
 
     {/*Modal Pizza Montada*/}

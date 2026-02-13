@@ -1,144 +1,132 @@
 
-.card-pizza {
+.pizza-card {
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
-  transition: transform 0.2s;
-  width: 15rem;
-
-}
-
-.card-content-pizza {
-  text-align: center;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  height: 17rem;
-  justify-content: space-between;
-  padding: 1rem;
+  align-items: stretch;
+  gap: 0;
+  width: 18rem;
+  min-height: 580px;
+  height: 580px;
+}
+
+.pizza-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   text-align: left;
+  flex: 1;
+  padding: 1rem 1.2rem 1.2rem;
 }
 
-.card-content-pizza h3 {
+.pizza-info h3 {
   color: #B22222;
-  font-size: 1.3rem;
-  font-weight: 1000;
-  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
 }
 
-.cala{
+.pizza-ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 5.2rem;
+  flex: 1;
+}
+
+.pizza-description {
+  flex: 1;
+}
+
+.pizza-section .pizza-ingredients .pizza-ingredient {
+  margin: 0;
+}
+
+.pizza-price {
+  color: #333;
+  font-weight: bold;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.pizza-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.pizza-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.pizza-image {
+  width: 100%;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: #f8f5f2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.pizza-image.pizza-cala {
   background-image: url("/cala.png");
-  background-size: contain;
-  background-position: 7rem -1rem;
-  background-repeat: no-repeat;
 }
 
-.fc{
+.pizza-image.pizza-fc {
   background-image: url("/fc.png");
-  background-size: contain;
-  background-position: 7.5rem -0.5rem;
-  background-repeat: no-repeat;
-}
-.qq{
-  background-image: url("/4q.png");
-  background-size: contain;
-  background-position: 7.5rem -0.5rem;
-  background-repeat: no-repeat;
 }
 
-.mista{
-  background-image: url("/pepperoni.png");
-  background-size: 85%;
-  background-position: 8rem 0.5rem;
-  background-repeat: no-repeat; 
+.pizza-image.pizza-qq {
+  background-image: url("/4q.png");
 }
-.section-pizzas {
+
+.pizza-image.pizza-mista {
+  background-image: url("/pepperoni.png");
+}
+
+.pizza-image.pizza-monte {
+  background-image: url("/cala.png");
+}
+
+.pizza-section {
   padding: 2rem 1rem;
   text-align: center;
 }
-.section-pizzas h2 {
+.pizza-section h2 {
   font-size: 1.8rem;
   margin-bottom: 3rem;
   color: white; /* títulos vermelhos */
 }
-.section-pizzas p {
-  margin-bottom: 2rem;
-  color: #555;
-}
 
-.section-sabores {
+
+.pizza-sabores {
   display: flex;
   gap: 50px;
   justify-content: center;
-  
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
-.card-content h3 {
-  color: #B22222;
-  margin-bottom: 0.5rem;
-}
-
-.section {
-  padding: 2rem 1rem;
-  text-align: center;
-}
-.section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.2rem;
-  color: #B22222; /* títulos vermelhos */
-}
-.section p {
-  margin-bottom: 2rem;
-  color: #555;
-}
-
-.card-monte{
+.pizza-btn {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background: linear-gradient(0deg,#fff 50%, #FAF3E0 100%);
-  transition: transform 0.2s;
-  width: 15%;
-}
-
-.card-monte h3{
-  color:#B22222;
-}
-
-.card-monte button{
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  
-}
-.ing{
-  display: flex;
-  flex-direction: column;
-  margin-bottom: auto;
-  height: 12dvh;
-}
-.price-pizza {
-  color: #333;
-  font-weight: bold;
-  margin: 0;
-  font-size: 1.5rem;
-
-}
-
-.card-pizza button {
-  display: block;
-  width: 60%;
+  width: 100%;
   padding: 0.6rem;
   background: #2E7D32; /* verde manjericão */
   border: none;
@@ -149,90 +137,53 @@
   transition: 0.3s; 
 }
 
-.botoes{
-  display: flex;
-  flex-direction: column;
-}
-.half{
-  display: flex;
-  text-align: center;
-}
 
-.inteira{
-  display: flex;
-  margin-top: auto;
-}
 
 
 @media (hover: hover) {
-  .card-pizza:hover{
-    transform: translateY(-2px);
-    transition: all 0.2s;
-    scale: 1.02;
-  }
-
-  .btn:hover {
+  .pizza-btn:hover {
     background: #FFD54F; 
     color: #333;
   }
 }
 
 @media(max-width: 768px){
-  .section-sabores{
+  .pizza-sabores{
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 1.5rem;
   }
-  .section-pizzas h2{
+  .pizza-section h2{
     margin: 0 0 1rem 0;
   }
-  .card-pizza{
+  .pizza-card{
     width: 90vw;
   }
-  .botoes{
-    width: 65%;
+
+  .pizza-image{
+    min-height: 280px;
+    height: 280px;
+  } 
+
+  .pizza-price {
+  margin: 0;
   }
 
-  .cala{
-  background-image: url("/cala.png");
-  background-size: 65%;
-  background-position: 7.5rem 0rem;
-  background-repeat: no-repeat;
-}
-
-.fc{
-  background-image: url("/fc.png");
-  background-size: 70%;
-  background-position: 7.25rem -0.2rem;
-  background-repeat: no-repeat;
-}
-.mista{
-  background-image: url("/pepperoni.png");
-  background-size: 61%;
-  background-position: 8.1rem 0.5rem;
-  background-repeat: no-repeat; 
-}
-.qq{
-  background-image: url("/4q.png");
-  background-size: 69%;
-  background-position: 7.3rem 0rem;
-  background-repeat: no-repeat;
-}
-
-.card-monte{
-  width: 90vw;
-  padding: 1rem 0;
-}
-.card-monte h3{
-  margin: 0.5rem 1rem;
-}
-.card-monte p{
-  margin: 0.1rem 0;
-  width: 12rem;
-}
-.card-monte button{
-  margin-top: 10px;
-}
+  .pizza-info{
+    align-items: center;
+    text-align: center;
+  }
+  .pizza-footer{
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    width: 100%;
+  }
+  .pizza-actions{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
 }

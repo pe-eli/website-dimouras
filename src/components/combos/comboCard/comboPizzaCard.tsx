@@ -17,6 +17,7 @@ type ComboCardProps = {
   precoF: number;
   precoQ: number;
   precoP: number;
+  imagem: string;
   qtdPizzas?: number;
   qtdBebidas?: number;
   bebes?: string[];
@@ -30,6 +31,7 @@ export default function ComboCard({
   precoF,
   precoQ,
   precoP,
+  imagem,
   qtdPizzas = 1,
   qtdBebidas = 1,
   bebes = []
@@ -127,14 +129,19 @@ const itemName = `Combo ${titulo}\n${pizzasDescricao}\n${bebidasDescricao}`;
 
   return (
     <>
-      <div className="card-combo">
-        <div className="card-content-combo">
+      <div className="product-card combo-card">
+        <div className="product-image">
+          <img src={imagem} alt={titulo} />
+        </div>
+        <div className="product-info">
           <h3>{titulo}</h3>
-          <p className="descricao-combo">{descricao}</p>
-          <p className="price-combo">A partir de R${(precoC*qtdPizzas).toFixed(2).replace(".", ",")}</p>
-          <button className="btn-combo" onClick={() => setIsModalOpen(true)}>
-            Adicionar ao Carrinho
-          </button>
+          <p className="product-description">{descricao}</p>
+          <div className="product-footer">
+            <p className="product-price">A partir de R${(precoC*qtdPizzas).toFixed(2).replace(".", ",")}</p>
+            <button className="btn-combo" onClick={() => setIsModalOpen(true)}>
+              Adicionar ao Carrinho
+            </button>
+          </div>
         </div>
       </div>
 

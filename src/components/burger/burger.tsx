@@ -106,70 +106,84 @@ function Burger() {
     return Number(selectedBurger?.price || 0) + totalExtras;
   }, [extras, selectedBurger]);
 
+
   const PizzaCard = ({ nome, precoC, precoF, precoP, classe, ingredientes }: Burger) => (
-    <div className="card-burger">
-      <div className={`card-content-burger ${classe}`}>
+    <div className="burger-card">
+      <div
+        className={`burger-image burger-${classe}`}
+        role="img"
+        aria-label={nome}
+      />
+
+      <div className="burger-info">
         <h3>{nome}</h3>
-        <div className="ing">
+        <div className="burger-ingredients">
           {ingredientes.map((ing: string, idx: number) => (
-            <p key={idx} style={{ margin: 0 }}>{`- ${ing}`}</p>
+            <p key={idx} className="burger-ingredient">{`- ${ing}`}</p>
           ))}
         </div>
 
-        <button
-          className="btn-burger"
-          onClick={() =>
-            handleOpenModal({
-              name: `${nome} Contrafilé`,
-              price: precoC,
-              qty: 1,
-            })
-          }
-        > Contrafilé
-          <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
-            R${precoC.toFixed(2).replace(".", ",")}
-          </p>
-        </button>
+        <div className="burger-footer">
+          <div className="burger-actions">
+            <button
+              className="btn-burger"
+              onClick={() =>
+                handleOpenModal({
+                  name: `${nome} Contrafilé`,
+                  price: precoC,
+                  qty: 1,
+                })
+              }
+            >
+              <span className="btn-label">Contrafilé</span>
+              <span className="btn-price">
+                R${precoC.toFixed(2).replace(".", ",")}
+              </span>
+            </button>
 
-        <button
-          className="btn-burger"
-          onClick={() =>
-            handleOpenModal({
-              name: `${nome} Fraldinha`,
-              price: precoP,
-              qty: 1,
-            })
-          }
-        > Fraldinha
-          <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
-            R${precoP.toFixed(2).replace(".", ",")}
-          </p>
-        </button>
+            <button
+              className="btn-burger"
+              onClick={() =>
+                handleOpenModal({
+                  name: `${nome} Fraldinha`,
+                  price: precoP,
+                  qty: 1,
+                })
+              }
+            >
+              <span className="btn-label">Fraldinha</span>
+              <span className="btn-price">
+                R${precoP.toFixed(2).replace(".", ",")}
+              </span>
+            </button>
 
 
-        <button
-          className="btn-burger"
-          onClick={() =>
-            handleOpenModal({
-              name: `${nome} Blend Costela`,
-              price: precoF,
-              qty: 1,
-            })
-          }
-        > Blend Costela
-          <p style={{ margin: "0 0 0px auto", color: "yellow" }}>
-            R${precoF.toFixed(2).replace(".", ",")}
-          </p>
-        </button>
+            <button
+              className="btn-burger"
+              onClick={() =>
+                handleOpenModal({
+                  name: `${nome} Blend Costela`,
+                  price: precoF,
+                  qty: 1,
+                })
+              }
+            >
+              <span className="btn-label">Blend Costela</span>
+              <span className="btn-price">
+                R${precoF.toFixed(2).replace(".", ",")}
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <section className="section-pizzas">
+    <section className="burger-section">
       <h2>Burgers</h2>
 
-      <div className="section-sabores">
+      <div className="burger-sabores">
         {saboresFixos.map((pizza, i) => (
           <PizzaCard key={i} {...pizza} />
         ))}
