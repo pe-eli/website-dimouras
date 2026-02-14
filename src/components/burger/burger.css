@@ -291,6 +291,9 @@
   .burger-footer{
     width: 100%;
   }
+  .burger-image{
+    height: 215px;
+  }
   .burger-actions{
     display: flex;
     flex-direction: column;

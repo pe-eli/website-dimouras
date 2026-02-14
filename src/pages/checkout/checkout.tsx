@@ -41,6 +41,7 @@ export default function Checkout() {
   const [observacao, setObservacao] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [erroPedido, setErroPedido] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState<"success" | "error" | null>(null);
   const [emailError, setEmailError] = useState("");
 
   const validateEmail = (emailToValidate: string): boolean => {
@@ -101,6 +102,7 @@ export default function Checkout() {
       setPixQrCode(null);
       setPixQrCodeBase64(null);
       setPixTicketUrl(null);
+      setPaymentStatus(null);
     }
   }, [paymentMethod]);
 
@@ -155,8 +157,12 @@ export default function Checkout() {
     const pedidoSalvo = JSON.parse(localStorage.getItem("pedidoPendente") || "null");
 
     if (!pedidoSalvo) {
+      setPaymentStatus("error");
       setErroPedido("Pedido pendente nao encontrado. Tente novamente.");
-      setTimeout(() => setErroPedido(""), 2000);
+      setTimeout(() => {
+        setErroPedido("");
+        setPaymentStatus(null);
+      }, 2000);
       return;
     }
 
@@ -175,12 +181,17 @@ export default function Checkout() {
       localStorage.removeItem("pedidoPendente");
       localStorage.removeItem("pedidoRef");
       clearCart();
+      setPaymentStatus("success");
       setErroPedido(mensagem);
       setTimeout(() => navigate(`/acompanhar/${id}`), 2000);
     } catch (err) {
       console.error("Erro ao registrar pedido:", err);
+      setPaymentStatus("error");
       setErroPedido("Ocorreu um erro ao salvar o pedido. Tente novamente.");
-      setTimeout(() => setErroPedido(""), 2000);
+      setTimeout(() => {
+        setErroPedido("");
+        setPaymentStatus(null);
+      }, 2000);
     } finally {
       setIsLoading(false);
     }
@@ -290,12 +301,17 @@ const handlePayment = async () => {
     localStorage.removeItem("pedidoPendente");
     localStorage.removeItem("pedidoRef");
     clearCart();
+    setPaymentStatus("success");
     setErroPedido("Pedido confirmado!\nVocê será redirecionado para o acompanhamento.");
     setTimeout(() => navigate(`/acompanhar/${id}`), 2500);
   } catch (err) {
     console.error("Erro ao registrar pedido:", err);
+    setPaymentStatus("error");
     setErroPedido("Ocorreu um erro ao salvar o pedido. Tente novamente.");
-    setTimeout(() => setErroPedido(""), 2000);
+    setTimeout(() => {
+      setErroPedido("");
+      setPaymentStatus(null);
+    }, 2000);
   } finally {
     setIsLoading(false);
   }
@@ -376,8 +392,12 @@ const handlePaymentSubmit = async (formData: any) => {
     return data;
   } catch (error: any) {
     console.error("Erro ao processar pagamento:", error);
+    setPaymentStatus("error");
     setErroPedido("Erro ao processar pagamento. Tente novamente.");
-    setTimeout(() => setErroPedido(""), 2000);
+    setTimeout(() => {
+      setErroPedido("");
+      setPaymentStatus(null);
+    }, 2000);
     throw error;
   }
 };
@@ -399,8 +419,12 @@ const handleCreatePix = async () => {
   const referencia = getPedidoRef();
 
   if (!referencia) {
+    setPaymentStatus("error");
     setErroPedido("Pedido nao encontrado. Atualize a pagina e tente novamente.");
-    setTimeout(() => setErroPedido(""), 2000);
+    setTimeout(() => {
+      setErroPedido("");
+      setPaymentStatus(null);
+    }, 2000);
     return;
   }
 
@@ -462,8 +486,12 @@ const handleCreatePix = async () => {
     setIsLoading(false);
   } catch (error: any) {
     console.error("Erro ao criar PIX:", error);
+    setPaymentStatus("error");
     setErroPedido("Erro ao criar PIX. Tente novamente.");
-    setTimeout(() => setErroPedido(""), 3000);
+    setTimeout(() => {
+      setErroPedido("");
+      setPaymentStatus(null);
+    }, 3000);
     setIsLoading(false);
   }
 };
@@ -547,6 +575,12 @@ const isFormValid = isStepOneValid;
       {erroPedido && (
         <div className="loading-overlay">
           <div className="loading-box">
+            {paymentStatus === "success" && (
+              <div style={{ fontSize: "3rem", marginBottom: "12px" }}>✅</div>
+            )}
+            {paymentStatus === "error" && (
+              <div style={{ fontSize: "3rem", marginBottom: "12px", color: "#e74c3c" }}>❌</div>
+            )}
             <p style={{whiteSpace: "pre-line"}}>{erroPedido}</p>
           </div>
         </div>
@@ -871,8 +905,12 @@ const isFormValid = isStepOneValid;
                         onSubmit={handlePaymentSubmit}
                         onError={(error) => {
                           console.error("Erro no pagamento:", error);
+                          setPaymentStatus("error");
                           setErroPedido("Erro ao processar pagamento. Tente novamente.");
-                          setTimeout(() => setErroPedido(""), 2000);
+                          setTimeout(() => {
+                            setErroPedido("");
+                            setPaymentStatus(null);
+                          }, 2000);
                         }}
                       />
                     </div>
