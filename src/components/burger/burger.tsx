@@ -118,9 +118,7 @@ function Burger() {
       <div className="burger-info">
         <h3>{nome}</h3>
         <div className="burger-ingredients">
-          {ingredientes.map((ing: string, idx: number) => (
-            <p key={idx} className="burger-ingredient">{`- ${ing}`}</p>
-          ))}
+          <p className="burger-ingredient">{ingredientes.join(", ")}</p>
         </div>
 
         <div className="burger-footer">

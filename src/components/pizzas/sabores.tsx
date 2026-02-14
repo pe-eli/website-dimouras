@@ -3,25 +3,25 @@ export const saboresFixos = [
     nome: "Calabresa",
     preco: 59.90,
     classe: "cala",
-    ingredientes: ["Molho Caseiro", "Mussarela", "Calabresa", "Azeitona", "Orégano"],
+    ingredientes: ["Massa artesanal", "molho caseiro", "mussarela", "calabresa", "azeitona", "orégano."],
   },
   {
     nome: "Frango",
     preco: 65.90,
     classe: "fc",
-    ingredientes: ["Molho Caseiro", "Mussarela", "Cream Cheese", "Frango", "Azeitona", "Milho", "Orégano"],
+    ingredientes: ["Massa artesanal", "molho caseiro", "mussarela", "cream cheese", "frango", "azeitona", "milho", "orégano."],
   },
-  // {
-  //   nome: "Pepperoni",
-  //   preco: 63.90,
-  //   classe: "mista",
-  //   ingredientes: ["Molho Caseiro", "Mussarela", "Pepperoni", "Azeitona", "Orégano"],
-  // },
+  {
+    nome: "Mista",
+    preco: 63.90,
+    classe: "mista",
+    ingredientes: ["Massa artesanal", "molho caseiro", "mussarela", "presunto", "azeitona", "milho", "orégano."],
+  },
   {
     nome: "Quatro Queijos",
     preco: 63.90,
     classe: "qq",
-    ingredientes: ["Molho Caseiro", "Mussarela", "Parmesão", "Provolone", "Gorgonzola", "Orégano"],
+    ingredientes: ["Massa artesanal", "molho caseiro", "mussarela", "parmesão", "provolone", "gorgonzola", "orégano."],
   },
   
 ];

@@ -25,9 +25,7 @@ function Pizzas(){
     <div className="pizza-info">
       <h3>{nome}</h3>
       <div className="pizza-ingredients">
-        {ingredientes.map((ing: string, idx: number) => (
-          <p key={idx} className="pizza-ingredient">{`- ${ing}`}</p>
-        ))}
+        <p className="pizza-ingredient">{ingredientes.join(", ")}</p>
       </div>
       <div className="pizza-footer">
         <p className="pizza-price">R${preco.toFixed(2).replace(".", ",")}</p>
