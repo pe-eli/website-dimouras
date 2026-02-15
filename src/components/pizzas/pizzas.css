@@ -102,7 +102,7 @@
 }
 
 .pizza-image.pizza-mista {
-  background-image: url("/pepperoni.png");
+  background-image: url("/mista.png");
 }
 
 .pizza-image.pizza-monte {
@@ -188,6 +188,7 @@
     margin: 0 0 1rem 0;
   }
   .pizza-card{
+    height: fit-content;
     width: 90vw;
   }
 
