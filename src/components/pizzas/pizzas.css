@@ -194,8 +194,8 @@
 
   .pizza-card--personalizada {
     width: 80vw;
-    min-height: 16vh;
-    height: 16vh;
+    min-height: 20vh;
+    height: 20vh;
   }
 
   .pizza-image{
