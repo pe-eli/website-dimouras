@@ -10,14 +10,14 @@
   align-items: stretch;
   gap: 0;
   width: 18rem;
-  min-height: 420px;
-  height: 450px;
+  min-height: 55vh;
+  height: 60vh;
 }
 
 .pizza-card--personalizada {
   width: 18rem;
-  min-height: calc(520px * 0.30);
-  height: calc(520px * 0.30);
+  min-height: 20vh;
+  height: 20vh;
 }
 
 .pizza-info {
@@ -76,7 +76,7 @@
 
 .pizza-image {
   width: 100%;
-  height: 190px;
+  height: 25vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,13 +193,13 @@
 
   .pizza-card--personalizada {
     width: 80vw;
-    min-height: calc(580px * 0.25);
-    height: calc(580px * 0.25);
+    min-height: 16vh;
+    height: 16vh;
   }
 
   .pizza-image{
-    min-height: 280px;
-    height: 280px;
+    min-height: 31vh;
+    height: 31vh;
   } 
 
   .pizza-price {
