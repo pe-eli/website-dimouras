@@ -1,129 +1,152 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCart } from "../../CartContext"; 
-import "./combos.css"
-import CardCombo from "./comboCard/comboPizzaCard";
-import HamburguerCard from "./comboCard/comboBurgerCard";
-import { refriLata, refri2L, precoBebidas } from "../bebidas/bebes";
-function Combos(){
+import { useEffect, useMemo, useState } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { useCart } from "../../CartContext";
+import { db } from "../../firebase/config";
+import "./combos.css";
 
-  const precoPizzaCombo = {
-  calabresa: {
-    casal: 50,
-    familia: 50,
-    galera: 57
-  },
-  frango: {
-    casal: 65,
-    familia: 60,
-    galera: 67
-  },
-  quatroqueijos: {
-    casal: 60,
-    familia: 55,
-    galera: 60 
-  },
-  pepperoni: {
-    casal: 60,
-    familia: 55,
-    galera: 60
-  }
+type ComboDoc = {
+	nome?: string;
+	itens?: string[];
+	preco?: number | string;
+	imagem?: string;
+	ativo?: boolean;
+	ordem?: number;
 };
 
-    return(
+type Combo = {
+	id: string;
+	nome: string;
+	itens: string[];
+	preco: number;
+	imagem?: string;
+	ativo?: boolean;
+	ordem?: number;
+};
 
-<section className="section-combo">
-        <h2>Combos</h2>
-        <section className="section-combo">
-        <div className="grid-combo"> 
-          <div className="grid-combo">
-            <CardCombo
-            nomeCombo="Casal"
-            titulo="Casal"
-            descricao="1 Pizza + 2 Refris Lata"
-            imagem="/cala.png"
-            precoC={precoPizzaCombo.calabresa.casal+4.90}
-            precoF={precoPizzaCombo.frango.casal+2.90}
-            precoQ={precoPizzaCombo.quatroqueijos.casal+3.90}
-            precoP={precoPizzaCombo.pepperoni.casal+1.90}
-            qtdPizzas={1}
-            qtdBebidas={2}
-            bebes={refriLata}
-          />
+const parsePriceToNumber = (value: number | string | undefined): number => {
+	if (typeof value === "number") {
+		return value;
+	}
+	if (!value) {
+		return 0;
+	}
+	const cleaned = String(value)
+		.trim()
+		.replace(/[R$\s]/g, "")
+		.replace(/\./g, "")
+		.replace(/,/g, ".");
+	const numberValue = Number(cleaned);
+	return Number.isFinite(numberValue) ? numberValue : 0;
+};
 
-            <CardCombo
-            nomeCombo="Família"
-            titulo="Família"
-            descricao="2 Pizzas + 1 Refri 2L"
-            imagem="/fc.png"
-            precoC={precoPizzaCombo.calabresa.familia+8.9/2}
-            precoF={precoPizzaCombo.frango.familia+7.9/2}
-            precoQ={precoPizzaCombo.quatroqueijos.familia+7.9/2}
-            precoP={precoPizzaCombo.pepperoni.familia+5.9/2}
-            qtdPizzas={2}
-            qtdBebidas={1}
-            bebes={refri2L}
-          />
+const formatPrice = (value: number): string =>
+	value.toFixed(2).replace(".", ",");
 
-          <CardCombo
-            nomeCombo="Galera"
-            titulo="Galera"
-            descricao="3 Pizzas + 2 Refris 2L"
-            imagem="/pepperoni.png"
-            precoC={precoPizzaCombo.calabresa.galera+4.9/3}
-            precoF={precoPizzaCombo.frango.galera+1.9/3}
-            precoQ={precoPizzaCombo.quatroqueijos.galera+5.9/3}
-            precoP={precoPizzaCombo.pepperoni.galera+3.9/3}
-            qtdPizzas={3}
-            qtdBebidas={2}
-            bebes={refri2L}
-          />
+function Combos() {
+	const { addToCart } = useCart();
+	const [combos, setCombos] = useState<Combo[]>([]);
+	const [carregando, setCarregando] = useState(true);
+	const [erro, setErro] = useState("");
 
-         <HamburguerCard
-                nomeCombo="Bacon"
-                titulo="Bacon"
-                descricao="2x Moura's Bacon + 2x Refris Lata"
-            imagem="/mbacon.png"
-                precoContra={71.9/2}
-                precoFralda={64.9/2}
-                precoPicanha={66.9/2}
-                qtdBebidas={2}
-                bebes={refriLata} 
-                sanduba="Moura's Bacon"
-                economia={10}                       
-                />
+	useEffect(() => {
+		const combosRef = collection(db, "combos");
+		const unsubscribe = onSnapshot(
+			combosRef,
+			(snapshot) => {
+				const list = snapshot.docs.map((doc) => {
+					const data = doc.data() as ComboDoc;
+					return {
+						id: doc.id,
+						nome: data.nome ?? "",
+						itens: Array.isArray(data.itens) ? data.itens : [],
+						preco: parsePriceToNumber(data.preco),
+						imagem: data.imagem,
+						ativo: data.ativo,
+						ordem: data.ordem,
+					};
+				});
 
-          <HamburguerCard
-                nomeCombo="Duplo"
-                titulo="Duplo"
-                descricao="2x Moura's Duplo + 2x Refris Lata"
-                imagem="/mduplo.png"
-                precoContra={98.9/2}
-                precoFralda={81.9/2}
-                precoPicanha={88.9/2}
-                qtdBebidas={2}
-                bebes={refriLata} 
-                sanduba="Moura's Duplo Bacon"
-                       
-                />
+				setCombos(list);
+				setCarregando(false);
+				setErro("");
+			},
+			(error) => {
+				console.error("Erro ao carregar combos:", error);
+				setErro("Nao foi possivel carregar os combos.");
+				setCarregando(false);
+			}
+		);
 
-          <HamburguerCard
-                nomeCombo="Duplo Bacon"
-                titulo="Duplo Bacon"
-                descricao="2x Moura's Duplo Bacon + 1x Refri 2L"
-                imagem="/mduplobacon.png"
-                precoContra={103.9/2}
-                precoFralda={88.9/2}
-                precoPicanha={94.9/2}
-                qtdBebidas={2}
-                bebes={refri2L} 
-                sanduba="Moura's Duplo Bacon"
-                   
-                />
-                          
-                </div>
-            </div> 
-          </section>
-      </section>
-)
-      }
-export default Combos
+		return () => unsubscribe();
+	}, []);
+
+	const combosOrdenados = useMemo(() => {
+		return [...combos]
+			.filter((combo) => combo.nome)
+			.filter((combo) => combo.ativo !== false)
+			.sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0));
+	}, [combos]);
+
+	const handleAddToCart = (combo: Combo) => {
+		const itensTexto = combo.itens.length > 0 ? ` - ${combo.itens.join(", ")}` : "";
+		addToCart({
+			name: `Combo ${combo.nome}${itensTexto}`,
+			price: `R$${formatPrice(combo.preco)}`,
+			qty: 1,
+			category_id: "food",
+		});
+	};
+
+	if (!carregando && !erro && combosOrdenados.length === 0) {
+		return null;
+	}
+
+	return (
+		<section className="section-combo">
+			<h2>Combos</h2>
+
+			{carregando && <p className="combo-status">Carregando...</p>}
+			{erro && <p className="combo-status combo-status--erro">{erro}</p>}
+
+			<div className="grid-combo">
+				{combosOrdenados.map((combo) => {
+					const imageClass = combo.imagem ? `combo-image combo-${combo.id}` : "combo-image combo-image-fallback";
+					return (
+					<article className="product-card combo-card" key={combo.id}>
+						<div className={imageClass}
+							style={combo.imagem ? { backgroundImage: `url(${combo.imagem})` } : undefined}
+						/>
+						<div className="product-info">
+							<h3>{combo.nome}</h3>
+							<ul className="combo-items">
+								{combo.itens.map((item, index) => (
+									<li key={`${combo.id}-${index}`}>{item}</li>
+								))}
+							</ul>
+							<div className="product-footer">
+								<p className="product-price">R${formatPrice(combo.preco)}</p>
+								<button className="btn-combo" onClick={() => handleAddToCart(combo)}>
+									Adicionar ao carrinho
+								</button>
+							</div>
+						</div>
+					</article>
+					);
+				})}
+			</div>
+
+       <div
+        style={{
+          width: "70vw",
+          height: "5px",
+          backgroundColor: "red",
+          placeSelf: "center",
+          borderRadius: "40%"
+        }}
+      ></div>
+
+		</section>
+	);
+}
+
+export default Combos;

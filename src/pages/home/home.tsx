@@ -209,19 +209,9 @@ const precoFinal = Math.max(
         </div>
       )}
 
-      {/* <div ref={combosRef}>
+      { <div ref={combosRef}>
       <Combos/>
-      </div> */}
-
-      {/* <div
-        style={{
-          width: "70vw",
-          height: "5px",
-          backgroundColor: "red",
-          placeSelf: "center",
-          borderRadius: "40%"
-        }}
-      ></div> */}
+      </div> }
 
       
       <div ref={burgerRef}>
