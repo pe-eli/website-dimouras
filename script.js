@@ -1,8 +1,9 @@
-// Substitua apenas este valor quando o canal oficial de assinatura estiver definido.
-const SIGNUP_URL = "#assinar";
+const SIGNUP_URL = "https://mpago.la/2AVjcMM";
 
 document.querySelectorAll(".signup-link").forEach((link) => {
   link.href = SIGNUP_URL;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
 });
 
 if (window.lucide) {
